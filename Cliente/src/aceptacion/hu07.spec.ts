@@ -1,41 +1,39 @@
-
-import {DeviceService} from '../app/devices/device.service';
-import {Device} from '../app/devices/device';
-import {DeviceNotExists} from '../app/devices/exceptions/device-not-exists';
-import { obtainDeviceService } from './comun';
+import { DeviceService } from '../app/devices/device.service';
+import { Device } from '../app/devices/device';
+import { DeviceNotExists } from '../app/devices/exceptions/device-not-exists';
+import { obtainDeviceService, limpiarEstado } from './comun';
 
 describe('HU07: Consultar estado de los dispositivos', () => {
-    let deviceService: DeviceService;
+  let deviceService: DeviceService;
 
-    beforeEach(() => {
-        deviceService = obtainDeviceService();
-    });
+  beforeEach(() => {
+    deviceService = obtainDeviceService();
+  });
 
-    it('Deberia poder consultar el estado de los dispositivos',
-     async () => {
-         //Given -- En given obtendremos la id de uno de los dispositivos que tiene el hub por default
-         
-        const id = "CAS"
-         
-         //When -- Consultamos el estado del dispositivo
-        const checkedState = await deviceService.checkState(id);
+  it('Deberia poder consultar el estado de los dispositivos', async () => {
+    // Given -- El id de uno de los dispositivos del hub
 
-         //Then -- debería devolver un dispositivo
-         expect(checkedState).toBeInstanceOf(Device)
-     });
+    const id = 'CAS';
 
-     it('No deberia poder consultar el estado de los dispositivos que no existen',
-     async () => {
-         //Given
-         
-        const id = ""
-         
-         //When
-        const checkedState = await deviceService.checkState(id);
+    // When -- Consultamos el estado del dispositivo
+    const checkedState = await deviceService.checkState(id);
 
-         //Then
-         expect(checkedState).toThrow(new DeviceNotExists(id));
-     });
-      
+    // Then -- debería devolver un dispositivo
+    expect(checkedState).toBeInstanceOf(Device);
+  });
+
+  it('No deberia poder consultar el estado de los dispositivos que no existen', async () => {
+    // Given -- un id vacio
+
+    const id = '';
+
+    // When -- consultamos el estado
+    const checkedState = await deviceService.checkState(id);
+
+    // Then -- se produce una excepción que indica que no existe el dispositivo
+    expect(checkedState).toThrow(new DeviceNotExists(id));
+  });
+  afterEach(() => {
+    limpiarEstado();
+  });
 });
-
