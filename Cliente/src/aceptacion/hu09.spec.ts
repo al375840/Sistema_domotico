@@ -5,37 +5,36 @@ import {RoomService} from '../app/rooms/room.service';
 import {DeviceNotExists} from '../app/devices/exceptions/device-not-exists';
 import { obtainDeviceService, obtainRoomService } from './comun';
 
-describe('HU08: Listar dispositivos no asignados conocidos', () => {
+describe('HU09: Actualizar dispositivos no asignados ', () => {
     let deviceService: DeviceService;
     let roomService: RoomService;
 
     beforeEach(() => {
         deviceService = obtainDeviceService();
-        
     });
 
-    it('Deberia devolver una lista vacía cuando no hay dispositivos no asignados',
+    it('Deberia poder actualizar la lista con los cambios realizados',
      async () => {
-         //Given -- Asignamos todos los dispositivos no asignados para comprobar que la lista de no asignados quede vacia
+         //Given -- Tenemos uno de los dispositivos por defecto a una habitación 
          roomService = obtainRoomService();
 
          roomService.addRoom("Test")
-         const devices = await deviceService.listUnasignedDevices().toPromise();
-         devices.forEach(d=>roomService.asignDevice(d.id,"Test"));
+         const id = "CAS"
+         roomService.asignDevice(id,"Test");
+         const listDevices = await deviceService.listUnasignedDevices().toPromise();
          
-         //When -- Obtenemos los dispositivos no asignados
-        const listDevices = await deviceService.listUnasignedDevices().toPromise();
+         
+         //When -- Eliminamos la habitación y por lo tanto el dispositivo se desasigna
 
-         //Then -- No debería de haber ningún dispositivo no asignado
-         expect(listDevices.length).toBe(0);
-
-         //After -- Eliminamos la habitación y los dispositivo volverian a estar no asignados
          roomService.deleteRoom("Test");
 
-
+         //Then -- El dispositivo con id 'CAS' Debería de estar en la lista de dispo
+         const newListDevices = await deviceService.listUnasignedDevices().toPromise();
+         expect(newListDevices.some(d => d.id == 'CAS')).toBeTrue();
+         
      });
 
-     it('Deberia devolver una lista no vacia cuando hay algun dispositivo no asignado',
+     it('Deberia poder mostrar los dispositivos no asignados sin cambios',
      async () => {
          //Given
          

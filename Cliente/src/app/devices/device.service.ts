@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Device } from './Device';
+import { Device } from './device';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -9,7 +9,7 @@ export class DeviceService {
 
   constructor() { }
 
-  async listDevices(): Promise<Array<Device>> {
+  listUnasignedDevices(): Observable<Array<Device>> {
     throw new Error('Unimplemented');
   }
 
@@ -17,7 +17,5 @@ export class DeviceService {
     throw new Error('Unimplemented');
   }
 
-  async checkNewDevices(): Promise<Observable<Array<Device>>> {
-    throw new Error('Unimplemented');
-  }
+
 }
