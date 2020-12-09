@@ -1,3 +1,4 @@
+import { take } from 'rxjs/operators';
 import { DeviceService } from '../app/devices/device.service';
 import { RoomService } from '../app/rooms/room.service';
 import { limpiarEstado, obtainDeviceService, obtainRoomService } from './comun';
@@ -25,6 +26,7 @@ describe('HU09: Actualizar dispositivos no asignados ', () => {
     // Then -- el dispositivo con id 'CAS' Debería de estar en la lista de dispo
     const newListDevices = await deviceService
       .listUnasignedDevices()
+      .pipe(take(1))
       .toPromise();
 
     expect(newListDevices.some((d) => d.id == 'CAS')).toBeTrue();
@@ -37,7 +39,10 @@ describe('HU09: Actualizar dispositivos no asignados ', () => {
     roomService.asignDevice(id, 'Test');
 
     // When -- listamos todos los dispositivos no asignados
-    const listDevices = await deviceService.listUnasignedDevices().toPromise();
+    const listDevices = await deviceService
+      .listUnasignedDevices()
+      .pipe(take(1))
+      .toPromise();
 
     // Then -- no debería de estar el dispositivo asignado a la habitación
     expect(listDevices.some((d) => d.id == 'CAS')).not.toBeTrue();
