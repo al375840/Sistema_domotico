@@ -19,7 +19,7 @@ describe('HU07: Consultar estado de los dispositivos', () => {
     const checkedState = await deviceService.checkState(id);
 
     // Then -- debería devolver un dispositivo
-    expect(checkedState).toBeInstanceOf(Device);
+    expect(checkedState.id).toBe('CAS');
   });
 
   it('No deberia poder consultar el estado de los dispositivos que no existen', async () => {
