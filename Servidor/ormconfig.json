@@ -1,0 +1,8 @@
+{
+	"name": "default",
+	"type": "postgres",
+	"url": "postgres://dhwoqbym:0XgCpSA1uQF9uPsbJQxwkngahDS3y5qO@kandula.db.elephantsql.com:5432/dhwoqbym",
+	"entities": ["dist/entity/**/*.js"],
+	"logging": true,
+	"synchronize": true
+}

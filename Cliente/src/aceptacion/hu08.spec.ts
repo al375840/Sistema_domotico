@@ -23,7 +23,7 @@ describe('HU08: Listar dispositivos no asignados conocidos', () => {
     devices.forEach((d) => roomService.asignDevice(d.id, 'Test'));
 
     // When -- Obtenemos los dispositivos no asignados
-    const listDevices = await deviceService.listUnasignedDevices().toPromise();
+    const listDevices = await deviceService.listUnasignedDevices().pipe(take(1)).toPromise();
 
     // Then -- No debería de haber ningún dispositivo no asignado
     expect(listDevices.length).toBe(0);
