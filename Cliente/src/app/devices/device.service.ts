@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Device } from './device';
 import { Observable } from 'rxjs';
-import { io, Socket } from 'socket.io-client';
-import { environment } from 'src/environments/environment';
-import { DeviceNotExists } from './exceptions/device-not-exists';
+import { Socket } from 'socket.io-client';
+import { ServerService } from '../comun/server.service';
+import { Device } from './device';
 
 @Injectable({
   providedIn: 'root',
@@ -12,35 +11,13 @@ export class DeviceService {
   private socket: Socket;
 
   devices: Device[];
-  constructor() {
-    this.socket = io(environment.urlServer);
-
-    this.socket.on('unasigndevices', (devices: Device[]) => {
-      this.devices = devices;
-    });
-
-    this.socket.on('disconect', () => {
-      console.log('Server disconected');
-    });
-  }
+  constructor(private server: ServerService) {}
 
   listUnasignedDevices(): Observable<Array<Device>> {
-    return new Observable((obs) => {
-      this.socket.on('unasigndevices', (devices: Device[]) => {
-        obs.next(devices);
-      });
-    });
+    return this.server.listUnasignedDevices();
   }
 
   checkState(idDevice: string): Observable<Device> {
-    this.socket.emit('checkState', idDevice);
-    return new Observable((obs) => {
-      this.socket.on('checkState', (device: Device) => {
-        if (device == null) {
-          obs.error(new DeviceNotExists(idDevice));
-        }
-        obs.next(device);
-      });
-    });
+    return this.server.checkState(idDevice);
   }
 }

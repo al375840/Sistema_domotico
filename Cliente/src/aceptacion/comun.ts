@@ -1,6 +1,7 @@
 import { DeviceService } from '../app/devices/device.service';
 import { RoomService } from '../app/rooms/room.service';
 import { TestBed } from '@angular/core/testing';
+import { ServerService } from '../app/comun/server.service';
 
 TestBed.configureTestingModule({});
 let ds;
@@ -16,5 +17,6 @@ export function obtainRoomService(): RoomService {
 }
 
 export function limpiarEstado(): void {
-  //TODO limpiar estado
+  let server = TestBed.inject(ServerService)
+  server.disconect()
 }
