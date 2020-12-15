@@ -16,7 +16,7 @@ describe('HU09: Actualizar dispositivos no asignados ', () => {
     // Given -- tenemos uno de los dispositivos por defecto a asignado en una habitación
 
     roomService.addRoom('Test');
-    const id = 'CAS';
+    const id = 'FEN';
     roomService.asignDevice(id, 'Test');
 
     // When -- eliminamos la habitación y por lo tanto el dispositivo se desasigna
@@ -29,13 +29,13 @@ describe('HU09: Actualizar dispositivos no asignados ', () => {
       .pipe(take(1))
       .toPromise();
 
-    expect(newListDevices.some((d) => d.id == 'CAS')).toBeTrue();
+    expect(newListDevices.some((d) => d.id == 'FEN')).toBeTrue();
   });
 
   it('Deberia poder mostrar los dispositivos no asignados sin cambios', async () => {
     // Given -- tenemos uno de los dispositivos por defecto a asignado en una habitación
     roomService.addRoom('Test');
-    const id = 'CAS';
+    const id = 'FEN';
     roomService.asignDevice(id, 'Test');
 
     // When -- listamos todos los dispositivos no asignados
@@ -45,7 +45,7 @@ describe('HU09: Actualizar dispositivos no asignados ', () => {
       .toPromise();
 
     // Then -- no debería de estar el dispositivo asignado a la habitación
-    expect(listDevices.some((d) => d.id == 'CAS')).not.toBeTrue();
+    expect(listDevices.some((d) => d.id == 'FEN')).not.toBeTrue();
 
     // After -- Devolvemos el estado inicial
     roomService.deleteRoom('Test');
