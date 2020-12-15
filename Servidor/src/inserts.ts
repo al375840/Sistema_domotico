@@ -8,7 +8,7 @@ import { DeviceType } from "./enums/typeEnum";
 createConnection().then(()=>main()).catch((error) => console.log(error));
 
 async function main(){
-/* 	await addDevice({
+ /* 	await addDevice({
 		type: DeviceType.APERTURA,
 		state: "close",
 		turned: true
@@ -24,7 +24,7 @@ async function main(){
 		type: DeviceType.MOVIMIENTO,
 		state: "no_motion",
 		turned: true
-	}); */
+	});  */
 	
 	getUnasignedDevices().then((devices) =>
 		devices.forEach((d) => console.log(d))

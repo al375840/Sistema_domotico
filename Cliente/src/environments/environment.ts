@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  urlServer: 'postgres://dhwoqbym:0XgCpSA1uQF9uPsbJQxwkngahDS3y5qO@kandula.db.elephantsql.com:5432/dhwoqbym'
+  urlServer: 'http://localhost:3000'
 };
 
 /*

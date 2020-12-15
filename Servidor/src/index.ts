@@ -1,11 +1,11 @@
 import "reflect-metadata";
 import express from "express";
-import { ConnectionOptions, createConnection } from "typeorm";
+import { createConnection } from "typeorm";
 
 import { Room } from "./entity/room";
 import { Device } from "./entity/device";
 import { Server } from "socket.io";
-import { addDevice, getUnasignedDevices, getRooms, addRoom, deleteRoom, updateRoom, asignDeviceToRoom, unasignDevice, } from "./controllers/controller";
+import { addDevice, getUnasignedDevices, getRooms, addRoom, deleteRoom, updateRoom, asignDeviceToRoom, unasignDevice } from "./controllers/controller";
 
 const PORT = process.env.PORT || 3000;
 
