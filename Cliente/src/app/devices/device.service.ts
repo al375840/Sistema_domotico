@@ -37,7 +37,7 @@ export class DeviceService {
     return new Observable((obs) => {
       this.socket.on('checkState', (device: Device) => {
         if (device == null) {
-          throw new DeviceNotExists(idDevice);
+          obs.error(new DeviceNotExists(idDevice));
         }
         obs.next(device);
       });

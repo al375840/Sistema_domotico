@@ -10,15 +10,15 @@ export class RoomService {
 
   constructor() { }
 
-  asignDevice(device:string, room:string) {
+  asignDevice(device: string, room: string) {
     throw new Error('Unimplemented');
   }
 
-  deleteRoom(room:string) {
+  deleteRoom(room: string) {
     throw new Error('Unimplemented');
   }
 
-  addRoom(room:string) {
+  addRoom(room: string) {
     throw new Error('Unimplemented');
   }
 }
