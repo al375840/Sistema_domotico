@@ -19,7 +19,7 @@ __decorate([
     __metadata("design:type", String)
 ], Room.prototype, "name", void 0);
 __decorate([
-    typeorm_1.OneToMany(() => device_1.Device, device => device.room),
+    typeorm_1.OneToMany(() => device_1.Device, device => device.room, { nullable: true }),
     __metadata("design:type", Array)
 ], Room.prototype, "devices", void 0);
 Room = __decorate([

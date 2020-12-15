@@ -1,0 +1,9 @@
+<h2>Unasigned Devices</h2>
+<ul class="devices">
+  <li *ngFor="let device of devices">
+    <span class="badge">{{device.id}}</span>
+    <span class="badge">{{device.type}}</span>
+    <span class="badge">{{device.state}}</span>
+    <span class="badge">{{device.turned}}</span>
+  </li>
+</ul>

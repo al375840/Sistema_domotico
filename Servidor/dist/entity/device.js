@@ -37,7 +37,7 @@ __decorate([
 ], Device.prototype, "turned", void 0);
 __decorate([
     typeorm_1.ManyToOne(() => room_1.Room, room => room.devices, { nullable: true }),
-    __metadata("design:type", room_1.Room)
+    __metadata("design:type", Object)
 ], Device.prototype, "room", void 0);
 Device = __decorate([
     typeorm_1.Entity()

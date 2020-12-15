@@ -3,7 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  urlServer: 'postgres://dhwoqbym:0XgCpSA1uQF9uPsbJQxwkngahDS3y5qO@kandula.db.elephantsql.com:5432/dhwoqbym'
 };
 
 /*
