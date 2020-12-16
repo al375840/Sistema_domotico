@@ -26,7 +26,6 @@ export const getUnasignedDevices = async () => {
 	return await getRepository(Device)
 		.createQueryBuilder("device")
 		.where("device.room IS NULL")
-		.printSql()
 		.getMany();
 };
 
@@ -34,7 +33,6 @@ export const getDeviceState = async (device: string) => {
 	return await getRepository(Device)
 		.createQueryBuilder("device")
 		.where("device.id = :id", { id: device })
-		.printSql()
 		.getOne();
 };
 
@@ -71,35 +69,33 @@ export const deleteRoom = async (room: string) => {
 export const getRooms = async () => {
 	return await getRepository(Room)
 		.createQueryBuilder("room")
-		.printSql()
+		.leftJoinAndSelect("room.devices", "device")
 		.getMany();
 };
 
 export const getRoom = async (room: string) => {
 	return await getRepository(Room)
 		.createQueryBuilder("room")
-		.where("room.id = :id", { id: room })
-		.printSql()
+		.leftJoinAndSelect("room.devices", "device")
+		.where("room.name = :name", { name: room })
 		.getOne();
 };
 
 export const asignDeviceToRoom = async (room: Room, device: string) => {
 	return await getRepository(Device)
-		.createQueryBuilder("device")
+		.createQueryBuilder()
 		.update(Device)
 		.set({ room: room })
 		.where("device.id = :id", { id: device })
-		.printSql()
 		.execute();
 };
 
 export const unasignDevice = async (device: string) => {
 	return await getRepository(Device)
-		.createQueryBuilder("device")
+		.createQueryBuilder()
 		.update(Device)
-		.set({ room: null })
+		.set({ room: undefined })
 		.where("device.id = :id", { id: device })
-		.printSql()
 		.execute();
 };
 

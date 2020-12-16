@@ -22,6 +22,12 @@ async function main() {
            state: "no_motion",
            turned: true
        });  */
-    controller_1.getUnasignedDevices().then((devices) => devices.forEach((d) => console.log(d)));
-    controller_1.getDeviceState("HCB").then(d => console.log(d));
+    /* getUnasignedDevices().then((devices) =>
+        devices.forEach((d) => console.log(d))
+    );
+    
+    
+    getDeviceState("HCB").then(d=>console.log(d)); */
+    controller_1.updateRoom("Entrada", "B").catch(() => console.log("Nombre no correcto"));
+    //console.log(await getRoom("Salon"))
 }

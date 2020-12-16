@@ -1,14 +1,15 @@
 import "reflect-metadata";
 import { createConnection } from "typeorm";
-import { addDevice, getDeviceState, getUnasignedDevices } from "./controllers/controller";
-import { Device } from "./entity/device";
-import { DeviceType } from "./enums/typeEnum";
+import {
+	updateRoom
+} from "./controllers/controller";
 
+createConnection()
+	.then(() => main())
+	.catch((error) => console.log(error));
 
-createConnection().then(()=>main()).catch((error) => console.log(error));
-
-async function main(){
- /* 	await addDevice({
+async function main() {
+	/* 	await addDevice({
 		type: DeviceType.APERTURA,
 		state: "close",
 		turned: true
@@ -25,11 +26,14 @@ async function main(){
 		state: "no_motion",
 		turned: true
 	});  */
-	
-	getUnasignedDevices().then((devices) =>
+
+	/* getUnasignedDevices().then((devices) =>
 		devices.forEach((d) => console.log(d))
 	);
 	
-	getDeviceState("HCB").then(d=>console.log(d));
-}
+	
+	getDeviceState("HCB").then(d=>console.log(d)); */
+	updateRoom("Entrada", "B").catch(() => console.log("Nombre no correcto"));
 
+	//console.log(await getRoom("Salon"))
+}

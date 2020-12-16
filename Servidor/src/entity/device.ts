@@ -21,6 +21,6 @@ export class Device {
     @Column()
     turned: boolean;
 
-    @ManyToOne(() => Room, room => room.devices, { nullable: true })
-    room?: Room | null;
+    @ManyToOne(() => Room, room => room.devices, { nullable: true ,onUpdate:'CASCADE',onDelete:'SET NULL'})
+    room?: Room;
 }

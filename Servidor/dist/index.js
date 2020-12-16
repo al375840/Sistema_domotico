@@ -62,6 +62,10 @@ function main() {
             let d = await controller_1.getDeviceState(device);
             socket.emit("checkState", d);
         };
+        const emitRoom = async (room) => {
+            let r = await controller_1.getRoom(room);
+            socket.emit("getRoom", r);
+        };
         //Para que cuando se conecte salga un mensaje por pantalla y emita los cambios
         emitChanges();
         console.log("Nueva conexión");
@@ -87,7 +91,7 @@ function main() {
         /*Cliente*/
         socket.on("addRoom", (room) => {
             if (room != null) {
-                controller_1.addRoom(room).then(() => { emitRoomChanges(); });
+                controller_1.addRoom(room).then(() => { emitRoomChanges(); }).catch();
             }
         });
         socket.on("deleteRoom", (room) => {
@@ -98,6 +102,11 @@ function main() {
         socket.on("updateRoom", (room, newroom) => {
             if (room != null && newroom != null) {
                 controller_1.updateRoom(room, newroom).then(() => { emitRoomChanges(); });
+            }
+        });
+        socket.on("getRoom", (room) => {
+            if (room != null) {
+                emitRoom(room);
             }
         });
         socket.on("asignDevice", (room, device) => {

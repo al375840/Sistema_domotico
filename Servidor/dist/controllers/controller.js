@@ -8,7 +8,7 @@ const room_1 = require("../entity/room");
     const newDevice = await getRepository(Device).create(device);
     return await getRepository(Device).save(newDevice);
 }*/
-const addDevice = async (device) => {
+exports.addDevice = async (device) => {
     let id = await generateDeviceId();
     return await typeorm_1.getRepository(device_1.Device)
         .createQueryBuilder()
@@ -22,24 +22,19 @@ const addDevice = async (device) => {
     })
         .execute();
 };
-exports.addDevice = addDevice;
-const getUnasignedDevices = async () => {
+exports.getUnasignedDevices = async () => {
     return await typeorm_1.getRepository(device_1.Device)
         .createQueryBuilder("device")
         .where("device.room IS NULL")
-        .printSql()
         .getMany();
 };
-exports.getUnasignedDevices = getUnasignedDevices;
-const getDeviceState = async (device) => {
+exports.getDeviceState = async (device) => {
     return await typeorm_1.getRepository(device_1.Device)
         .createQueryBuilder("device")
         .where("device.id = :id", { id: device })
-        .printSql()
         .getOne();
 };
-exports.getDeviceState = getDeviceState;
-const addRoom = async (room) => {
+exports.addRoom = async (room) => {
     let id = await generateDeviceId();
     return await typeorm_1.getRepository(room_1.Room)
         .createQueryBuilder()
@@ -49,8 +44,7 @@ const addRoom = async (room) => {
     })
         .execute();
 };
-exports.addRoom = addRoom;
-const updateRoom = async (room, newroom) => {
+exports.updateRoom = async (room, newroom) => {
     let id = await generateDeviceId();
     return await typeorm_1.getRepository(room_1.Room)
         .createQueryBuilder("room")
@@ -59,8 +53,7 @@ const updateRoom = async (room, newroom) => {
         .where("room.name = :name", { name: room })
         .execute();
 };
-exports.updateRoom = updateRoom;
-const deleteRoom = async (room) => {
+exports.deleteRoom = async (room) => {
     let id = await generateDeviceId();
     return await typeorm_1.getRepository(room_1.Room)
         .createQueryBuilder("room")
@@ -68,42 +61,35 @@ const deleteRoom = async (room) => {
         .where("room.name = :name", { name: room })
         .execute();
 };
-exports.deleteRoom = deleteRoom;
-const getRooms = async () => {
+exports.getRooms = async () => {
     return await typeorm_1.getRepository(room_1.Room)
         .createQueryBuilder("room")
-        .printSql()
+        .leftJoinAndSelect("room.devices", "device")
         .getMany();
 };
-exports.getRooms = getRooms;
-const getRoom = async (room) => {
+exports.getRoom = async (room) => {
     return await typeorm_1.getRepository(room_1.Room)
         .createQueryBuilder("room")
-        .where("room.id = :id", { id: room })
-        .printSql()
+        .leftJoinAndSelect("room.devices", "device")
+        .where("room.name = :name", { name: room })
         .getOne();
 };
-exports.getRoom = getRoom;
-const asignDeviceToRoom = async (room, device) => {
+exports.asignDeviceToRoom = async (room, device) => {
     return await typeorm_1.getRepository(device_1.Device)
-        .createQueryBuilder("device")
+        .createQueryBuilder()
         .update(device_1.Device)
         .set({ room: room })
         .where("device.id = :id", { id: device })
-        .printSql()
         .execute();
 };
-exports.asignDeviceToRoom = asignDeviceToRoom;
-const unasignDevice = async (device) => {
+exports.unasignDevice = async (device) => {
     return await typeorm_1.getRepository(device_1.Device)
-        .createQueryBuilder("device")
+        .createQueryBuilder()
         .update(device_1.Device)
-        .set({ room: null })
+        .set({ room: undefined })
         .where("device.id = :id", { id: device })
-        .printSql()
         .execute();
 };
-exports.unasignDevice = unasignDevice;
 async function generateDeviceId() {
     let cadena = "";
     for (let i = 0; i < 3; i += 1)
