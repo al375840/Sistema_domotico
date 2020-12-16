@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import {Room} from './room';
 import {Device} from '../devices/device';
 import { Observable } from 'rxjs';
+import { ServerService } from '../comun/server.service';
+import { NameNotValid } from './exceptions/name-not-valid';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +11,7 @@ import { Observable } from 'rxjs';
 export class RoomService {
   newRoom: any;
 
-  constructor() { }
+  constructor(private server:ServerService) { }
 
   asignDevice(device: string, room: string) {
     throw new Error('Unimplemented');
@@ -19,8 +21,10 @@ export class RoomService {
     throw new Error('Unimplemented');
   }
 
-  addRoom(room: string) {
-    throw new Error('Unimplemented');
+  async addRoom(room: string) {
+    
+    await this.server.addRoom(room).catch(()=>{throw new NameNotValid(room)} );
+    
   }
   
   getRoom(room: string): Observable<Room> {

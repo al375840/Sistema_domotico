@@ -24,11 +24,12 @@ describe('HU01: Añadir habitaciones', () => {
 });
 
   it('No deberia poder añadir haibitaciones con un nombre no valido', async () => {
+    //Given -- Un nombre de habitación incorrecto
     let nombre = ''
 
-    //When -- añadimos con nombre concreto
+    //When -- Añadimos una habitación con ese nombre
 
-    //Then --
+    //Then -- Debería de producirse una excepción indicando que el nombre no es válido
     await expectAsync(roomService.addRoom(nombre)).toBeRejectedWith(new NameNotValid(nombre));
     
   });

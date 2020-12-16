@@ -35,7 +35,6 @@ exports.getDeviceState = async (device) => {
         .getOne();
 };
 exports.addRoom = async (room) => {
-    let id = await generateDeviceId();
     return await typeorm_1.getRepository(room_1.Room)
         .createQueryBuilder()
         .insert()
@@ -45,7 +44,6 @@ exports.addRoom = async (room) => {
         .execute();
 };
 exports.updateRoom = async (room, newroom) => {
-    let id = await generateDeviceId();
     return await typeorm_1.getRepository(room_1.Room)
         .createQueryBuilder("room")
         .update(room_1.Room)
@@ -54,7 +52,6 @@ exports.updateRoom = async (room, newroom) => {
         .execute();
 };
 exports.deleteRoom = async (room) => {
-    let id = await generateDeviceId();
     return await typeorm_1.getRepository(room_1.Room)
         .createQueryBuilder("room")
         .delete()

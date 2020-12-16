@@ -1,4 +1,3 @@
-
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
@@ -8,10 +7,9 @@ import { DeviceNotExists } from '../devices/exceptions/device-not-exists';
 import { Room } from '../rooms/room';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ServerService {
-
   private socket: Socket;
 
   devices: Device[];
@@ -47,9 +45,17 @@ export class ServerService {
     });
   }
 
-  
-  addRoom(room: string) { 
-    throw new Error('Unimplemented');
+  async addRoom(room: string) {
+    this.socket.emit('addRoom', room);
+    return new Promise<void>((resolve,reject) => {
+      this.socket.once('addRoomRes', (res: string) => {
+        if (res == 'Error') {
+          reject("Nombre no valido")
+        }else{
+          resolve()
+        }
+      });
+    });
   }
 
   getRooms(): Observable<Array<Room>> {
@@ -68,8 +74,7 @@ export class ServerService {
     throw new Error('Unimplemented');
   }
 
-  disconect(){
+  disconect() {
     this.socket.close();
   }
-  
 }
