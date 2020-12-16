@@ -37,7 +37,6 @@ export const getDeviceState = async (device: string) => {
 };
 
 export const addRoom = async (room: string) => {
-	let id = await generateDeviceId();
 	return await getRepository(Room)
 		.createQueryBuilder()
 		.insert()
@@ -48,7 +47,6 @@ export const addRoom = async (room: string) => {
 };
 
 export const updateRoom = async (room: string, newroom: string) => {
-	let id = await generateDeviceId();
 	return await getRepository(Room)
 		.createQueryBuilder("room")
 		.update(Room)
@@ -58,7 +56,6 @@ export const updateRoom = async (room: string, newroom: string) => {
 };
 
 export const deleteRoom = async (room: string) => {
-	let id = await generateDeviceId();
 	return await getRepository(Room)
 		.createQueryBuilder("room")
 		.delete()
