@@ -5,6 +5,7 @@ import { io, Socket } from 'socket.io-client';
 import { environment } from 'src/environments/environment';
 import { Device } from '../devices/device';
 import { DeviceNotExists } from '../devices/exceptions/device-not-exists';
+import { Room } from '../rooms/room';
 
 @Injectable({
   providedIn: 'root'
@@ -44,6 +45,27 @@ export class ServerService {
         obs.next(device);
       });
     });
+  }
+
+  
+  addRoom(room: string) { 
+    throw new Error('Unimplemented');
+  }
+
+  getRooms(): Observable<Array<Room>> {
+    throw new Error('Unimplemented');
+  }
+
+  getRoom(room: string): Observable<Room> {
+    throw new Error('Unimplemented');
+  }
+
+  updateRoom(room: string, newRoom: string) {
+    throw new Error('Unimplemented');
+  }
+
+  deleteRoom(room: string) {
+    throw new Error('Unimplemented');
   }
 
   disconect(){

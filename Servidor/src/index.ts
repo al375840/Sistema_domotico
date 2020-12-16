@@ -5,7 +5,7 @@ import { createConnection } from "typeorm";
 import { Room } from "./entity/room";
 import { Device } from "./entity/device";
 import { Server } from "socket.io";
-import { addDevice, getUnasignedDevices, getRooms, addRoom, deleteRoom, updateRoom, asignDeviceToRoom, unasignDevice, getDeviceState } from "./controllers/controller";
+import { addDevice, getUnasignedDevices, getRooms, addRoom, deleteRoom, updateRoom, asignDeviceToRoom, unasignDevice, getDeviceState, getRoom } from "./controllers/controller";
 
 const PORT = process.env.PORT || 3000;
 
@@ -70,6 +70,11 @@ function main(){
 			let d = await getDeviceState(device);
 			socket.emit("checkState", d);
 		}
+
+		const emitRoom = async(room: string)=> {
+			let r = await getRoom(room);
+			socket.emit("getRoom", r);
+		}
 		
 		//Para que cuando se conecte salga un mensaje por pantalla y emita los cambios
 		emitChanges()
@@ -99,7 +104,7 @@ function main(){
 		/*Cliente*/
 		socket.on("addRoom", (room: string) => {
 			if (room != null) {
-				addRoom(room).then(()=>{emitRoomChanges()})
+				addRoom(room).then(()=>{emitRoomChanges()}).catch()
 			}
 		});
 	
@@ -112,6 +117,12 @@ function main(){
 		socket.on("updateRoom", (room: string, newroom: string) => {
 			if (room != null && newroom != null) {
 				updateRoom(room, newroom).then(()=>{emitRoomChanges()})
+			}
+		});
+
+		socket.on("getRoom", (room: string) => {
+			if (room != null) {
+				emitRoom(room);
 			}
 		});
 	

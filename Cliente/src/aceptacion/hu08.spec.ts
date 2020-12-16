@@ -1,6 +1,6 @@
 import { DeviceService } from '../app/devices/device.service';
 import { RoomService } from '../app/rooms/room.service';
-import { limpiarEstado, obtainDeviceService, obtainRoomService } from './comun';
+import { initializeTestBed, limpiarEstado, obtainDeviceService, obtainRoomService } from './comun';
 import { take } from 'rxjs/operators';
 
 describe('HU08: Listar dispositivos no asignados conocidos', () => {
@@ -8,6 +8,7 @@ describe('HU08: Listar dispositivos no asignados conocidos', () => {
   let roomService: RoomService;
 
   beforeEach(() => {
+    initializeTestBed()
     deviceService = obtainDeviceService();
   });
 

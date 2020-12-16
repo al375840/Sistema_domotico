@@ -3,20 +3,24 @@ import { RoomService } from '../app/rooms/room.service';
 import { TestBed } from '@angular/core/testing';
 import { ServerService } from '../app/comun/server.service';
 
-TestBed.configureTestingModule({});
-let ds;
-let rs;
+let tb
+export function initializeTestBed() {
+  tb=TestBed.configureTestingModule({
+    providers:[DeviceService,RoomService,ServerService]
+  });
+}
+
 export function obtainDeviceService(): DeviceService {
-  rs = TestBed.inject(DeviceService);
+  let rs = tb.inject(DeviceService);
   return rs;
 }
 
 export function obtainRoomService(): RoomService {
-  ds = TestBed.inject(RoomService);
+  let ds = tb.inject(RoomService);
   return ds;
 }
 
 export function limpiarEstado(): void {
-  let server = TestBed.inject(ServerService)
+  let server = tb.inject(ServerService)
   server.disconect()
 }
