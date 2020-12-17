@@ -1,15 +1,33 @@
+
+.mycard{
+  width: 40%;
+  height: 25%;
+  min-width: 300px;
+  max-width: 600px;
+  min-height: 220px;
+  max-height: 600px;
+  margin-top: 5rem;
+  background-color:paleturquoise;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+  border: 2cm;
+}
+
 .tittle{
-    position: fixed;
+    /*position: fixed;*/
     margin-top: 1em;
     margin-left: 1rem;
+    margin-right: 65%;
     font-size: 20px;
 }
 
 .unasigned-container {
     display: flex;
-    position: fixed;
+    /* position: fixed; */
     width: 95%;
-    margin-top: 5rem;
+    margin-top: 3rem;
     justify-content: center;
     align-items: center;
 }
@@ -22,9 +40,11 @@
     max-width: 95%;
     margin: 0px 15%;
     scroll-behavior: smooth; 
+    background-color:paleturquoise;
 }
   
 .unasigned-box {
+
     width: 70px;
     height: 70px;
     border-right: none;

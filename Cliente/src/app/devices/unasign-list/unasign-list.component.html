@@ -1,4 +1,7 @@
+<mat-card class="mycard">
+  <mat-card-title>
 <h2 class="tittle" matBadge={{devices.length}} matBadgePosition="after above" matBadgeColor="primary">Unasigned Devices</h2>
+</mat-card-title>
 <div cdkDropListGroup>
   <div overflow="scroll" class="unasigned-container" >
     <button (click)="scrollLeft()" mat-icon-button><mat-icon>keyboard_arrow_left</mat-icon></button>
@@ -12,3 +15,4 @@
     <button (click)="scrollRight()" mat-icon-button><mat-icon>keyboard_arrow_right</mat-icon></button>
   </div>
 </div>
+
