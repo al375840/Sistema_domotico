@@ -1,19 +1,16 @@
-
-
-  
 .tittle{
     margin-top: 1rem;
     margin-left: 1rem;
 }
 
-.example-container {
+.unasigned-container {
     display: flex;
     position: relative;
     justify-content: center;
     align-items: center;
 }
 
-.example-list {
+.unasigned-list {
     max-height: 100px;
     background: white;
     overflow: hidden;
@@ -22,7 +19,7 @@
     margin: 0px 15%;
 }
   
-.example-box {
+.unasigned-box {
     width: 70px;
     height: 70px;
     border-right: none;
