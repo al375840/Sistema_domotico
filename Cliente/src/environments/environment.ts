@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  //urlServer: 'https://sistema-domotico.herokuapp.com/'
-  urlServer: 'localhost:3000'
+  urlServer: 'https://sistema-domotico.herokuapp.com/'
+  //urlServer: 'localhost:3000'
 };
 
 /*
