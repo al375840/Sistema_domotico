@@ -5,23 +5,17 @@ import { createConnection } from "typeorm";
 import { Room } from "./entity/room";
 import { Device } from "./entity/device";
 import { Server } from "socket.io";
-import {
-	addDevice,
-	getUnasignedDevices,
-	getRooms,
-	addRoom,
-	deleteRoom,
-	updateRoom,
-	asignDeviceToRoom,
-	unasignDevice,
-	getDeviceState,
-	getRoom,
-} from "./controllers/controller";
+import { Controller } from './controllers/controller';
+
 
 const PORT = process.env.PORT || 3000;
-
+var controller:Controller;
 createConnection()
-	.then(() => main())
+	.then((c) => {
+		console.log("############################### Conexión con postgres establecida ##############################")
+		controller = new Controller(c)
+		main()
+	})
 	.catch((error) => console.log(error));
 //createConnection().then(()=>emitChanges()).catch((error) => console.log(error));
 
@@ -43,14 +37,14 @@ function main() {
 
 		//Emitimos los dispositivos sin habitación y las habitaciones
 		const emitChanges = () => {
-			getUnasignedDevices().then((data: Device[]) => {
+			controller.getUnasignedDevices().then((data: Device[]) => {
 				let devices: Device[] = [];
 				data.forEach((dev) => devices.push(dev));
 				//console.log(devices);
 				io.emit("unasigndevices", devices);
 			});
 
-			getRooms().then((data: Room[]) => {
+			controller.getRooms().then((data: Room[]) => {
 				let rooms: Room[] = [];
 				data.forEach((room) => rooms.push(room));
 				//console.log(rooms);
@@ -60,7 +54,7 @@ function main() {
 
 		//Emitimos los dispositivos sin habitación
 		const emitDeviceChanges = () => {
-			getUnasignedDevices().then((data: Device[]) => {
+			controller.getUnasignedDevices().then((data: Device[]) => {
 				let devices: Device[] = [];
 				data.forEach((dev) => devices.push(dev));
 				//console.log(devices);
@@ -69,7 +63,7 @@ function main() {
 		};
 		//Emitimos las habitaciones
 		const emitRoomChanges = () => {
-			getRooms().then((data: Room[]) => {
+			controller.getRooms().then((data: Room[]) => {
 				let rooms: Room[] = [];
 				data.forEach((room) => rooms.push(room));
 				//console.log(rooms);
@@ -77,14 +71,14 @@ function main() {
 			});
 		};
 		//Emitimos el estado de un dispositivo
-		const emitDeviceState = async (device: string) => {
-			let d = await getDeviceState(device);
-			socket.emit("checkState", d);
+		const emitDeviceState = (device: string) => {
+			controller.getDeviceState(device).then((d) => {
+				socket.emit("checkState", d);
+			});
 		};
 
 		const emitRoom = async (room: string) => {
-			let r = await getRoom(room);
-			socket.emit("getRoom", r);
+			await controller.getRoom(room).then((r) => socket.emit("getRoom", r));
 		};
 
 		//Para que cuando se conecte salga un mensaje por pantalla y emita los cambios
@@ -100,6 +94,16 @@ function main() {
 			}, 20000);
 		});
 
+		socket.on("getUnasignedDevices",()=>{
+			controller.getUnasignedDevices().then((data)=>{
+				let devices: Device[] = [];
+				data.forEach((dev) => devices.push(dev));
+				//console.log(devices);
+				socket.emit("unasigndevices", devices);
+			})
+			
+		})
+
 		/*HUB*/
 		//añadimos los dispositivos cuando del hub recibimos esos disp por
 		//un mensaje con la cabecers addDevices
@@ -107,7 +111,7 @@ function main() {
 			timeout.refresh();
 			if (devices != null && devices.length > 0) {
 				devices.forEach((element) => {
-					addDevice(element).then(() => {
+					controller.addDevice(element).then(() => {
 						emitDeviceChanges();
 					});
 				});
@@ -115,10 +119,10 @@ function main() {
 		});
 
 		/*Cliente*/
-		socket.on("addRoom", async (room: string) => {
+		socket.on("addRoom", async(room: string) => {
 			let res = "OK";
-			if (room != null && room.length > 0) {
-				await addRoom(room)
+			if (room != null && room.trim().length > 0) {
+				await controller.addRoom(room)
 					.then(() => {
 						emitRoomChanges();
 					})
@@ -130,16 +134,20 @@ function main() {
 		});
 
 		socket.on("deleteRoom", (room: string) => {
+			let res = "OK";
 			if (room != null) {
-				deleteRoom(room).then(() => {
+				controller.deleteRoom(room).then(() => {
 					emitChanges();
 				});
+			} else {
+				res = "Error";
 			}
+			socket.emit("deleteRoomRes", res);
 		});
 
 		socket.on("updateRoom", (room: string, newroom: string) => {
 			if (room != null && newroom != null) {
-				updateRoom(room, newroom).then(() => {
+				controller.updateRoom(room, newroom).then(() => {
 					emitRoomChanges();
 				});
 			}
@@ -153,7 +161,7 @@ function main() {
 
 		socket.on("asignDevice", (room: Room, device: string) => {
 			if (room != null && device != null) {
-				asignDeviceToRoom(room, device).then(() => {
+				controller.asignDeviceToRoom(room, device).then(() => {
 					emitChanges();
 				});
 			}
@@ -161,7 +169,7 @@ function main() {
 
 		socket.on("unasignDevice", (device: string) => {
 			if (device != null) {
-				unasignDevice(device).then(() => {
+				controller.unasignDevice(device).then(() => {
 					emitChanges();
 				});
 			}

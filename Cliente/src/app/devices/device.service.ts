@@ -8,7 +8,6 @@ import { Device } from './device';
   providedIn: 'root',
 })
 export class DeviceService {
-  private socket: Socket;
 
   devices: Device[];
   constructor(private server: ServerService) {}

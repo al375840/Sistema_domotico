@@ -26,6 +26,7 @@ export class ServerService {
   }
 
   listUnasignedDevices(): Observable<Array<Device>> {
+    this.socket.emit("getUnasignedDevices");
     return new Observable((obs) => {
       this.socket.on('unasigndevices', (devices: Device[]) => {
         obs.next(devices);
@@ -71,7 +72,16 @@ export class ServerService {
   }
 
   deleteRoom(room: string) {
-    throw new Error('Unimplemented');
+    this.socket.emit("deleteRoom",room)
+    return new Promise<void>((resolve,reject) => {
+      this.socket.once('deleteRoomRes', (res: string) => {
+        if (res == 'Error') {
+          reject("Nombre no valido")
+        }else{
+          resolve()
+        }
+      });
+    });
   }
 
   disconect() {

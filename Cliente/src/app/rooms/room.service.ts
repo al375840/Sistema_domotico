@@ -17,8 +17,8 @@ export class RoomService {
     throw new Error('Unimplemented');
   }
 
-  deleteRoom(room: string) {
-    throw new Error('Unimplemented');
+  async deleteRoom(room: string) {
+    return await this.server.deleteRoom(room).catch(()=>{throw new Error()});
   }
 
   async addRoom(room: string) {

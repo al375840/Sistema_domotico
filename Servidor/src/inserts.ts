@@ -1,12 +1,9 @@
 import "reflect-metadata";
 import { createConnection } from "typeorm";
-import {
-	updateRoom
-} from "./controllers/controller";
+import { Controller } from './controllers/controller';
 
-createConnection()
-	.then(() => main())
-	.catch((error) => console.log(error));
+
+//createConnection().then(() => main()).catch((error) => console.log(error));
 
 async function main() {
 	/* 	await addDevice({
@@ -33,7 +30,8 @@ async function main() {
 	
 	
 	getDeviceState("HCB").then(d=>console.log(d)); */
-	updateRoom("Entrada", "B").catch(() => console.log("Nombre no correcto"));
+	/* var controller = new Controller();
+	controller.updateRoom("Entrada", "B").catch(() => console.log("Nombre no correcto")); */
 
 	//console.log(await getRoom("Salon"))
 }
