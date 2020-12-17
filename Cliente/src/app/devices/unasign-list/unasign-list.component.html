@@ -1,9 +1,12 @@
-<h2>Unasigned Devices</h2>
-<ul class="devices">
-  <li *ngFor="let device of devices">
-    <span class="badge">{{device.id}}</span>
-    <span class="badge">{{device.type}}</span>
-    <span class="badge">{{device.state}}</span>
-    <span class="badge">{{device.turned}}</span>
-  </li>
-</ul>
+<h2 class="tittle" matBadge={{devices.length}} matBadgePosition="before" matBadgeColor="accent">Unasigned Devices</h2>
+<div cdkDropListGroup>
+  <div overflow="scroll" class="example-container" >
+    <div #container1 cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
+      <div class="example-box" *ngFor="let device of devices" cdkDrag vsDragScroll [vsDragScrollContainer]="container1">
+        <button mat-icon-button color="primary"><mat-icon>warning</mat-icon></button>
+        <br>
+        <label>{{device.id}} </label>
+      </div>
+    </div>
+  </div>
+</div>

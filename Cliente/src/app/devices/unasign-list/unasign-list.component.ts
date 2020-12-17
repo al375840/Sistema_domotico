@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Device } from '../device';
 import { DeviceService } from '../device.service';
+import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-unasign-list',
@@ -9,6 +10,7 @@ import { DeviceService } from '../device.service';
 })
 export class UnasignListComponent implements OnInit {
 
+  @Input() scrollContainer: HTMLElement;
   constructor(private ds: DeviceService) { }
   devices: Device[] = [];
   ngOnInit(): void {
@@ -19,4 +21,7 @@ export class UnasignListComponent implements OnInit {
 
   }
 
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.devices, event.previousIndex, event.currentIndex);
+  }
 }
