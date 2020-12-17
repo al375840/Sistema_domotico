@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Device } from '../device';
 import { DeviceService } from '../device.service';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
@@ -23,5 +23,16 @@ export class UnasignListComponent implements OnInit {
 
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.devices, event.previousIndex, event.currentIndex);
+    console.log(event.currentIndex)
+  }
+
+@ViewChild('containerunasigned') containerunasigned: ElementRef;
+
+  scrollLeft() {
+    this.containerunasigned.nativeElement.scrollLeft -= 75;
+  }
+
+  scrollRight() {
+    this.containerunasigned.nativeElement.scrollLeft += 75;
   }
 }

@@ -8,7 +8,7 @@
 .unasigned-container {
     display: flex;
     position: fixed;
-    width: 90%;
+    width: 95%;
     margin-top: 5rem;
     justify-content: center;
     align-items: center;
@@ -19,8 +19,9 @@
     background: white;
     overflow: hidden;
     white-space: nowrap;
-    max-width: 90%;
+    max-width: 95%;
     margin: 0px 15%;
+    scroll-behavior: smooth; 
 }
   
 .unasigned-box {
