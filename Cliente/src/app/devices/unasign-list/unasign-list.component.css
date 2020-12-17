@@ -1,11 +1,15 @@
 .tittle{
-    margin-top: 1rem;
+    position: fixed;
+    margin-top: 1em;
     margin-left: 1rem;
+    font-size: 20px;
 }
 
 .unasigned-container {
     display: flex;
-    position: relative;
+    position: fixed;
+    width: 90%;
+    margin-top: 5rem;
     justify-content: center;
     align-items: center;
 }

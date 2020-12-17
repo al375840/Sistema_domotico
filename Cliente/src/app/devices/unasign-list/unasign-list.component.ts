@@ -10,7 +10,7 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag
 })
 export class UnasignListComponent implements OnInit {
 
-  @Input() scrollContainer: HTMLElement;
+
   constructor(private ds: DeviceService) { }
   devices: Device[] = [];
   ngOnInit(): void {

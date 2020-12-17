@@ -1,4 +1,4 @@
-<h2 class="tittle" matBadge={{devices.length}} matBadgePosition="before" matBadgeColor="accent">Unasigned Devices</h2>
+<h2 class="tittle" matBadge={{devices.length}} matBadgePosition="after above" matBadgeColor="primary">Unasigned Devices</h2>
 <div cdkDropListGroup>
   <div overflow="scroll" class="unasigned-container" >
     <div #container1 cdkDropList cdkDropListOrientation="horizontal" class="unasigned-list" (cdkDropListDropped)="drop($event)">
