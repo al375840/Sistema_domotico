@@ -1,18 +1,30 @@
-<mat-card class="mycard">
+<mat-card class="mycard" color="primary">
   <mat-card-title>
-<h2 class="tittle" matBadge={{devices.length}} matBadgePosition="after above" matBadgeColor="primary">Unasigned Devices</h2>
+<h2 class="tittle" matBadge={{devices.length}} matBadgePosition="after above" matBadgeColor="accent">Unasigned Devices</h2>
 </mat-card-title>
 <div cdkDropListGroup>
   <div overflow="scroll" class="unasigned-container" >
-    <button (click)="scrollLeft()" mat-icon-button><mat-icon>keyboard_arrow_left</mat-icon></button>
+    <button (click)="scrollLeft()" mat-mini-fab color="accent"><mat-icon>keyboard_arrow_left</mat-icon></button>
     <div #containerunasigned cdkDropList cdkDropListOrientation="horizontal" class="unasigned-list" (cdkDropListDropped)="drop($event)">
       <div class="unasigned-box" *ngFor="let device of devices" cdkDrag vsDragScroll [vsDragScrollContainer]="containerunasigned">
-        <button mat-icon-button color="primary"><mat-icon>warning</mat-icon></button>
-        <br>
+      <div *ngIf="device.type == 'movimiento'">
+        <button mat-icon-button color="primary"><mat-icon class="device">directions_walks</mat-icon></button>
+        <p></p>
         <label>{{device.id}} </label>
       </div>
+      <div *ngIf="device.type == 'apertura'">
+        <button mat-icon-button color="primary"><mat-icon class="device">sensor_door</mat-icon></button>
+        <p></p>
+        <label>{{device.id}} </label>
+      </div>
+      <div *ngIf="device.type == 'alarma'">
+        <button mat-icon-button color="primary"><mat-icon class="device">notification_important</mat-icon></button>
+        <p></p>
+        <label>{{device.id}} </label>
+      </div>
+      </div>
     </div>
-    <button (click)="scrollRight()" mat-icon-button><mat-icon>keyboard_arrow_right</mat-icon></button>
+    <button (click)="scrollRight()" mat-mini-fab color="accent"><mat-icon>keyboard_arrow_right</mat-icon></button>
   </div>
 </div>
 </mat-card>
