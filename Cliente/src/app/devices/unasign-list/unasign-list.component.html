@@ -13,12 +13,12 @@
         <label>{{device.id}} </label>
       </div>
       <div *ngIf="device.type == 'apertura'">
-        <button mat-icon-button color="primary"><mat-icon class="device">sensor_door</mat-icon></button>
+        <button mat-icon-button color="primary"><mat-icon class="device" [ngStyle]="{'color':'#8BC34A'}">sensor_door</mat-icon></button>
         <p></p>
         <label>{{device.id}} </label>
       </div>
       <div *ngIf="device.type == 'alarma'">
-        <button mat-icon-button color="primary"><mat-icon class="device">notification_important</mat-icon></button>
+        <button mat-icon-button color="warn"><mat-icon class="device">notification_important</mat-icon></button>
         <p></p>
         <label>{{device.id}} </label>
       </div>

@@ -12,6 +12,11 @@
     box-shadow: 1px 2px 10px 0 black;
 }
 
+.roomlist{
+    position: absolute;
+    width: 90%;
+}
+
 .tittle{
     position: absolute;
     margin-left: 1rem;
@@ -22,5 +27,5 @@
 .add-room{
     position: relative;
     margin-top: -1%;
-    margin-left: 95%;
+    margin-left: 100%;
 }
