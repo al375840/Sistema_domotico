@@ -145,7 +145,7 @@ function main() {
 
 		socket.on("updateRoom", (room: string, newroom: string) => {
 			let res = "OK"
-			if (room != null && newroom != null) {
+			if (room != null && newroom != null && newroom.trim() != '' || controller.getRoom(room)!=undefined) {
 				controller.updateRoom(room, newroom).then(() => {
 					emitRoomChanges();
 				}).catch(()=>res = 'Error');
