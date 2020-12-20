@@ -19,17 +19,13 @@ describe('HU03: Eliminar habitaciones', () => {
         // When --  el usuario la elimina
         await roomService.deleteRoom(nombre);
         // Then -- se borra del registro.
-        const habitacion = await roomService.getRoom(nombre);
-        expect(habitacion).toBeUndefined();
-        //After
-        await roomService.deleteRoom(nombre).catch(()=>{});
+        await expectAsync(roomService.getRoom(nombre)).toBeRejectedWith(new RoomNotExists(nombre));
         
   });
 
   it('No deberia poder eliminar una habitacion no existente', async () => {
         // Given -- una habitacion que no existe.
-        const nombre = "Test"
-        await roomService.deleteRoom(nombre).catch(()=>{});
+        const nombre = "FakeRoom"
         // When -- el usuario la borra.
         // Then -- lanza la excepcion correspondiente.
         await expectAsync(roomService.deleteRoom(nombre)).toBeRejectedWith(new RoomNotExists(nombre));

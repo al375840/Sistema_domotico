@@ -19,17 +19,17 @@ describe('HU08: Listar dispositivos no asignados conocidos', () => {
     // Given -- todos los dispositivos están asignados
 
 
-    try{
+    try {
       await roomService.addRoom('Test');
-    }catch (e){
+    } catch (e) {
 
     }
     const devices = await deviceService.listUnasignedDevices().pipe(take(1)).toPromise();
-    
+    var habitacion = new Room('Test')
+    for (let d of devices) {
+      await roomService.asignDevice(d.id, habitacion).catch(() => { })
+    }
 
-
-
-    devices.forEach((d) => roomService.asignDevice(d.id, new Room('Test')));
 
     // When -- Obtenemos los dispositivos no asignados
     const listDevices = await deviceService.listUnasignedDevices().pipe(take(1)).toPromise();
@@ -41,7 +41,7 @@ describe('HU08: Listar dispositivos no asignados conocidos', () => {
     // After -- Eliminamos la habitación y los dispositivo volverian a estar no asignados
     await roomService.deleteRoom('Test');
 
-  },10000);
+  }, 20000);
 
   it('Deberia devolver una lista no vacia cuando hay algun dispositivo no asignado', async () => {
     // Given -- el listado inicial de dispositivos no asignados

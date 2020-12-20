@@ -18,7 +18,7 @@ describe('HU04: Asignar un dispositivo a una habitacion', () => {
     const nombre = "Test"
     await roomService.addRoom(nombre).catch((e)=>{});
     const deviceId = "FEN"
-    await roomService.unasignDevice(deviceId);
+    await roomService.unasignDevice(deviceId).catch(() => {});
     var room = await roomService.getRoom(nombre);
 
     // When -- el usuario quiera añadir ese dispositivo a la habitación
@@ -36,17 +36,14 @@ describe('HU04: Asignar un dispositivo a una habitacion', () => {
 
   it('No deberia poder asignar el dispositivo a la haibitacion si la habitacion NO existe', async () => {
    // Given -- una habitación que no existe y un dispositivo que no pertenece a una habitación
-  const nombre = "Test"
+  const nombre = "Fake"
   const deviceId = "FEN"
-  await roomService.unasignDevice(deviceId);
-  var room: Room = new Room('Fake');
+  await roomService.unasignDevice(deviceId).catch(() => {});;
+  var room: Room = new Room(nombre);
 
   // When -- el usuario quiera añadir ese dispositivo a la habitación
   // Then -- se lanzará la excepción correspondiente
   await expectAsync(roomService.asignDevice(deviceId, room)).toBeRejectedWith(new RoomNotExists(nombre));
-   
-  //After
-  await roomService.deleteRoom(nombre);
 
   });
 

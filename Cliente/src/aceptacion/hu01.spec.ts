@@ -11,7 +11,6 @@ describe('HU01: Añadir habitaciones', () => {
     initializeTestBed();
     roomService = obtainRoomService();
   });
-
   it('Deberia poder añadir haibitaciones con un nombre correcto', async () => {
     // Given -- Un nombre de habitación correcto (Salon)
     const nombre = 'Test';
@@ -21,13 +20,13 @@ describe('HU01: Añadir habitaciones', () => {
 
     //Then --se debería de haber creado la habitación con nombre salon
     var room = await roomService.getRoom(nombre);
-    expect(( room.name== nombre)).toBeTrue();
+    expect(( room.name == nombre)).toBeTrue();
 
     //After -- quitamos la habitación que hemos creado
-    await roomService.deleteRoom(nombre);
+    await roomService.deleteRoom(nombre).catch((e)=>{});
   });
 
-  it('No deberia poder añadir haibitaciones con un nombre no valido', async () => {
+  it('No deberia poder añadir habitaciones con un nombre no valido', async () => {
     //Given -- Un nombre de habitación incorrecto
     const nombre = '';
 

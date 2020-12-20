@@ -18,7 +18,7 @@ describe('HU02: Modificar habitaciones', () => {
         await roomService.addRoom(nombre).catch(()=>{});
         const newname = "NewTestName"
         // When --  el usuario cambia su nombre
-        await roomService.updateRoom(nombre, newname);
+        await roomService.updateRoom(nombre, newname).catch(() => {});
         // Then -- se registra la habitación.
         const habitacion = await roomService.getRoom(newname);
         expect(habitacion.name == newname).toBeTrue();

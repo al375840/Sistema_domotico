@@ -60,21 +60,55 @@ export class ServerService {
   }
   
   asignDevice(device:string,room:Room){
-    throw new Error('Unimplemented');
+    this.socket.emit('asignDevice', room, device);
+    return new Promise<void>((resolve,reject) => {
+      this.socket.once('asignDeviceRes', (res: string) => {
+        if (res == 'Error') {
+          reject("Error al asignar")
+        }else{
+          resolve()
+        }
+      });
+    });
   }
+  
   unasignDevice(device:string){
     throw new Error('Unimplemented');
   }
+
   getRooms(): Observable<Array<Room>> {
-    throw new Error('Unimplemented');
+    this.socket.emit("getRooms");
+    return new Observable((obs) => {
+      this.socket.on('rooms', (rooms: Room[]) => {
+        obs.next(rooms);
+      });
+    });
   }
 
-  getRoom(room: string): Observable<Room> {
-    throw new Error('Unimplemented');
+  getRoom(room: string): Promise<Room> {
+    this.socket.emit('getRoom', room);
+    return new Promise<Room>((resolve,reject) => {
+      this.socket.once('getRoomRes', (res: Room) => {
+        if (res == undefined) {
+          reject("Error al obtener habitacion")
+        }else{
+          resolve(res)
+        }
+      });
+    });
   }
 
-  updateRoom(room: string, newRoom: string) {
-    throw new Error('Unimplemented');
+  updateRoom(room: string, newRoom: string):Promise<void> {
+    this.socket.emit('updateRoom', room, newRoom);
+    return new Promise<void>((resolve,reject) => {
+      this.socket.once('updateRoomRes', (res: string) => {
+        if (res == "Error") {
+          reject("Error al actualizar habitacion")
+        }else{
+          resolve()
+        }
+      });
+    });
   }
 
   deleteRoom(room: string) {
