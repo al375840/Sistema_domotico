@@ -135,10 +135,11 @@ function main() {
 
 		socket.on("deleteRoom", (room: string) => {
 			let res = "OK";
-			if (room != null) {
-				controller.deleteRoom(room).then(() => {
+			if (room != null || controller.getRoom(room)!=undefined) {
+				controller.deleteRoom(room).then((r) => {	
 					emitChanges();
 				});
+				
 			} else {
 				res = "Error";
 			}
