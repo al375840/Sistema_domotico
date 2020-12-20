@@ -1,7 +1,8 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { Room } from '../room';
-import { RoomService } from '../room.service';
+import {Component, OnInit, Inject} from '@angular/core';
+import {Room} from '../room';
+import {RoomService} from '../room.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {AddRoomComponent} from '../add-room/add-room.component';
 
 @Component({
   selector: 'app-rooms-list',
@@ -10,9 +11,13 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
 })
 export class RoomsListComponent implements OnInit {
 
-  constructor(private rs: RoomService, public dialog: MatDialog) { }
-  rooms: Room[] = []
+  constructor(private rs: RoomService, public dialog: MatDialog) {
+  }
+
+  rooms: Room[] = [];
   newRoom: string;
+  dialogRef: MatDialogRef<AddRoomComponent, any>;
+
   ngOnInit(): void {
     this.rs.getRooms().subscribe((data) => {
       this.rooms = data;
@@ -20,35 +25,24 @@ export class RoomsListComponent implements OnInit {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(DialogAddRoom, {
-      width: '250px',
-      data: this.newRoom,
-      autoFocus: true,
-      disableClose:false
-    });
+    if (this.dialogRef == undefined) {
+      this.dialogRef = this.dialog.open(AddRoomComponent, {
+        width: '250px',
+        data: this.newRoom,
+        autoFocus: true,
+        disableClose: false,
+        hasBackdrop: true
+      });
 
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.newRoom = result;
-      console.log(this.newRoom)
-    });
+      this.dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+        this.newRoom = result;
+        this.dialogRef = undefined;
+        console.log(this.newRoom);
+      });
+    }
   }
 
 }
 
-@Component({
-  selector: 'dialog-add-room',
-  templateUrl: 'dialog-add-room.html',
-})
-export class DialogAddRoom {
-
-  constructor(
-    public dialogRef: MatDialogRef<DialogAddRoom>,
-    @Inject(MAT_DIALOG_DATA) public data: string) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-}

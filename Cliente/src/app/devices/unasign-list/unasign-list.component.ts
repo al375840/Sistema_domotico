@@ -23,7 +23,7 @@ export class UnasignListComponent implements OnInit {
 
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.devices, event.previousIndex, event.currentIndex);
-    console.log(event.currentIndex)
+    console.log(event.currentIndex);
   }
 
 @ViewChild('containerunasigned') containerunasigned: ElementRef;

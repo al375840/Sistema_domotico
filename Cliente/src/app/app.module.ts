@@ -8,10 +8,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from 'src/material.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { DragScrollModule } from "cdk-drag-scroll";
-import { DialogAddRoom, RoomsListComponent } from './rooms/rooms-list/rooms-list.component';
+import { RoomsListComponent } from './rooms/rooms-list/rooms-list.component';
 import { RoomDetailsComponent } from './rooms/room-details/room-details.component';
 import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { MatNativeDateModule } from '@angular/material/core';
+import { AddRoomComponent } from './rooms/add-room/add-room.component';
 
 
 @NgModule({
@@ -20,7 +21,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     UnasignListComponent,
     RoomsListComponent,
     RoomDetailsComponent,
-    DialogAddRoom
+    AddRoomComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +36,7 @@ import { MatNativeDateModule } from '@angular/material/core';
   ],
   entryComponents: [
     RoomsListComponent,
-    DialogAddRoom
+    AddRoomComponent
   ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
