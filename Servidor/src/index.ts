@@ -77,9 +77,6 @@ function main() {
 			});
 		};
 
-		const emitRoom = async (room: string) => {
-			await controller.getRoom(room).then((r) => socket.emit("getRoom", r));
-		};
 
 		//Para que cuando se conecte salga un mensaje por pantalla y emita los cambios
 		emitChanges();
@@ -147,16 +144,23 @@ function main() {
 		});
 
 		socket.on("updateRoom", (room: string, newroom: string) => {
+			let res = "OK"
 			if (room != null && newroom != null) {
 				controller.updateRoom(room, newroom).then(() => {
 					emitRoomChanges();
-				});
+				}).catch(()=>res = 'Error');
+			}else{
+				res = 'Error'
 			}
+			socket.emit("updateRoomRes",res);
 		});
 
 		socket.on("getRoom", (room: string) => {
+			
 			if (room != null) {
-				emitRoom(room);
+				controller.getRoom(room)
+				.then((r) => socket.emit("getRoomRes", r))
+				.catch(()=>socket.emit("getRoomRes", undefined));
 			}
 		});
 
@@ -174,10 +178,13 @@ function main() {
 		});
 
 		socket.on("unasignDevice", (device: string) => {
+			let res = 'OK'
 			if (device != null) {
 				controller.unasignDevice(device).then(() => {
 					emitChanges();
-				});
+				}).catch(()=>res = 'Error');
+			}else{
+				res = 'Error'
 			}
 		});
 
