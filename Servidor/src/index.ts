@@ -132,7 +132,7 @@ function main() {
 
 		socket.on("deleteRoom", (room: string) => {
 			let res = "OK";
-			if (room != null || controller.getRoom(room)!=undefined) {
+			if (room != null && controller.getRoom(room)!=undefined) {
 				controller.deleteRoom(room).then((r) => {	
 					emitChanges();
 				});
@@ -145,7 +145,7 @@ function main() {
 
 		socket.on("updateRoom", (room: string, newroom: string) => {
 			let res = "OK"
-			if (room != null && newroom != null && newroom.trim() != '' || controller.getRoom(room)!=undefined) {
+			if (room != null && newroom != null && newroom.trim() != '' && controller.getRoom(room)!=undefined) {
 				controller.updateRoom(room, newroom).then(() => {
 					emitRoomChanges();
 				}).catch(()=>res = 'Error');
@@ -164,12 +164,15 @@ function main() {
 			}
 		});
 
-		socket.on("asignDevice", (room: Room, device: string) => {
+		socket.on("asignDevice", async(room: Room, device: string) => {
 			let res = "OK"
 			if (room != null && device != null) {
-				controller.asignDeviceToRoom(room, device).then(() => {
-					emitChanges();
-				}).catch(()=>{res = 'Error'});
+				let ur = await controller.asignDeviceToRoom(room, device).catch(()=>{res = 'Error'});
+				if(ur != undefined && ur.affected != undefined && ur.affected > 0)
+				emitChanges();
+				else
+					res = 'Error';
+
 			}else{
 				res = 'Error'
 			}
