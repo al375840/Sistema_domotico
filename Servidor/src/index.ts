@@ -161,11 +161,16 @@ function main() {
 		});
 
 		socket.on("asignDevice", (room: Room, device: string) => {
+			let res = "OK"
 			if (room != null && device != null) {
 				controller.asignDeviceToRoom(room, device).then(() => {
 					emitChanges();
-				});
+				}).catch(()=>{res = 'Error'});
+			}else{
+				res = 'Error'
 			}
+
+			socket.emit("asignDeviceRes",res);
 		});
 
 		socket.on("unasignDevice", (device: string) => {
