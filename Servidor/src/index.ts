@@ -1,20 +1,21 @@
 import "reflect-metadata";
 import express from "express";
-import { createConnection } from "typeorm";
+import { createConnection, DeleteResult } from "typeorm";
 
 import { Room } from "./entity/room";
 import { Device } from "./entity/device";
 import { Server } from "socket.io";
-import { Controller } from './controllers/controller';
-
+import { Controller } from "./controllers/controller";
 
 const PORT = process.env.PORT || 3000;
-var controller:Controller;
+var controller: Controller;
 createConnection()
 	.then((c) => {
-		console.log("############################### Conexión con postgres establecida ##############################")
-		controller = new Controller(c)
-		main()
+		console.log(
+			"############################### Conexión con postgres establecida ##############################"
+		);
+		controller = new Controller(c);
+		main();
 	})
 	.catch((error) => console.log(error));
 //createConnection().then(()=>emitChanges()).catch((error) => console.log(error));
@@ -77,7 +78,6 @@ function main() {
 			});
 		};
 
-
 		//Para que cuando se conecte salga un mensaje por pantalla y emita los cambios
 		emitChanges();
 		console.log("Nueva conexión");
@@ -91,15 +91,14 @@ function main() {
 			}, 20000);
 		});
 
-		socket.on("getUnasignedDevices",()=>{
-			controller.getUnasignedDevices().then((data)=>{
+		socket.on("getUnasignedDevices", () => {
+			controller.getUnasignedDevices().then((data) => {
 				let devices: Device[] = [];
 				data.forEach((dev) => devices.push(dev));
 				//console.log(devices);
 				socket.emit("unasigndevices", devices);
-			})
-			
-		})
+			});
+		});
 
 		/*HUB*/
 		//añadimos los dispositivos cuando del hub recibimos esos disp por
@@ -116,10 +115,11 @@ function main() {
 		});
 
 		/*Cliente*/
-		socket.on("addRoom", async(room: string) => {
+		socket.on("addRoom", async (room: string) => {
 			let res = "OK";
 			if (room != null && room.trim().length > 0) {
-				await controller.addRoom(room)
+				await controller
+					.addRoom(room)
 					.then(() => {
 						emitRoomChanges();
 					})
@@ -130,13 +130,20 @@ function main() {
 			socket.emit("addRoomRes", res);
 		});
 
-		socket.on("deleteRoom", (room: string) => {
+		socket.on("deleteRoom", async (room: string) => {
 			let res = "OK";
-			if (room != null && controller.getRoom(room)!=undefined) {
-				controller.deleteRoom(room).then((r) => {	
-					emitChanges();
+			if (room != null) {
+				let dl = await controller.deleteRoom(room).catch(() => {
+					res = "Error";
 				});
-				
+				if (
+					dl != null &&
+					dl.affected != null &&
+					dl.affected != undefined &&
+					dl.affected > 0
+				) {
+					emitChanges();
+				} else res = "Error";
 			} else {
 				res = "Error";
 			}
@@ -144,53 +151,64 @@ function main() {
 		});
 
 		socket.on("updateRoom", (room: string, newroom: string) => {
-			let res = "OK"
-			if (room != null && newroom != null && newroom.trim() != '' && controller.getRoom(room)!=undefined) {
-				controller.updateRoom(room, newroom).then(() => {
-					emitRoomChanges();
-				}).catch(()=>res = 'Error');
-			}else{
-				res = 'Error'
+			let res = "OK";
+			if (
+				room != null &&
+				newroom != null &&
+				newroom.trim() != "" &&
+				controller.getRoom(room) != undefined
+			) {
+				controller
+					.updateRoom(room, newroom)
+					.then(() => {
+						emitRoomChanges();
+					})
+					.catch(() => (res = "Error"));
+			} else {
+				res = "Error";
 			}
-			socket.emit("updateRoomRes",res);
+			socket.emit("updateRoomRes", res);
 		});
 
 		socket.on("getRoom", (room: string) => {
-			
 			if (room != null) {
-				controller.getRoom(room)
-				.then((r) => socket.emit("getRoomRes", r))
-				.catch(()=>socket.emit("getRoomRes", undefined));
+				controller
+					.getRoom(room)
+					.then((r) => socket.emit("getRoomRes", r))
+					.catch(() => socket.emit("getRoomRes", undefined));
 			}
 		});
 		socket.on("getRooms", () => {
-			emitRoomChanges()
+			emitRoomChanges();
 		});
 
-		socket.on("asignDevice", async(room: Room, device: string) => {
-			let res = "OK"
+		socket.on("asignDevice", async (room: Room, device: string) => {
+			let res = "OK";
 			if (room != null && device != null) {
-				let ur = await controller.asignDeviceToRoom(room, device).catch(()=>{res = 'Error'});
-				if(ur != undefined && ur.affected != undefined && ur.affected > 0)
-				emitChanges();
-				else
-					res = 'Error';
-
-			}else{
-				res = 'Error'
+				let ur = await controller.asignDeviceToRoom(room, device).catch(() => {
+					res = "Error";
+				});
+				if (ur != undefined && ur.affected != undefined && ur.affected > 0)
+					emitChanges();
+				else res = "Error";
+			} else {
+				res = "Error";
 			}
 
-			socket.emit("asignDeviceRes",res);
+			socket.emit("asignDeviceRes", res);
 		});
 
 		socket.on("unasignDevice", (device: string) => {
-			let res = 'OK'
+			let res = "OK";
 			if (device != null) {
-				controller.unasignDevice(device).then(() => {
-					emitChanges();
-				}).catch(()=>res = 'Error');
-			}else{
-				res = 'Error'
+				controller
+					.unasignDevice(device)
+					.then(() => {
+						emitChanges();
+					})
+					.catch(() => (res = "Error"));
+			} else {
+				res = "Error";
 			}
 		});
 
