@@ -14,14 +14,14 @@ describe('HU01: Añadir habitaciones', () => {
 
   it('Deberia poder añadir haibitaciones con un nombre correcto', async () => {
     // Given -- Un nombre de habitación correcto (Salon)
-    const nombre = 'Salon';
+    const nombre = 'Test';
 
     // When -- añadimos con nombre concreto
     await roomService.addRoom(nombre).catch((e)=>{});
 
     //Then --se debería de haber creado la habitación con nombre salon
-    var room = await roomService.getRoom(nombre).pipe(take(1)).toPromise();
-    expect(( room.name== 'Salon')).toBeTrue();
+    var room = await roomService.getRoom(nombre);
+    expect(( room.name== nombre)).toBeTrue();
 
     //After -- quitamos la habitación que hemos creado
     await roomService.deleteRoom(nombre);

@@ -2,6 +2,7 @@ import { DeviceService } from '../app/devices/device.service';
 import { RoomService } from '../app/rooms/room.service';
 import { initializeTestBed, limpiarEstado, obtainDeviceService, obtainRoomService } from './comun';
 import { take } from 'rxjs/operators';
+import { Room } from 'src/app/rooms/room';
 
 describe('HU08: Listar dispositivos no asignados conocidos', () => {
   let deviceService: DeviceService;
@@ -28,7 +29,7 @@ describe('HU08: Listar dispositivos no asignados conocidos', () => {
 
 
 
-    devices.forEach((d) => roomService.asignDevice(d.id, 'Test'));
+    devices.forEach((d) => roomService.asignDevice(d.id, new Room('Test')));
 
     // When -- Obtenemos los dispositivos no asignados
     const listDevices = await deviceService.listUnasignedDevices().pipe(take(1)).toPromise();
