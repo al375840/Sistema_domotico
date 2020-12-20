@@ -58,7 +58,13 @@ export class ServerService {
       });
     });
   }
-
+  
+  asignDevice(device:string,room:Room){
+    throw new Error('Unimplemented');
+  }
+  unasignDevice(device:string){
+    throw new Error('Unimplemented');
+  }
   getRooms(): Observable<Array<Room>> {
     throw new Error('Unimplemented');
   }

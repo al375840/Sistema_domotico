@@ -13,7 +13,11 @@ export class RoomService {
 
   constructor(private server:ServerService) { }
 
-  asignDevice(device: string, room: string) {
+  async asignDevice(device: string, room: Room) {
+    throw new Error('Unimplemented');
+  }
+
+  async unasignDevice(device: string) {
     throw new Error('Unimplemented');
   }
 
@@ -22,12 +26,12 @@ export class RoomService {
   }
 
   async addRoom(room: string) {
-    
+
     await this.server.addRoom(room).catch(()=>{throw new NameNotValid(room)} );
     
   }
   
-  getRoom(room: string): Observable<Room> {
+  async getRoom(room: string): Promise<Room> {
     throw new Error('Unimplemented');
   }
 
@@ -35,7 +39,7 @@ export class RoomService {
     throw new Error('Unimplemented');
   }
 
-  updateRoom(room: string, newRoom: string) {
+  async updateRoom(room: string, newRoom: string) {
     throw new Error('Unimplemented');
   }
 }
