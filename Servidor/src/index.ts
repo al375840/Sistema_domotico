@@ -163,6 +163,9 @@ function main() {
 				.catch(()=>socket.emit("getRoomRes", undefined));
 			}
 		});
+		socket.on("getRooms", () => {
+			emitRoomChanges()
+		});
 
 		socket.on("asignDevice", async(room: Room, device: string) => {
 			let res = "OK"
