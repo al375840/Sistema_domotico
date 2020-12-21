@@ -4,7 +4,7 @@
 </mat-card-title>
 <div cdkDropListGroup>
   <div overflow="scroll" class="unasigned-container" >
-    <button (click)="scrollLeft()" mat-mini-fab color="accent" class="left_button"><mat-icon>keyboard_arrow_left</mat-icon></button>
+    <button (mousedown)="scrollLeft()" (mouseup)="stopScroll()" (mouseout)="stopScroll()" mat-mini-fab color="accent" class="left_button"><mat-icon>keyboard_arrow_left</mat-icon></button>
     <div #containerunasigned cdkDropList cdkDropListOrientation="horizontal" class="unasigned-list" (cdkDropListDropped)="drop($event)">
       <div class="unasigned-box" *ngFor="let device of devices" cdkDrag vsDragScroll [vsDragScrollContainer]="containerunasigned">
       <div *ngIf="device.type == 'movimiento'">
@@ -24,7 +24,7 @@
       </div>
       </div>
     </div>
-    <button (click)="scrollRight()" mat-mini-fab color="accent" class="right_button"><mat-icon>keyboard_arrow_right</mat-icon></button>
+    <button (mousedown)="scrollRight()" (mouseup)="stopScroll()" (mouseout)="stopScroll()"mat-mini-fab color="accent" class="right_button"><mat-icon>keyboard_arrow_right</mat-icon></button>
   </div>
 </div>
 </mat-card>

@@ -10,7 +10,7 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag
 })
 export class UnasignListComponent implements OnInit {
 
-
+  intervalScroll;
   constructor(private ds: DeviceService) { }
   devices: Device[] = [];
   ngOnInit(): void {
@@ -29,10 +29,19 @@ export class UnasignListComponent implements OnInit {
 @ViewChild('containerunasigned') containerunasigned: ElementRef;
 
   scrollLeft() {
-    this.containerunasigned.nativeElement.scrollLeft -= 75;
+    this.intervalScroll = setInterval(() => {
+      this.containerunasigned.nativeElement.scrollLeft -= 50;
+    }, 100);
+  }
+
+  stopScroll() {
+    clearTimeout(this.intervalScroll)
   }
 
   scrollRight() {
-    this.containerunasigned.nativeElement.scrollLeft += 75;
+    this.intervalScroll = setInterval(() => {
+      this.containerunasigned.nativeElement.scrollLeft += 50;
+    }, 100);
   }
+
 }

@@ -35,7 +35,6 @@ import { AddRoomComponent } from './rooms/add-room/add-room.component';
     ReactiveFormsModule,
   ],
   entryComponents: [
-    RoomsListComponent,
     AddRoomComponent
   ],
   providers: [
