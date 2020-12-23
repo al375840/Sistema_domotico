@@ -198,18 +198,19 @@ function main() {
 			socket.emit("asignDeviceRes", res);
 		});
 
-		socket.on("unasignDevice", (device: string) => {
+		socket.on("unasignDevice", async (device: string) => {
 			let res = "OK";
 			if (device != null) {
-				controller
-					.unasignDevice(device)
-					.then(() => {
-						emitChanges();
-					})
-					.catch(() => (res = "Error"));
+				let ur = await controller
+					.unasignDevice(device).catch(()=>{res = 'Error'})
+				if (ur != undefined && ur.affected != undefined && ur.affected > 0)
+					emitChanges();
+				else res = "Error";
+					
 			} else {
 				res = "Error";
 			}
+			socket.emit("unasignDeviceRes",res);
 		});
 
 		socket.on("checkState", (device: string) => {
