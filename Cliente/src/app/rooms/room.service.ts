@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { ServerService } from '../comun/server.service';
 import { NameNotValid } from './exceptions/name-not-valid';
 import { RoomNotExists } from './exceptions/room-not-exists';
+import { DeviceNotExists } from '../devices/exceptions/device-not-exists';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class RoomService {
   }
 
   async unasignDevice(device: string) {
-    throw new Error('Unimplemented');
+    return await this.server.unasignDevice(device).catch(() => {throw new DeviceNotExists(device); });
   }
 
   async deleteRoom(room: string) {

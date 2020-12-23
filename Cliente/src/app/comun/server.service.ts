@@ -73,7 +73,16 @@ export class ServerService {
   }
   
   unasignDevice(device:string){
-    throw new Error('Unimplemented');
+    this.socket.emit('unasignDevice', device);
+    return new Promise<void>((resolve,reject) => {
+      this.socket.once('unasignDeviceRes', (res: string) => {
+        if (res == 'Error') {
+          reject("Error al asignar")
+        }else{
+          resolve()
+        }
+      });
+    });
   }
 
   getRooms(): Observable<Array<Room>> {

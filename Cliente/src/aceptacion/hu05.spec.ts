@@ -3,6 +3,8 @@ import { initializeTestBed, limpiarEstado, obtainRoomService } from './comun';
 import { take } from 'rxjs/operators';
 import { Room } from 'src/app/rooms/room';
 import { NameNotValid } from 'src/app/rooms/exceptions/name-not-valid';
+import { Device } from 'src/app/devices/device';
+import { DeviceNotExists } from 'src/app/devices/exceptions/device-not-exists';
 
 describe('HU05: Quitar un dispositivo a una habitacion', () => {
     let roomService: RoomService;
@@ -13,15 +15,28 @@ describe('HU05: Quitar un dispositivo a una habitacion', () => {
     });
 
     it('Deberia poder desasignar un dispositivo asignado previamente a una habitacion', async () => {
-        // Given -- 
-        // When -- 
-        // Then -- 
+        // Given --  una habitación y un dispositivo que pertenece a esa habitación.
+            const roomname = 'TEST'
+            await roomService.addRoom(roomname).catch(()=>{});
+            const deviceId = 'FEN'
+            const room = await roomService.getRoom(roomname)
+            await roomService.asignDevice(deviceId, room).catch(()=>{})
+        // When --   el usuario quiera quitar ese dispositivo de la habitación.
+        await roomService.unasignDevice(deviceId)
+        const roomAfter = await roomService.getRoom(roomname)
+        // Then --    se quitará de la habitación el dispositivo
+        let device: Device | undefined = roomAfter.devices.find(d=>d.id == deviceId);
+        expect(device).toBeUndefined()
+        await roomService.deleteRoom(roomname).catch(()=>{})
     });
 
-    it('No deberia poder desasignar un dispositivo de una habitacion sin dispositivos', async () => {
-        // Given -- 
-        // When -- 
-        // Then -- se asignará a la habitación el dispositivo
+    it('No deberia poder desasignar un dispositivo que no existe', async () => {
+        // Given --  un dispositivo que no existe.
+        // When --  el usuario quiera quitar un dispositivo.
+        const deviceId = 'TEST'
+        // Then --  no se quitará nada y se notificará que el dispositivo no existe.
+        await expectAsync(roomService.unasignDevice(deviceId)).toBeRejectedWith(new DeviceNotExists(deviceId));
+        
     });
 
         afterEach(() => {
