@@ -26,7 +26,7 @@ export class RoomDetailsComponent implements OnInit {
                         event.container.data,
                         event.previousIndex,
                         event.currentIndex);
-      console.log(event.previousContainer.data[event.previousIndex])
+      console.log(event.container.data[event.currentIndex])
     }
   }
 
