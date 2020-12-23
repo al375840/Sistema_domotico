@@ -24,7 +24,7 @@
       </div>
       </div>
     </div>
-    <button (click)="scrollRight()" mat-mini-fab color="accent" class="right_button"><mat-icon>keyboard_arrow_right</mat-icon></button>
+    <button (mousedown)="scrollRight()" (mouseup)="stopScroll()" (mouseout)="stopScroll()"mat-mini-fab color="accent" class="right_button"><mat-icon>keyboard_arrow_right</mat-icon></button>
   </div>
 </mat-card>
 
