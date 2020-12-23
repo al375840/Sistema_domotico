@@ -21,7 +21,7 @@ import { AddRoomComponent } from './rooms/add-room/add-room.component';
     UnasignListComponent,
     RoomsListComponent,
     RoomDetailsComponent,
-    AddRoomComponent
+    AddRoomComponent,
   ],
   imports: [
     BrowserModule,
