@@ -10,6 +10,7 @@ import { Room } from '../room';
 })
 export class RoomDetailsComponent implements OnInit {
   @Input() room:Room;
+  intervalScroll;
   constructor() { }
   devices: Device[] = [{id:"JME",state:"true",turned:true,type:"alarma"}as Device];
   ngOnInit(): void {
@@ -31,11 +32,19 @@ export class RoomDetailsComponent implements OnInit {
 
 @ViewChild('containerunasigned') containerunasigned: ElementRef;
 
-  scrollLeft() {
-    this.containerunasigned.nativeElement.scrollLeft -= 75;
-  }
+scrollLeft() {
+  this.intervalScroll = setInterval(() => {
+    this.containerunasigned.nativeElement.scrollLeft -= 50;
+  }, 100);
+}
 
-  scrollRight() {
-    this.containerunasigned.nativeElement.scrollLeft += 75;
-  }
+stopScroll() {
+  clearTimeout(this.intervalScroll)
+}
+
+scrollRight() {
+  this.intervalScroll = setInterval(() => {
+    this.containerunasigned.nativeElement.scrollLeft += 50;
+  }, 100);
+}
 }

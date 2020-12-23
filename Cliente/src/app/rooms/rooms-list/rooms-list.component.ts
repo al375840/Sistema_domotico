@@ -40,6 +40,7 @@ export class RoomsListComponent implements OnInit {
         this.newRoom = result;
         this.dialogRef = undefined;
         console.log(this.newRoom);
+        this.rs.addRoom(this.newRoom)
       });
     }
   }

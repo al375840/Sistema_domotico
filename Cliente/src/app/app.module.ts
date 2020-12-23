@@ -32,7 +32,7 @@ import { AddRoomComponent } from './rooms/add-room/add-room.component';
     MatDialogModule,
     FormsModule,
     MatNativeDateModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
   entryComponents: [
     AddRoomComponent
