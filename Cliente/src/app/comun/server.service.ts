@@ -49,9 +49,9 @@ export class ServerService {
   async addRoom(room: string) {
     this.socket.emit('addRoom', room);
     return new Promise<void>((resolve,reject) => {
-      this.socket.once('addRoomRes', (res: string) => {
-        if (res == 'Error') {
-          reject("Nombre no valido")
+      this.socket.once('addRoomRes', (done:boolean) => {
+        if (!done) {
+          reject("Error al crear habitación")
         }else{
           resolve()
         }
@@ -62,8 +62,8 @@ export class ServerService {
   asignDevice(device:string,room:Room){
     this.socket.emit('asignDevice', room, device);
     return new Promise<void>((resolve,reject) => {
-      this.socket.once('asignDeviceRes', (res: string) => {
-        if (res == 'Error') {
+      this.socket.once('asignDeviceRes', (done:boolean) => {
+        if (!done) {
           reject("Error al asignar")
         }else{
           resolve()
@@ -75,8 +75,8 @@ export class ServerService {
   unasignDevice(device:string){
     this.socket.emit('unasignDevice', device);
     return new Promise<void>((resolve,reject) => {
-      this.socket.once('unasignDeviceRes', (res: string) => {
-        if (res == 'Error') {
+      this.socket.once('unasignDeviceRes', (done:boolean) => {
+        if (!done) {
           reject("Error al asignar")
         }else{
           resolve()
@@ -110,8 +110,8 @@ export class ServerService {
   updateRoom(room: string, newRoom: string):Promise<void> {
     this.socket.emit('updateRoom', room, newRoom);
     return new Promise<void>((resolve,reject) => {
-      this.socket.once('updateRoomRes', (res: string) => {
-        if (res == "Error") {
+      this.socket.once('updateRoomRes', (done:boolean) => {
+        if (!done) {
           reject("Error al actualizar habitacion")
         }else{
           resolve()
@@ -123,8 +123,8 @@ export class ServerService {
   deleteRoom(room: string) {
     this.socket.emit("deleteRoom",room)
     return new Promise<void>((resolve,reject) => {
-      this.socket.once('deleteRoomRes', (res: string) => {
-        if (res == 'Error') {
+      this.socket.once('deleteRoomRes', (done:boolean) => {
+        if (!done) {
           reject("Nombre no valido")
         }else{
           resolve()

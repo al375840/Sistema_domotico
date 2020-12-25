@@ -107,30 +107,30 @@ function main() {
         });
         /*Cliente*/
         socket.on("addRoom", async (room) => {
-            let res = "OK";
+            let done = true;
             if (room != null && room.trim().length > 0) {
                 await controller.addRoom(room)
                     .then(() => {
                     emitRoomChanges();
                 })
-                    .catch(() => (res = "Error"));
+                    .catch(() => (done = false));
             }
             else {
-                res = "Error";
+                done = false;
             }
-            socket.emit("addRoomRes", res);
+            socket.emit("addRoomRes", done);
         });
         socket.on("deleteRoom", (room) => {
-            let res = "OK";
+            let done = true;
             if (room != null) {
                 controller.deleteRoom(room).then(() => {
                     emitChanges();
                 });
             }
             else {
-                res = "Error";
+                done = false;
             }
-            socket.emit("deleteRoomRes", res);
+            socket.emit("deleteRoomRes", done);
         });
         socket.on("updateRoom", (room, newroom) => {
             if (room != null && newroom != null) {
