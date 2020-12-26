@@ -13,6 +13,7 @@ import { RoomDetailsComponent } from './rooms/room-details/room-details.componen
 import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { MatNativeDateModule } from '@angular/material/core';
 import { AddRoomComponent } from './rooms/add-room/add-room.component';
+import { EditRoomComponent } from './rooms/edit-room/edit-room.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { AddRoomComponent } from './rooms/add-room/add-room.component';
     UnasignListComponent,
     RoomsListComponent,
     RoomDetailsComponent,
-    AddRoomComponent,
+    EditRoomComponent,
+    AddRoomComponent
   ],
   imports: [
     BrowserModule,
@@ -34,8 +36,10 @@ import { AddRoomComponent } from './rooms/add-room/add-room.component';
     MatNativeDateModule,
     ReactiveFormsModule
   ],
+  
   entryComponents: [
-    AddRoomComponent
+    AddRoomComponent,
+    EditRoomComponent
   ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
