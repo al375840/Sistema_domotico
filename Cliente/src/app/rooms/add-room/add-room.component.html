@@ -2,10 +2,12 @@
 <div mat-dialog-content>
   <mat-form-field>
     <mat-label>Room name:</mat-label>
-    <input matInput [(ngModel)]="data">
+    <input matInput (input)="validate()" [(ngModel)]="data.name">
   </mat-form-field>
+  <mat-label *ngIf="usedName" for="nombre" class="error">Name {{data.name}} already used</mat-label>
+  <mat-label *ngIf="!validName" for="nombre" class="error">Name is empty</mat-label>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Back</button>
-  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+  <button mat-button [mat-dialog-close]="data" [disabled]="usedName || !validName" cdkFocusInitial>Ok</button>
 </div>

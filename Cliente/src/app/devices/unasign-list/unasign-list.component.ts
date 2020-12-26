@@ -16,7 +16,7 @@ export class UnasignListComponent implements OnInit {
   ngOnInit(): void {
 
     this.ds.listUnasignedDevices().subscribe((data) => {
-      if(data!=null && data.length != this.devices.length)
+      
         this.devices = data.sort((a,b)=>a.id>b.id?1:-1);
     });
 
@@ -24,7 +24,7 @@ export class UnasignListComponent implements OnInit {
 
   drop(event: CdkDragDrop<Device[]>) {
     if (event.previousContainer == event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      //moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
       transferArrayItem(event.previousContainer.data,
                         event.container.data,

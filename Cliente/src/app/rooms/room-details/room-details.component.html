@@ -1,41 +1,28 @@
 <mat-card class="roomcard" color="primary">
   <mat-card-title>
-<h2 class="tittle" matBadge={{room.devices.length}} matBadgePosition="after above" matBadgeColor="accent">{{room.name}}</h2>
+<h2 class="tittle" [matBadge]="room.devices.length" matBadgePosition="after above" matBadgeColor="accent">{{room.name}}</h2>
 <div class="edit">
   <button mat-icon-button [matMenuTriggerFor]="menu" color="accent">
     <mat-icon>more_vert</mat-icon>
   </button>
   <mat-menu #menu="matMenu" >
-    <button mat-menu-item (click)="delete()">
-      <mat-icon>delete</mat-icon>
-      <span>Remove room</span>
-    </button>
     <button mat-menu-item (click)="openDialog()">
       <mat-icon>edit</mat-icon>
       <span>Change name</span>
+    </button>
+    <button mat-menu-item (click)="delete()">
+      <mat-icon>delete</mat-icon>
+      <span>Remove room</span>
     </button>
   </mat-menu>
 </div>
 </mat-card-title>
   <div overflow="scroll" class="device-container" >
     <button (mousedown)="scrollLeft()" (mouseup)="stopScroll()" (mouseout)="stopScroll()" mat-mini-fab color="accent" class="left_button"><mat-icon>keyboard_arrow_left</mat-icon></button>
-    <div #containerunasigned cdkDropList [cdkDropListData]="room.devices" cdkDropListOrientation="horizontal" class="device-list" (cdkDropListDropped)="drop($event)">
+    <div #containerunasigned cdkDropListSortingDisabled cdkDropList [cdkDropListData]="room.devices" cdkDropListOrientation="horizontal" class="device-list" (cdkDropListDropped)="drop($event)">
       <div class="device-box" *ngFor="let device of room.devices" cdkDrag  >
-      <div *ngIf="device.type == 'movimiento'">
-        <button mat-icon-button color="primary"><mat-icon class="device">directions_walks</mat-icon></button>
-        <p></p>
-        <label>{{device.id}} </label>
-      </div>
-      <div *ngIf="device.type == 'apertura'">
-        <button mat-icon-button color="primary"><mat-icon class="device" [ngStyle]="{'color':'#8BC34A'}">sensor_door</mat-icon></button>
-        <p></p>
-        <label>{{device.id}} </label>
-      </div>
-      <div *ngIf="device.type == 'alarma'">
-        <button mat-icon-button color="warn"><mat-icon class="device">notification_important</mat-icon></button>
-        <p></p>
-        <label>{{device.id}} </label>
-      </div>
+      <app-device-details [device]="device"></app-device-details>
+      
       </div>
     </div>
     <button (mousedown)="scrollRight()" (mouseup)="stopScroll()" (mouseout)="stopScroll()" mat-mini-fab color="accent" class="right_button"><mat-icon>keyboard_arrow_right</mat-icon></button>

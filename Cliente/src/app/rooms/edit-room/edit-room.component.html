@@ -6,8 +6,8 @@
 
   </mat-form-field>
   <br>
-  <mat-label *ngIf="usedName && changed" for="nombre" class='error'>El nombre {{data.newName}} ya está usado</mat-label>
-  <mat-label *ngIf="!validName " for="nombre" color="warn">El nombre está vacio</mat-label>
+  <mat-label *ngIf="usedName && changed" for="nombre" class="error">Name {{data.newName}} already used</mat-label>
+  <mat-label *ngIf="!validName" for="nombre" class="error">Name is empty</mat-label>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Back</button>

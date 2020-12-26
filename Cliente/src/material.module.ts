@@ -9,6 +9,7 @@ import {MatIconModule} from '@angular/material/icon'
 import {MatBadgeModule} from '@angular/material/badge'
 import {A11yModule} from '@angular/cdk/a11y';
 import {MatMenuModule} from '@angular/material/menu';
+import {MatSnackBarModule } from '@angular/material/snack-bar';
 @NgModule({
     imports: [
     MatToolbarModule,
@@ -19,7 +20,8 @@ import {MatMenuModule} from '@angular/material/menu';
     MatIconModule,
     MatBadgeModule,
     A11yModule,
-    MatMenuModule
+    MatMenuModule,
+    MatSnackBarModule
     ],
     exports: [
         MatToolbarModule,
@@ -30,7 +32,8 @@ import {MatMenuModule} from '@angular/material/menu';
         MatIconModule,
         MatBadgeModule,
         A11yModule,
-        MatMenuModule
+        MatMenuModule,
+        MatSnackBarModule
     ]
 })
 export class MaterialModule { }

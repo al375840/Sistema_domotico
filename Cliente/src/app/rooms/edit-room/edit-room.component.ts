@@ -9,9 +9,9 @@ import { EditRoomName } from '../room-details/room-details.component';
 })
 export class EditRoomComponent{
 
-  validName= false;
+  validName= true;
   usedName= true;
-  changed = false
+  changed = false;
   constructor(
     public dialogRef: MatDialogRef<EditRoomComponent>,
     @Inject(MAT_DIALOG_DATA) public data: EditRoomName) {}

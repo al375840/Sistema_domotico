@@ -14,10 +14,12 @@ import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/d
 import { MatNativeDateModule } from '@angular/material/core';
 import { AddRoomComponent } from './rooms/add-room/add-room.component';
 import { EditRoomComponent } from './rooms/edit-room/edit-room.component';
+import { DeviceDetailsComponent } from './devices/device-details/deviceDetails.component';
 
 
 @NgModule({
   declarations: [
+    DeviceDetailsComponent,
     AppComponent,
     UnasignListComponent,
     RoomsListComponent,

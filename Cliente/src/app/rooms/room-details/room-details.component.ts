@@ -6,6 +6,7 @@ import { EditRoomComponent } from '../edit-room/edit-room.component';
 import { Room } from '../room';
 import { RoomService } from '../room.service';
 import { take } from 'rxjs/operators';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 export interface EditRoomName{
   newName:string;
@@ -22,7 +23,7 @@ export class RoomDetailsComponent implements OnInit {
   intervalScroll;
   dialogRef: MatDialogRef<EditRoomComponent, any>;
   newRoomName: string
-  constructor(private rs: RoomService, public dialog: MatDialog) { }
+  constructor(private rs: RoomService, public dialog: MatDialog, private snackbar: MatSnackBar) { }
   
   ngOnInit(): void {
 
@@ -46,6 +47,9 @@ export class RoomDetailsComponent implements OnInit {
           this.newRoomName = result.newName;
           console.log(this.room.name,this.newRoomName);
           this.rs.updateRoom(this.room.name,this.newRoomName);
+          this.snackbar.open("Room update successful", "Ok", {
+            duration: 2000,
+          });
         }
       });
     
@@ -53,7 +57,7 @@ export class RoomDetailsComponent implements OnInit {
 
   drop(event: CdkDragDrop<Device[]>) {
     if (event.previousContainer == event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      //moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
       transferArrayItem(event.previousContainer.data,
                         event.container.data,
@@ -65,8 +69,11 @@ export class RoomDetailsComponent implements OnInit {
     }
   }
 
-  delete() {
-    this.rs.deleteRoom(this.room.name)
+  async delete() {
+    await this.rs.deleteRoom(this.room.name)
+    this.snackbar.open("Room deleted successfully", "Ok", {
+      duration: 2000,
+    });
   }
 
 @ViewChild('containerunasigned') containerunasigned: ElementRef;
