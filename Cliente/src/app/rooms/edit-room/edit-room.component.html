@@ -2,10 +2,14 @@
 <div mat-dialog-content>
   <mat-form-field>
     <mat-label>Room name:</mat-label>
-    <input matInput [(ngModel)]="data">
+    <input id="nombre" matInput (input)="validate()" [(ngModel)]="data.newName" value="data.oldName">
+
   </mat-form-field>
+  <br>
+  <mat-label *ngIf="usedName && changed" for="nombre" class='error'>El nombre {{data.newName}} ya está usado</mat-label>
+  <mat-label *ngIf="!validName " for="nombre" color="warn">El nombre está vacio</mat-label>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Back</button>
-  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+  <button #okButton mat-button [mat-dialog-close]="data" [disabled] = "usedName || !validName" >Ok</button>
 </div>

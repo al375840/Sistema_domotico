@@ -1,17 +1,20 @@
 import { RoomService } from '../app/rooms/room.service';
-import { initializeTestBed, limpiarEstado, obtainRoomService } from './comun';
+import { initializeTestBed, limpiarEstado, obtainDeviceService, obtainRoomService } from './comun';
 import { take } from 'rxjs/operators';
 import { Room } from 'src/app/rooms/room';
 import { NameNotValid } from 'src/app/rooms/exceptions/name-not-valid';
 import { Device } from 'src/app/devices/device';
 import { DeviceNotExists } from 'src/app/devices/exceptions/device-not-exists';
+import { DeviceService } from '../app/devices/device.service';
 
 describe('HU05: Quitar un dispositivo a una habitacion', () => {
     let roomService: RoomService;
+    let deviceService: DeviceService;
 
     beforeEach(() => {
         initializeTestBed();
         roomService = obtainRoomService();
+        deviceService = obtainDeviceService();
     });
 
     it('Deberia poder desasignar un dispositivo asignado previamente a una habitacion', async () => {
@@ -22,7 +25,7 @@ describe('HU05: Quitar un dispositivo a una habitacion', () => {
             const room = await roomService.getRoom(roomname)
             await roomService.asignDevice(deviceId, room).catch(()=>{})
         // When --   el usuario quiera quitar ese dispositivo de la habitación.
-        await roomService.unasignDevice(deviceId)
+        await deviceService.unasignDevice(deviceId)
         const roomAfter = await roomService.getRoom(roomname)
         // Then --    se quitará de la habitación el dispositivo
         let device: Device | undefined = roomAfter.devices.find(d=>d.id == deviceId);
@@ -35,7 +38,7 @@ describe('HU05: Quitar un dispositivo a una habitacion', () => {
         // When --  el usuario quiera quitar un dispositivo.
         const deviceId = 'TEST'
         // Then --  no se quitará nada y se notificará que el dispositivo no existe.
-        await expectAsync(roomService.unasignDevice(deviceId)).toBeRejectedWith(new DeviceNotExists(deviceId));
+        await expectAsync(deviceService.unasignDevice(deviceId)).toBeRejectedWith(new DeviceNotExists(deviceId));
         
     });
 

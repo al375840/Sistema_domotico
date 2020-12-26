@@ -15,17 +15,20 @@ export class RoomsListComponent implements OnInit {
   }
 
   rooms: Room[] = [];
+  roomNames: string[]=[];
   newRoom: string;
   dialogRef: MatDialogRef<AddRoomComponent, any>;
 
   ngOnInit(): void {
     this.rs.getRooms().subscribe((data) => {
-      this.rooms = data;
+
+      this.rooms = data.sort((a,b)=>a.name>=b.name?1:-1);
+      this.roomNames = data.map((r)=>r.name);
     });
   }
 
   openDialog(): void {
-    if (this.dialogRef == undefined) {
+   
       this.dialogRef = this.dialog.open(AddRoomComponent, {
         width: '250px',
         data: this.newRoom,
@@ -38,12 +41,12 @@ export class RoomsListComponent implements OnInit {
       this.dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed');
         this.newRoom = result;
-        this.dialogRef = undefined;
+        
         console.log(this.newRoom);
         this.rs.addRoom(this.newRoom)
       });
     }
-  }
+  
 
 }
 

@@ -5,7 +5,7 @@
     </mat-card-title>
     <div class="roomlist" cdkScrollable>
         <div *ngFor="let room of rooms">
-            <app-room-details [room]="room"></app-room-details>
+            <app-room-details [room]="room" [roomNames]="roomNames"></app-room-details>
         </div>
     </div>
     

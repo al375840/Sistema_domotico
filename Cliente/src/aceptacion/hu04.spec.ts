@@ -1,16 +1,19 @@
 import {RoomService} from '../app/rooms/room.service';
-import {initializeTestBed, limpiarEstado, obtainRoomService} from './comun';
+import {initializeTestBed, limpiarEstado, obtainDeviceService, obtainRoomService} from './comun';
 import {take} from 'rxjs/operators';
 import {Room} from 'src/app/rooms/room';
 import {RoomNotExists} from 'src/app/rooms/exceptions/room-not-exists';
 import { Device } from 'src/app/devices/device';
+import { DeviceService } from '../app/devices/device.service';
 
 describe('HU04: Asignar un dispositivo a una habitacion', () => {
   let roomService: RoomService;
+  let deviceService: DeviceService;
 
   beforeEach(() => {
     initializeTestBed();
     roomService = obtainRoomService();
+    deviceService = obtainDeviceService();
   });
 
   it('Deberia poder asignar el dispositivo a la haibitacion si la habitacion existe', async () => {
@@ -18,7 +21,7 @@ describe('HU04: Asignar un dispositivo a una habitacion', () => {
     const nombre = "Test"
     await roomService.addRoom(nombre).catch((e)=>{});
     const deviceId = "FEN"
-    await roomService.unasignDevice(deviceId).catch(() => {});
+    await deviceService.unasignDevice(deviceId).catch(() => {});
     var room = await roomService.getRoom(nombre);
 
     // When -- el usuario quiera añadir ese dispositivo a la habitación
@@ -38,7 +41,7 @@ describe('HU04: Asignar un dispositivo a una habitacion', () => {
    // Given -- una habitación que no existe y un dispositivo que no pertenece a una habitación
   const nombre = "Fake"
   const deviceId = "FEN"
-  await roomService.unasignDevice(deviceId).catch(() => {});;
+  await deviceService.unasignDevice(deviceId).catch(() => {});;
   var room: Room = new Room(nombre);
 
   // When -- el usuario quiera añadir ese dispositivo a la habitación

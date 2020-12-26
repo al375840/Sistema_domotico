@@ -16,7 +16,8 @@ export class UnasignListComponent implements OnInit {
   ngOnInit(): void {
 
     this.ds.listUnasignedDevices().subscribe((data) => {
-      this.devices = data;
+      if(data!=null && data.length != this.devices.length)
+        this.devices = data.sort((a,b)=>a.id>b.id?1:-1);
     });
 
   }
@@ -29,6 +30,7 @@ export class UnasignListComponent implements OnInit {
                         event.container.data,
                         event.previousIndex,
                         event.currentIndex);
+      this.ds.unasignDevice(event.container.data[event.currentIndex].id)
     }
     
   }

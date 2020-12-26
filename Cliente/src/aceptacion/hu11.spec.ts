@@ -5,14 +5,17 @@ import {Room} from 'src/app/rooms/room';
 import {NameNotValid} from 'src/app/rooms/exceptions/name-not-valid';
 import { TestBed } from '@angular/core/testing';
 import { Device } from 'src/app/devices/device';
+import { DeviceService } from '../app/devices/device.service';
 
 describe('HU11: Guardar información de habitaciones', () => {
   let roomService: RoomService;
+  let deviceService : DeviceService
   beforeEach(() => {
     TestBed.configureTestingModule({
         providers: [RoomService],
       });
       roomService = TestBed.inject(RoomService);
+      deviceService= TestBed.inject(DeviceService);
   });
 
   it('Deberia poder listar habitaciones creadas previamente', async () => {
@@ -34,7 +37,7 @@ describe('HU11: Guardar información de habitaciones', () => {
     const nombre = "Persistencia"
     await roomService.addRoom(nombre).catch((e)=>{});
     const deviceId = "FEN"
-    await roomService.unasignDevice(deviceId).catch(() => {});
+    await deviceService.unasignDevice(deviceId).catch(() => {});
     let room = await roomService.getRoom(nombre);
     await roomService.asignDevice(deviceId, room);
     //Cerramos aplicacion

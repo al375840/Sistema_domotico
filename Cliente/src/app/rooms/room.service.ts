@@ -19,10 +19,6 @@ export class RoomService {
     return await this.server.asignDevice(device, room).catch(() => {throw new RoomNotExists(room.name); });
   }
 
-  async unasignDevice(device: string) {
-    return await this.server.unasignDevice(device).catch(() => {throw new DeviceNotExists(device); });
-  }
-
   async deleteRoom(room: string) {
     return await this.server.deleteRoom(room).catch(() => {throw new RoomNotExists(room); });
   }
