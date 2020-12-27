@@ -4,6 +4,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatMenu } from '@angular/material/menu';
 
 import { RoomDetailsComponent } from './room-details.component';
+import { MaterialModule } from 'src/material.module';
+import { ServerService } from 'src/app/comun/server.service';
 
 describe('RoomDetailsComponent', () => {
   let component: RoomDetailsComponent;
@@ -11,10 +13,12 @@ describe('RoomDetailsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports:[MaterialModule],
       providers: [
         {provide: MatDialog, useValue: {}},
         {provide: MatSnackBar, useValue: {}},
         {provide: MatDialogRef, useValue: {}},
+        ServerService,{provide:'IServer', useClass:ServerService}
       ],
       declarations: [ RoomDetailsComponent ]
     })
@@ -27,7 +31,7 @@ describe('RoomDetailsComponent', () => {
     fixture.detectChanges();
   });
 
-   /*it('should create', () => {
+   it('should create', () => {
     expect(component).toBeTruthy();
-  });*/
+  });
 });

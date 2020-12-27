@@ -8,7 +8,7 @@ export const SERVER_SERVICE = new InjectionToken<IServer>('ServerService');
 
 export interface IServer {
     listUnasignedDevices(): Observable<Array<Device>>;
-    checkState(idDevice: string): Observable<Device>;
+    checkState(idDevice: string): Promise<Device>;
     addRoom(room: string): Promise<void>;
     asignDevice(device: string, room: Room): Promise<void>;
     unasignDevice(device: string): Promise<void>;

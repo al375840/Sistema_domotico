@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Device } from '../device';
+import { DeviceInfoComponent } from '../device-info/device-info.component';
 
 @Component({
     selector: 'app-device-details',
@@ -8,7 +10,13 @@ import { Device } from '../device';
 })
 export class DeviceDetailsComponent {
     @Input() device: Device
-    constructor () {}
+    dialogRef: MatDialogRef<DeviceInfoComponent, any>;;
+    room: any;
+    roomNames: any;
+    newRoomName: any;
+    rs: any;
+    snackbar: any;
+    constructor (public dialog: MatDialog) {}
     get color() {
         
         if(this.device.turned)
@@ -32,5 +40,17 @@ export class DeviceDetailsComponent {
                 return "notification_important"
             }
         }
+    }
+
+    openDialog(): void {
+    
+        this.dialogRef = this.dialog.open(DeviceInfoComponent, {
+          width: '250px',
+          data: this.device,
+          autoFocus: true,
+          disableClose: false,
+          hasBackdrop: true
+        });
+      
     }
 }

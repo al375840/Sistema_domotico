@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import {Room} from './room';
 import {Device} from '../devices/device';
 import { Observable } from 'rxjs';
@@ -13,7 +13,7 @@ import { DeviceNotExists } from '../devices/exceptions/device-not-exists';
 export class RoomService {
   newRoom: any;
 
-  constructor(private server: ServerService) { }
+  constructor(@Inject('IServer') private server: ServerService) { }
 
   async asignDevice(device: string, room: Room) {
     return await this.server.asignDevice(device, room).catch(() => {throw new RoomNotExists(room.name); });

@@ -3,12 +3,10 @@
     transform: scale(2);
   }
 
-.label {
-  cursor: move;
-}
-.p {
-  cursor: move;
-}
 .box {
+  cursor: move;
+}
+
+.device-id {
   cursor: move;
 }

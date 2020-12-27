@@ -1,3 +1,4 @@
+<div *ngIf="room">
 <mat-card class="roomcard" color="primary">
   <mat-card-title>
 <h2 class="tittle">{{room.name}}</h2>
@@ -28,3 +29,4 @@
     <button (mousedown)="scrollRight()" (mouseup)="stopScroll()" (mouseout)="stopScroll()" mat-mini-fab color="accent" class="right_button"><mat-icon>keyboard_arrow_right</mat-icon></button>
   </div>
 </mat-card>
+</div>

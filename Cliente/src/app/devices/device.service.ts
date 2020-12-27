@@ -18,7 +18,7 @@ export class DeviceService {
     return this.server.listUnasignedDevices();
   }
 
-  checkState(idDevice: string): Observable<Device> {
+  checkState(idDevice: string): Promise<Device> {
     return this.server.checkState(idDevice);
   }
 

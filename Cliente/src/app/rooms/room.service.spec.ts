@@ -7,7 +7,9 @@ describe('RoomService', () => {
   let service: RoomService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [ServerService,{provide:'IServer', useClass:ServerService}],
+    });
     service = TestBed.inject(RoomService);
   });
 

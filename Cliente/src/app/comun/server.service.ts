@@ -36,16 +36,17 @@ export class ServerService implements IServer {
     return this.unasignedDevices.asObservable();
   }
 
-  checkState(idDevice: string): Observable<Device> {
+  checkState(idDevice: string): Promise<Device> {
     this.socket.emit('checkState', idDevice);
-    return new Observable((obs) => {
-      this.socket.on('checkState', (device: Device) => {
-        if (device == null) {
-          obs.error(new DeviceNotExists(idDevice));
-        }
-        obs.next(device);
-      });
-    });
+     
+      return new Promise<Device>((resolve,reject)=>this.socket.on('checkState', (device: Device) => {
+        if(device)
+          resolve(device);
+        else
+          reject(new DeviceNotExists(idDevice));
+        
+      }));
+   
   }
 
   async addRoom(room: string) {

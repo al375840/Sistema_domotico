@@ -1,0 +1,13 @@
+<div *ngIf="data" class="device-info">
+<h1 mat-dialog-title>Device information</h1>
+<div mat-dialog-content class="device-data">
+  <mat-label>{{name}}</mat-label>
+  <br>
+  <mat-label>{{state}}</mat-label>
+  <br>
+  <mat-label>{{turned}}</mat-label>
+</div>
+<div mat-dialog-actions class="modal-close">
+  <button mat-button (click)="close()">Back</button>
+</div>
+</div>

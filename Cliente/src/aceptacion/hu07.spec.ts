@@ -18,7 +18,7 @@ describe('HU07: Consultar estado de los dispositivos', () => {
     const id = 'FEN';
 
     // When -- Consultamos el estado del dispositivo
-    const checkedState = await deviceService.checkState(id).pipe(take(1)).toPromise();
+    const checkedState = await deviceService.checkState(id);
 
     // Then -- debería devolver un dispositivo
     expect(checkedState.id).toBe('FEN');
@@ -31,7 +31,7 @@ describe('HU07: Consultar estado de los dispositivos', () => {
     // When -- consultamos el estado
 
     // Then -- se produce una excepción que indica que no existe el dispositivo
-    await expectAsync(deviceService.checkState(id).pipe(take(1)).toPromise()).toBeRejectedWith(new DeviceNotExists(id));
+    await expectAsync(deviceService.checkState(id)).toBeRejectedWith(new DeviceNotExists(id));
   }, 20000);
   afterEach(() => {
     limpiarEstado();

@@ -17,6 +17,7 @@ import { EditRoomComponent } from './rooms/edit-room/edit-room.component';
 import { DeviceDetailsComponent } from './devices/device-details/deviceDetails.component';
 import { SERVER_SERVICE } from './comun/i-server';
 import { ServerService } from './comun/server.service';
+import { DeviceInfoComponent } from './devices/device-info/device-info.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { ServerService } from './comun/server.service';
     RoomsListComponent,
     RoomDetailsComponent,
     EditRoomComponent,
-    AddRoomComponent
+    AddRoomComponent,
+    DeviceInfoComponent
   ],
   imports: [
     BrowserModule,
