@@ -1,5 +1,6 @@
-import {WithState} from '../comun/withState'
-import {Toggable} from '../comun/toggable'
+import { Toggable } from "./toggable";
+import { WithState } from "./withState";
+
 
 export class Device implements WithState,Toggable {
     id?: string;

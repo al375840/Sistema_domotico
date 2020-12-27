@@ -1,9 +1,9 @@
-import {Component, OnInit, Inject} from '@angular/core';
-import {Room} from '../room';
-import {RoomService} from '../room.service';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {AddRoomComponent} from '../add-room/add-room.component';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AddRoomComponent } from '../add-room/add-room.component';
+import { Room } from '../room';
+import { RoomService } from '../room.service';
 
 export interface AddRoomParams{
   name:string;

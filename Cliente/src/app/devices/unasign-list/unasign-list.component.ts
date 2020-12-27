@@ -1,7 +1,7 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Device } from '../device';
 import { DeviceService } from '../device.service';
-import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-unasign-list',

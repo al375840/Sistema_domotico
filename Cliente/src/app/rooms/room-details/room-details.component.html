@@ -1,6 +1,6 @@
 <mat-card class="roomcard" color="primary">
   <mat-card-title>
-<h2 class="tittle" [matBadge]="room.devices.length" matBadgePosition="after above" matBadgeColor="accent">{{room.name}}</h2>
+<h2 class="tittle">{{room.name}}</h2>
 <div class="edit">
   <button mat-icon-button [matMenuTriggerFor]="menu" color="accent">
     <mat-icon>more_vert</mat-icon>
@@ -28,4 +28,3 @@
     <button (mousedown)="scrollRight()" (mouseup)="stopScroll()" (mouseout)="stopScroll()" mat-mini-fab color="accent" class="right_button"><mat-icon>keyboard_arrow_right</mat-icon></button>
   </div>
 </mat-card>
-

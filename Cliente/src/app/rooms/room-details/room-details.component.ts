@@ -1,12 +1,11 @@
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Device } from 'src/app/devices/device';
 import { EditRoomComponent } from '../edit-room/edit-room.component';
 import { Room } from '../room';
 import { RoomService } from '../room.service';
-import { take } from 'rxjs/operators';
-import {MatSnackBar} from '@angular/material/snack-bar';
 
 export interface EditRoomName{
   newName:string;
@@ -22,7 +21,7 @@ export class RoomDetailsComponent implements OnInit {
   @Input() roomNames:string[];
   intervalScroll;
   dialogRef: MatDialogRef<EditRoomComponent, any>;
-  newRoomName: string
+  newRoomName: string;
   constructor(private rs: RoomService, public dialog: MatDialog, private snackbar: MatSnackBar) { }
   
   ngOnInit(): void {

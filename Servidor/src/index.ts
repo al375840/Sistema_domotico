@@ -96,9 +96,15 @@ function main() {
 		socket.on("addRoom", async (room: string) => {
 			let done = false;
 			if (room != null && room.trim().length > 0) {
-				await controller.addRoom(room)
+				try{
+					await controller.addRoom(room)
 				await emitRoomChanges();
-				done = true		
+				done = true	
+				}catch(e){
+					console.error(e)
+				}
+				
+					
 			} 
 			socket.emit("addRoomRes", done);
 		});
