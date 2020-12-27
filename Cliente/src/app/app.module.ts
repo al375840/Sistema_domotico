@@ -49,7 +49,7 @@ import { DeviceInfoComponent } from './devices/device-info/device-info.component
   ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
-    {provide:'IServer', useClass:ServerService}
+    {provide:SERVER_SERVICE, useClass:ServerService}
   ],
   bootstrap: [AppComponent]
 })

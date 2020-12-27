@@ -6,6 +6,7 @@ import { MatMenu } from '@angular/material/menu';
 import { RoomDetailsComponent } from './room-details.component';
 import { MaterialModule } from 'src/material.module';
 import { ServerService } from 'src/app/comun/server.service';
+import { SERVER_SERVICE } from 'src/app/comun/i-server';
 
 describe('RoomDetailsComponent', () => {
   let component: RoomDetailsComponent;
@@ -18,7 +19,7 @@ describe('RoomDetailsComponent', () => {
         {provide: MatDialog, useValue: {}},
         {provide: MatSnackBar, useValue: {}},
         {provide: MatDialogRef, useValue: {}},
-        ServerService,{provide:'IServer', useClass:ServerService}
+        ServerService,{provide:SERVER_SERVICE, useClass:ServerService}
       ],
       declarations: [ RoomDetailsComponent ]
     })

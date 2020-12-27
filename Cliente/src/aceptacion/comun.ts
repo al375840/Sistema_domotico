@@ -11,7 +11,7 @@ let tb = undefined;
 export function initializeTestBed() {
   
   tb = TestBed.configureTestingModule({
-    providers: [ServerService,{provide:'IServer', useClass:ServerService}],
+    providers: [ServerService,{provide:SERVER_SERVICE, useClass:ServerService}],
   });
   
 }

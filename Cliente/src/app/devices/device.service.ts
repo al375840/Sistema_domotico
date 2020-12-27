@@ -12,7 +12,7 @@ import { IServer, SERVER_SERVICE } from '../comun/i-server';
 export class DeviceService {
 
   devices: Device[];
-  constructor(@Inject('IServer')private server: IServer) {}
+  constructor(@Inject(SERVER_SERVICE)private server: IServer) {}
 
   listUnasignedDevices(): Observable<Array<Device>> {
     return this.server.listUnasignedDevices();

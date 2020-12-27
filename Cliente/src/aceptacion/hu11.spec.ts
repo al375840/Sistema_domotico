@@ -7,6 +7,7 @@ import { TestBed } from '@angular/core/testing';
 import { Device } from 'src/app/devices/device';
 import { DeviceService } from '../app/devices/device.service';
 import {ServerService} from '../app/comun/server.service';
+import { SERVER_SERVICE } from 'src/app/comun/i-server';
 
 describe('HU11: Guardar información de habitaciones', () => {
   let roomService: RoomService;
@@ -14,7 +15,7 @@ describe('HU11: Guardar información de habitaciones', () => {
   let tb;
   beforeEach(() => {
     tb = TestBed.configureTestingModule({
-      providers: [ServerService,{provide:'IServer', useClass:ServerService}],
+      providers: [ServerService,{provide:SERVER_SERVICE, useClass:ServerService}],
     });
     roomService = tb.inject(RoomService);
     deviceService = tb.inject(DeviceService);

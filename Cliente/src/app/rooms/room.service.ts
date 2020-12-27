@@ -6,6 +6,7 @@ import { ServerService } from '../comun/server.service';
 import { NameNotValid } from './exceptions/name-not-valid';
 import { RoomNotExists } from './exceptions/room-not-exists';
 import { DeviceNotExists } from '../devices/exceptions/device-not-exists';
+import { SERVER_SERVICE } from '../comun/i-server';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ import { DeviceNotExists } from '../devices/exceptions/device-not-exists';
 export class RoomService {
   newRoom: any;
 
-  constructor(@Inject('IServer') private server: ServerService) { }
+  constructor(@Inject(SERVER_SERVICE) private server: ServerService) { }
 
   async asignDevice(device: string, room: Room) {
     return await this.server.asignDevice(device, room).catch(() => {throw new RoomNotExists(room.name); });
