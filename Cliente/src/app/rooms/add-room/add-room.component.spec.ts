@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AddRoomComponent } from './add-room.component';
 
 describe('AddRoomComponent', () => {
@@ -8,7 +8,12 @@ describe('AddRoomComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AddRoomComponent ]
+      providers: [
+        {provide: MatDialogRef, useValue: {}},
+        {provide: MAT_DIALOG_DATA, useValue: {}},
+      ],
+      declarations: [ AddRoomComponent ],
+      
     })
     .compileComponents();
   });
@@ -19,7 +24,7 @@ describe('AddRoomComponent', () => {
     fixture.detectChanges();
   });
 
-  /*it('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
-  });*/
+  });
 });
