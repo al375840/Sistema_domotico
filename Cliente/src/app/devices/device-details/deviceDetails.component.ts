@@ -10,6 +10,7 @@ export class DeviceDetailsComponent {
     @Input() device: Device
     constructor () {}
     get color() {
+        
         if(this.device.turned)
             if(this.device.state in ["OFF", "NO_MOTION", "CLOSED"])
                 return "#C62828"

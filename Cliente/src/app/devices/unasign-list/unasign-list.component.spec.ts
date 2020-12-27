@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ServerService } from 'src/app/comun/server.service';
 
 import { UnasignListComponent } from './unasign-list.component';
 
@@ -8,6 +9,7 @@ describe('UnasignListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      providers: [ServerService,{provide:'IServer', useClass:ServerService}],
       declarations: [ UnasignListComponent ]
     })
     .compileComponents();
@@ -19,7 +21,7 @@ describe('UnasignListComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+   it('should create', () => {
     expect(component).toBeTruthy();
-  });
+  }); 
 });

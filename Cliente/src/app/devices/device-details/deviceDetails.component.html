@@ -1,4 +1,4 @@
-<div class="box">
+<div *ngIf="device" class="box">
   <button mat-icon-button><mat-icon class="device" [ngStyle]="{'color':color}">{{icon}}</mat-icon></button>
   <p></p>
   <label>{{device.id}} </label>

@@ -5,11 +5,12 @@ import { environment } from 'src/environments/environment';
 import { Device } from '../devices/device';
 import { DeviceNotExists } from '../devices/exceptions/device-not-exists';
 import { Room } from '../rooms/room';
+import { IServer } from './i-server';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ServerService {
+export class ServerService implements IServer {
   private socket: Socket;
   private unasignedDevices: ReplaySubject<Array<Device>> = new ReplaySubject<Array<Device>>(1);
   private roomlist: ReplaySubject<Array<Room>> = new ReplaySubject<Array<Room>>(1);

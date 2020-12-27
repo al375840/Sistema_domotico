@@ -2,16 +2,18 @@ import { DeviceService } from '../app/devices/device.service';
 import { RoomService } from '../app/rooms/room.service';
 import { TestBed } from '@angular/core/testing';
 import { ServerService } from '../app/comun/server.service';
+import { SERVER_SERVICE } from 'src/app/comun/i-server';
+import { IServer } from '../app/comun/i-server';
 
 let ds = undefined;
 let rs = undefined;
 let tb = undefined;
 export function initializeTestBed() {
-  if (tb == undefined){
-    tb = TestBed.configureTestingModule({
-      providers: [DeviceService, RoomService, ServerService],
-    });
-  }
+  
+  tb = TestBed.configureTestingModule({
+    providers: [ServerService,{provide:'IServer', useClass:ServerService}],
+  });
+  
 }
 
 export function obtainDeviceService(): DeviceService {

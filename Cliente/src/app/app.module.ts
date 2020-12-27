@@ -15,6 +15,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { AddRoomComponent } from './rooms/add-room/add-room.component';
 import { EditRoomComponent } from './rooms/edit-room/edit-room.component';
 import { DeviceDetailsComponent } from './devices/device-details/deviceDetails.component';
+import { SERVER_SERVICE } from './comun/i-server';
+import { ServerService } from './comun/server.service';
 
 
 @NgModule({
@@ -44,7 +46,8 @@ import { DeviceDetailsComponent } from './devices/device-details/deviceDetails.c
     EditRoomComponent
   ],
   providers: [
-    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
+    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
+    {provide:'IServer', useClass:ServerService}
   ],
   bootstrap: [AppComponent]
 })

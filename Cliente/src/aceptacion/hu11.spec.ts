@@ -14,7 +14,7 @@ describe('HU11: Guardar información de habitaciones', () => {
   let tb;
   beforeEach(() => {
     tb = TestBed.configureTestingModule({
-      providers: [DeviceService, RoomService, ServerService],
+      providers: [ServerService,{provide:'IServer', useClass:ServerService}],
     });
     roomService = tb.inject(RoomService);
     deviceService = tb.inject(DeviceService);
