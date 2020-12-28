@@ -10,7 +10,6 @@ describe('HUH01: Crear dispositivo de los distitos estados', () => {
     initializeTestBed();
     ds = obtainDeviceService();
   });
-  //Cambiar drive
   it('Deberia poder añadir dispositivos de tipo movimiento', async () => {
     //Given un tipo correcto de dispositivo.
     const type:DeviceType = DeviceType.MOVIMIENTO
@@ -20,7 +19,8 @@ describe('HUH01: Crear dispositivo de los distitos estados', () => {
     const devices: Device[] = await ds.getDevices().pipe(take(1)).toPromise();
     const addedDevice: Device | void = devices.find((d) => d.id == device);
     expect(addedDevice).toBeDefined();
-    if(addedDevice){
+    
+    if(addedDevice && addedDevice.id){
       await ds.deleteDevice(addedDevice.id).catch(() => {})
     }
     
@@ -35,6 +35,10 @@ describe('HUH01: Crear dispositivo de los distitos estados', () => {
     const devices: Device[] = await ds.getDevices().pipe(take(1)).toPromise();
     const addedDevice: Device | undefined = devices.find((d) => d.id == device);
     expect(addedDevice).toBeDefined();
+    
+    if(addedDevice && addedDevice.id){
+      await ds.deleteDevice(addedDevice.id).catch(() => {})
+    }
   });
 
   afterEach(() => {
