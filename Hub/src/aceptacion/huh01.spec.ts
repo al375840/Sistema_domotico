@@ -1,3 +1,4 @@
+
 import {initializeTestBed, limpiarEstado,obtainDeviceService} from './comun';
 import {take} from 'rxjs/operators';
 import { DeviceType } from 'src/app/devices/enums/typeEnum';
@@ -10,18 +11,19 @@ describe('HUH01: Crear dispositivo de los distitos estados', () => {
     initializeTestBed();
     ds = obtainDeviceService();
   });
+  
   it('Deberia poder añadir dispositivos de tipo movimiento', async () => {
     //Given un tipo correcto de dispositivo.
     const type:DeviceType = DeviceType.MOVIMIENTO
     // When el usuario lo crea. 
-    const device = await ds.addDevice(type).catch(() => {})
+    const device = await ds.addDevice(type).catch((e) => {console.error(e)})
     //Then se registra el dispositivo del tipo requerido.
     const devices: Device[] = await ds.getDevices().pipe(take(1)).toPromise();
     const addedDevice: Device | void = devices.find((d) => d.id == device);
     expect(addedDevice).toBeDefined();
     
     if(addedDevice && addedDevice.id){
-      await ds.deleteDevice(addedDevice.id).catch(() => {})
+      await ds.deleteDevice(addedDevice.id).catch((e) => {console.error(e)})
     }
     
   });
@@ -30,14 +32,14 @@ describe('HUH01: Crear dispositivo de los distitos estados', () => {
     //Given  un tipo incorrecto de dispositivo.
     const type:DeviceType = DeviceType.APERTURA
     //When el usuario lo crea. 
-    const device = await ds.addDevice(type).catch(() => {})
+    const device = await ds.addDevice(type).catch((e) => {console.error(e)})
     //Then no se registra la habitación.
     const devices: Device[] = await ds.getDevices().pipe(take(1)).toPromise();
     const addedDevice: Device | undefined = devices.find((d) => d.id == device);
     expect(addedDevice).toBeDefined();
     
     if(addedDevice && addedDevice.id){
-      await ds.deleteDevice(addedDevice.id).catch(() => {})
+      await ds.deleteDevice(addedDevice.id).catch((e) => {console.error(e)})
     }
   });
 

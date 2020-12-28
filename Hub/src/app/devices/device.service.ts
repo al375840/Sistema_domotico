@@ -19,7 +19,11 @@ export class DeviceService {
     throw new Error('Unimplemented')
   }
 
-  async updateDeviceState(id: string, change:string): Promise<void> {
+  async switchDeviceState(id: string): Promise<void> {
+    throw new Error('Unimplemented')
+  }
+
+  async switchDeviceTurned(id: string): Promise<void> {
     throw new Error('Unimplemented')
   }
 
@@ -27,7 +31,7 @@ export class DeviceService {
     throw new Error('Unimplemented')
   }
 
-  async getDevice(id: string): Promise<void> {
+  async getDevice(id: string): Promise<Device> {
     throw new Error('Unimplemented')
   }
 }

@@ -19,11 +19,11 @@ describe('HU05: Quitar un dispositivo a una habitacion', () => {
 
     it('Deberia poder desasignar un dispositivo asignado previamente a una habitacion', async () => {
         // Given --  una habitación y un dispositivo que pertenece a esa habitación.
-            const roomname = 'TEST'
-            await roomService.addRoom(roomname).catch(()=>{});
-            const deviceId = 'FEN'
-            const room = await roomService.getRoom(roomname)
-            await roomService.asignDevice(deviceId, room).catch(()=>{})
+        const roomname = 'TEST'
+        await roomService.addRoom(roomname).catch(()=>{});
+        const deviceId = 'FEN'
+        const room = await roomService.getRoom(roomname)
+        await roomService.asignDevice(deviceId, room).catch(()=>{})
         // When --   el usuario quiera quitar ese dispositivo de la habitación.
         await deviceService.unasignDevice(deviceId)
         const roomAfter = await roomService.getRoom(roomname)

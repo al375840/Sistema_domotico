@@ -9,7 +9,8 @@ export const SERVER_SERVICE = new InjectionToken<IServer>('ServerService');
 export interface IServer {
     addDevice(type: DeviceType): Promise<string>;
     deleteDevice(id: string): Promise<void>;
-    updateDeviceState(id: string, change:string): Promise<void>;
+    switchDeviceState(id: string): Promise<void>;
+    switchDeviceTurned(id: string): Promise<void>
     getDevices(): Observable<Array<Device>>;
     getDevice(id: string): Promise<Device>;
     disconectHub(): Promise<void>;

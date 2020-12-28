@@ -1,4 +1,4 @@
-//import {initializeTestBed, limpiarEstado, obtainRoomService} from './comun';
+
 import {take} from 'rxjs/operators';
 
 describe('HUH04: Desconectar HUB', () => {

@@ -16,7 +16,10 @@ export class ServerService implements IServer{
   deleteDevice(id: string): Promise<void> {
     throw new Error('Method not implemented.');
   }
-  updateDeviceState(id: string, change:string): Promise<void> {
+  switchDeviceState(id: string): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
+  switchDeviceTurned(id: string): Promise<void> {
     throw new Error('Method not implemented.');
   }
   getDevices(): Observable<Array<Device>> {
