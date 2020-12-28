@@ -1,7 +1,7 @@
 //import {initializeTestBed, limpiarEstado, obtainRoomService} from './comun';
 import {take} from 'rxjs/operators';
 
-describe('HUH02: Modificar dispositivo', () => {
+describe('HUH02: Modificar el estado del dispositivo', () => {
 
   beforeEach(() => {
     //initializeTestBed();
