@@ -4,6 +4,8 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { SERVER_SERVICE } from './server/i-server';
 import { ServerService } from './server/server.service';
+import { LocalStorageService } from './localstorage/localstorage.service';
+import { STORAGE } from './localstorage/i-local-storage';
 
 @NgModule({
   declarations: [
@@ -13,7 +15,8 @@ import { ServerService } from './server/server.service';
     BrowserModule
   ],
   providers: [
-    {provide:SERVER_SERVICE, useClass:ServerService}
+    {provide:SERVER_SERVICE, useClass:ServerService},
+    {provide:STORAGE, useClass:LocalStorageService},
   ],
   bootstrap: [AppComponent]
 })

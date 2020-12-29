@@ -43,7 +43,9 @@ describe('HUH07: Obtener detalles de un dispositivo', () => {
     } 
     //Then no se muestran los detalles del dispositivo
     if (device)
-      expectAsync(ds.getDevice(device)).toBeRejectedWith(new DeviceNotExists(device))
+      await expectAsync(ds.getDevice(device)).toBeRejectedWith(new DeviceNotExists(device))
+    else
+      expect(true).toBeFalse()
   });
 
   afterEach(() => {

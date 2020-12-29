@@ -2,15 +2,16 @@ import { DeviceService } from '../app/devices/device.service';
 import { TestBed, TestBedStatic } from '@angular/core/testing';
 import { ServerService } from '../app/server/server.service';
 import { SERVER_SERVICE } from 'src/app/server/i-server';
-import { HubService } from 'src/app/hub/hub.service';
+import { LocalStorageService } from 'src/app/localstorage/localstorage.service';
+import { STORAGE } from 'src/app/localstorage/i-local-storage';
 
 let ds:any = undefined;
-let hs:any = undefined;
+let ls:any = undefined;
 let tb:any = undefined;
 export function initializeTestBed() {
   
   tb = TestBed.configureTestingModule({
-    providers: [ServerService,{provide:SERVER_SERVICE, useClass:ServerService}],
+    providers: [ServerService,{provide:SERVER_SERVICE, useClass:ServerService}, {provide:STORAGE, useClass:LocalStorageService}],
   });
   
 }
@@ -22,11 +23,11 @@ export function obtainDeviceService(): DeviceService {
   return ds;
 }
 
-export function obtainHubService(): HubService {
-  if (hs == undefined) {
-    hs = tb.inject(HubService);
+export function obtainHubService(): LocalStorageService {
+  if (ls == undefined) {
+    ls = tb.inject(LocalStorageService);
   }
-  return hs;
+  return ls;
 }
 
 export function limpiarEstado(): void {

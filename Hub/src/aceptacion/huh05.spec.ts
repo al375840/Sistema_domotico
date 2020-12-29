@@ -16,35 +16,25 @@ describe('HUH05: Desconectar dispositivos', () => {
   it('Deberia poder desconectar dispositivo con un identificador correcto', async () => {
     //Given el identificador del dispositivo 
     const type:DeviceType = DeviceType.MOVIMIENTO
-    const device = await ds.addDevice(type).catch((e) => {console.error(e)})
+    const id = await ds.addDevice(type)
     //When el usuario lo desconecta.  
-    if (device)
-    await ds.switchDeviceTurned(device).catch((e) => {console.error(e)})
+    await ds.switchDeviceTurned(id, false).catch((e) => {console.error(e)})
     //Then se realiza la desconexión.
-    const devices: Device[] = await ds.getDevices().pipe(take(1)).toPromise();
-    const addedDevice: Device | void = devices.find((d) => d.id == device);
-    if (addedDevice) {
-      expect(addedDevice.turned).toBeFalse();
-    }
-    else {
-      expect(false).toBeTrue();
-    }
+    const addedDevice:Device = await ds.getDevice(id) 
+    expect(addedDevice.turned).toBeFalse();
+
     if(addedDevice && addedDevice.id){
       await ds.deleteDevice(addedDevice.id).catch((e) => {console.error(e)})
     }
     
   });
 
-  it('Deberia no poder desconectar dispositivo con un identificador incorrecto', async () => {
+  it('Deberia no poder desconectar dispositivo que no existe', async () => {
     //Given  el identificador de un  dispositivo que no existe
-    const type:DeviceType = DeviceType.MOVIMIENTO
-    const device = await ds.addDevice(type).catch((e) => {console.error(e)})
-    if (device) {
-      await ds.deleteDevice(device).catch((e) => {console.error(e)})
+    const device = "TEST"
     //When  el usuario lo desconecta.
     //Then no se realiza la eliminación.
-    expectAsync(ds.switchDeviceTurned(device)).toBeRejectedWith(new DeviceNotExists(device))
-    }
+    await expectAsync(ds.switchDeviceTurned(device, false)).toBeRejectedWith(new DeviceNotExists(device))
   });
 
   afterEach(() => {

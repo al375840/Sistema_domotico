@@ -16,20 +16,15 @@ describe('HUH02: Modificar el estado del dispositivo', () => {
   it('Deberia poder modificar el estado de un dispositivo que exista', async () => {
     //Given el identificador del dispositivo y un estado válido.
     const type:DeviceType = DeviceType.MOVIMIENTO
-    const device = await ds.addDevice(type).catch((e) => {console.error(e)})
+    const id = await ds.addDevice(type)
     
     //When el usuario lo modifica.
-    if (device)
-      await ds.switchDeviceState(device).catch((e) => {console.error(e)})
+    await ds.switchDeviceState(id, "MOTION_DETECTED").catch(() => {})
     //Then se realiza el cambio.
-    const devices: Device[] = await ds.getDevices().pipe(take(1)).toPromise();
-    const addedDevice: Device | void = devices.find((d) => d.id == device);
-    if (addedDevice) {
-      expect(addedDevice.state == "MOTION_DETECTED").toBeTrue();
-    }
-    else {
-      expect(false).toBeTrue();
-    }
+    let addedDevice = await ds.getDevice(id).catch(e=>{console.log(e); return {}as Device;})
+    
+    expect(addedDevice.state == "MOTION_DETECTED").toBeTrue();
+    
     if(addedDevice && addedDevice.id){
       await ds.deleteDevice(addedDevice.id).catch((e) => {console.error(e)})
     }
@@ -37,16 +32,12 @@ describe('HUH02: Modificar el estado del dispositivo', () => {
   });
 
   it('No deberia poder modificar un dispositivo que no exista', async () => {
-    //Given  el identificador del dispositivo y un estado inválido.
-    const type:DeviceType = DeviceType.MOVIMIENTO
-    const device = await ds.addDevice(type).catch((e) => {console.error(e)})
-    if (device) {
-      await ds.deleteDevice(device).catch((e) => {console.error(e)})
+    //Given  el identificador del dispositivo que no existe.
+    const device = "TEST"
+    
     //When  el usuario lo modifica.
-      expectAsync(ds.switchDeviceState(device)).toBeRejectedWith(new DeviceNotExists(device))
-      
     //Then  se realiza el cambio.
-    }
+    await expectAsync(ds.switchDeviceState(device, "MOTION_DETECTED")).toBeRejectedWith(new DeviceNotExists(device))
   });
 
   afterEach(() => {
