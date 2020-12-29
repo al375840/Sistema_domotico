@@ -15,7 +15,7 @@ describe('HUH07: Obtener detalles de un dispositivo', () => {
 
   it('Deberia poder obtener los detalles con su identifiacador', async () => {
     //Given Identificador del dispositivo que existe.
-    const type:DeviceType = DeviceType.MOVIMIENTO
+    const type:DeviceType = DeviceType.ALARMA
     let device;
     let getDevice;
     try{
@@ -28,24 +28,18 @@ describe('HUH07: Obtener detalles de un dispositivo', () => {
     
     //Then se muestran los detalles del dispositivo
     expect(getDevice).toBeDefined();
+    
+    if(getDevice && getDevice.id){
+      await ds.deleteDevice(getDevice.id).catch((e) => {console.error(e)})
+    }
+
   });
 
   it('No deberia poder obtener los detalles de un dispositivo usando un identificador no válido', async () => {
     //Given Identificador de dispositicov que no existe.
-    const type:DeviceType = DeviceType.MOVIMIENTO
-    let device;
-    try{
-      device = await ds.addDevice(type)
-      await ds.deleteDevice(device)
-      //When el usuario obtiene los detalles.
-    }catch(e){
-      console.error(e)
-    } 
+    const id = "TEST";
     //Then no se muestran los detalles del dispositivo
-    if (device)
-      await expectAsync(ds.getDevice(device)).toBeRejectedWith(new DeviceNotExists(device))
-    else
-      expect(true).toBeFalse()
+    await expectAsync(ds.getDevice(id)).toBeRejectedWith(new DeviceNotExists(id))
   });
 
   afterEach(() => {
