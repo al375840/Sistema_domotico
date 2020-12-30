@@ -1,0 +1,20 @@
+<div class="content center">
+    <mat-card class="devices">
+        <mat-card-title>
+            <div class="floatchild">
+                <h2 class="tittle"><span  matBadge={{devices.length}} matBadgePosition="after" matBadgeColor="accent">Devices </span></h2>  
+            </div>
+            <div class="floatchild">
+                <button mat-mini-fab class="add"><mat-icon>add</mat-icon></button> 
+            </div>
+            
+        </mat-card-title>
+        <div class=" devices-content  ">
+        <div class="devices-list" cdkScrollable>
+            <div class="device-box" *ngFor="let device of devices">
+                <app-device-info [device]="device" ></app-device-info>
+            </div>
+        </div>
+    </div>
+    </mat-card>
+</div>

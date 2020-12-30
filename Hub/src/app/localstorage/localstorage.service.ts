@@ -10,15 +10,19 @@ import { DeviceNotExists } from '../devices/exceptions/device-not-exist';
 })
 export class LocalStorageService implements ILocalStorage {
   private devices = new ReplaySubject<Device[]>(1);
+  private emited = false;
   constructor() {
+    
   }
   async addDevice(device: Device): Promise<string> {
-    let id = await this.generateDeviceId();
+    let id = device.id || await this.generateDeviceId();
     device.id = id;
-    await localforage.setItem(id, device).catch((e) => {
-      console.error(e);
-    });
-    await this.emiteChanges();
+    if (!((await localforage.keys()).includes(id))) {
+      await localforage.setItem(id, device).catch((e) => {
+        console.error(e);
+      });
+      await this.emiteChanges();
+    }
     return id;
   }
   async updateDevice(device: Device): Promise<boolean> {
@@ -49,13 +53,19 @@ export class LocalStorageService implements ILocalStorage {
   }
 
   getDevices(): Observable<Device[]> {
-    this.emiteChanges();
+    if(!this.emited){ // comprobamos que el subject tenga el estado inicial, solo se hace la primera vez que se solicita
+    this.emiteChanges()
+    this.emited=true;
+  }
     return this.devices;
   }
   private async emiteChanges() {
     let devices: Device[] = [];
-    await localforage.iterate((device: Device) => devices.push(device));
-    this.devices.next(devices);
+    await localforage.iterate(function(device: Device) {
+      devices.push(device)
+    });
+    this.devices.next(devices)
+    
   }
 
   private async generateDeviceId() {

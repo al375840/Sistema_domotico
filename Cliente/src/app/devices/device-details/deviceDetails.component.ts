@@ -18,20 +18,19 @@ export class DeviceDetailsComponent {
     snackbar: any;
     constructor (public dialog: MatDialog) {}
     get color() {
-        
         if(this.device.turned)
-            if(this.device.state in ["OFF", "NO_MOTION", "CLOSED"])
-                return "#C62828"
-            else
-                return "#8BC34A"
+        if(this.device.state == "OFF" || this.device.state == "NO_MOTION" || this.device.state == "CLOSE")
+            return "#8BC34A"
         else
-            return "#616161"
+            return "#C62828"
+    else
+        return "#616161"
     }
 
     get icon() {
         switch(this.device.type) {
             case "movimiento": {
-                return "directions_walks"
+                return "directions_run"
             }
             case "apertura": {
                 return "sensor_door"

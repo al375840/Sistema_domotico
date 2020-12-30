@@ -16,10 +16,14 @@ describe('HUH01: Crear dispositivo de los distitos estados', () => {
     //Given un tipo correcto de dispositivo.
     const type:DeviceType = DeviceType.MOVIMIENTO
     // When el usuario lo crea. 
-    const device = await ds.addDevice(type).catch((e) => {console.error(e)})
+    const device = await ds.addDevice(type)
     //Then se registra el dispositivo del tipo requerido.
-    const devices: Device[] = await ds.getDevices().pipe(take(1)).toPromise();
-    const addedDevice: Device | void = devices.find((d) => d.id == device);
+    let addedDevice: Device | undefined; 
+    try {
+      addedDevice = await ds.getDevice(device)
+    } catch (error) {
+      console.error(error)
+    }
     expect(addedDevice).toBeDefined();
     
     if(addedDevice && addedDevice.id){
@@ -28,15 +32,18 @@ describe('HUH01: Crear dispositivo de los distitos estados', () => {
     
   });
 
-  it('No deberia poder añadir dispositivos de tipo apertura', async () => {
+  it('Deberia poder añadir dispositivos de tipo apertura', async () => {
     //Given  un tipo incorrecto de dispositivo.
     const type:DeviceType = DeviceType.APERTURA
     //When el usuario lo crea. 
-    const device = await ds.addDevice(type).catch((e) => {console.error(e)})
+    const device = await ds.addDevice(type)
     //Then no se registra la habitación.
-    const devices: Device[] = await ds.getDevices().pipe(take(1)).toPromise();
-    const addedDevice: Device | undefined = devices.find((d) => d.id == device);
-    expect(addedDevice).toBeDefined();
+    let addedDevice: Device | undefined; 
+    try {
+      addedDevice = await ds.getDevice(device)
+    } catch (error) {
+      console.error(error)
+    }
     
     if(addedDevice && addedDevice.id){
       await ds.deleteDevice(addedDevice.id).catch((e) => {console.error(e)})

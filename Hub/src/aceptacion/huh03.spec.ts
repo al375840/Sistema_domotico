@@ -13,7 +13,7 @@ describe('HUH03: Eliminar dispositivo', () => {
     ds = obtainDeviceService();
   });
 
-  it('Deberia poder eliminar con un identificador que existe ', async () => {
+  it('Deberia poder eliminar con un dispositivo que existe ', async () => {
     //Given el identificador de un dispositivo que existe
     const type:DeviceType = DeviceType.MOVIMIENTO
     const device = await ds.addDevice(type).catch((e) => {console.error(e)})

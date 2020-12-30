@@ -1,0 +1,17 @@
+<mat-card class="device">
+    <div class="linea">
+        <div >
+            <button mat-icon-button class="delete" (click)="delete()"><mat-icon color="accent">delete</mat-icon></button>
+            <mat-icon [ngStyle]="{'color':color}" class="icono">{{icon}}</mat-icon>
+        </div>
+        <label>{{device.id}}</label>
+        <span>
+        <label [ngStyle]="{'color':colorTurned}">Connect: </label>
+        <mat-slide-toggle [checked]="device.turned" color="primary" (click)="switchTurned()"></mat-slide-toggle>
+        </span>
+        <span>
+        <label *ngIf="device.type != 'alarma'"  [ngStyle]="{'color':color}">State: </label>
+        <mat-slide-toggle *ngIf="device.type != 'alarma'" [disabled]="!device.turned"  [checked]="stateDetection" color="warn" (click)="!device.turned || switchState()"></mat-slide-toggle>
+        </span>
+    </div>
+</mat-card>

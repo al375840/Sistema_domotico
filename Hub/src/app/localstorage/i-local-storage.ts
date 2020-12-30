@@ -10,5 +10,5 @@ export interface ILocalStorage{
     updateDevice(device:Device):Promise<boolean>;
     deleteDevice(id: string):Promise<boolean>;
     getDevice(id: string): Promise<Device>;
-    getDevices(): Observable<Array<Device>>;
+    getDevices(): Observable<Device[]>;
 }

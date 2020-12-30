@@ -11,6 +11,7 @@ import { DeviceNotExists } from './exceptions/device-not-exist';
 export class DeviceService {
 
   constructor(@Inject(STORAGE)private storage:ILocalStorage) { 
+    this.addInitialDevices();
   }
 
   async addDevice(type: DeviceType): Promise<string> {
@@ -60,6 +61,20 @@ export class DeviceService {
 
   async getDevice(id: string): Promise<Device> {
     return this.storage.getDevice(id)
+  }
+
+  private async addInitialDevices(){
+    let inidev:Device[] = [
+      {id:'FEN',type:DeviceType.MOVIMIENTO,state:'NO_MOTION',turned:true},
+      {id:'MAX',type:DeviceType.MOVIMIENTO,state:'NO_MOTION',turned:true},
+      {id:'MCU',type:DeviceType.ALARMA,state:'OFF',turned:true},
+      {id:'OPO',type:DeviceType.ALARMA,state:'OFF',turned:true},
+      {id:'TNT',type:DeviceType.APERTURA,state:'CLOSE',turned:true},
+      {id:'BEN',type:DeviceType.APERTURA,state:'CLOSE',turned:true},
+    ]
+    for(let device of inidev){
+      await this.storage.addDevice(device);
+    }
   }
 
 }
