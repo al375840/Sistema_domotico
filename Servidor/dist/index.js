@@ -32,46 +32,25 @@ function main() {
     io.on("connection", (socket) => {
         var timeout;
         //Emitimos los dispositivos sin habitación y las habitaciones
-        const emitChanges = () => {
-            controller.getUnasignedDevices().then((data) => {
-                let devices = [];
-                data.forEach((dev) => devices.push(dev));
-                //console.log(devices);
-                io.emit("unasigndevices", devices);
-            });
-            controller.getRooms().then((data) => {
-                let rooms = [];
-                data.forEach((room) => rooms.push(room));
-                //console.log(rooms);
-                io.emit("rooms", rooms);
-            });
+        const emitChanges = async () => {
+            await emitDeviceChanges();
+            await emitRoomChanges();
         };
         //Emitimos los dispositivos sin habitación
-        const emitDeviceChanges = () => {
-            controller.getUnasignedDevices().then((data) => {
-                let devices = [];
-                data.forEach((dev) => devices.push(dev));
-                //console.log(devices);
-                io.emit("unasigndevices", devices);
-            });
+        const emitDeviceChanges = async () => {
+            let devices = await controller.getUnasignedDevices();
+            io.emit("unasigndevices", devices);
         };
         //Emitimos las habitaciones
-        const emitRoomChanges = () => {
-            controller.getRooms().then((data) => {
-                let rooms = [];
-                data.forEach((room) => rooms.push(room));
-                //console.log(rooms);
-                io.emit("rooms", rooms);
-            });
+        const emitRoomChanges = async () => {
+            let rooms = await controller.getRooms();
+            io.emit("rooms", rooms);
         };
         //Emitimos el estado de un dispositivo
         const emitDeviceState = (device) => {
             controller.getDeviceState(device).then((d) => {
                 socket.emit("checkState", d);
             });
-        };
-        const emitRoom = async (room) => {
-            await controller.getRoom(room).then((r) => socket.emit("getRoom", r));
         };
         //Para que cuando se conecte salga un mensaje por pantalla y emita los cambios
         emitChanges();
@@ -84,84 +63,96 @@ function main() {
                 io.emit("conexionlost");
             }, 20000);
         });
-        socket.on("getUnasignedDevices", () => {
-            controller.getUnasignedDevices().then((data) => {
-                let devices = [];
-                data.forEach((dev) => devices.push(dev));
-                //console.log(devices);
-                socket.emit("unasigndevices", devices);
-            });
+        socket.on("getUnasignedDevices", async () => {
+            let devices = await controller.getUnasignedDevices();
+            socket.emit("unasigndevices", devices);
         });
         /*HUB*/
         //añadimos los dispositivos cuando del hub recibimos esos disp por
         //un mensaje con la cabecers addDevices
-        socket.on("addDevice", (devices) => {
+        socket.on("updateState", async (devices) => {
             timeout.refresh();
             if (devices != null && devices.length > 0) {
-                devices.forEach((element) => {
-                    controller.addDevice(element).then(() => {
-                        emitDeviceChanges();
-                    });
-                });
+                await controller.updateState(devices);
             }
         });
         /*Cliente*/
         socket.on("addRoom", async (room) => {
-            let done = true;
+            let done = false;
             if (room != null && room.trim().length > 0) {
-                await controller.addRoom(room)
-                    .then(() => {
-                    emitRoomChanges();
-                })
-                    .catch(() => (done = false));
-            }
-            else {
-                done = false;
+                try {
+                    await controller.addRoom(room);
+                    await emitRoomChanges();
+                    done = true;
+                }
+                catch (e) {
+                    console.error(e);
+                }
             }
             socket.emit("addRoomRes", done);
         });
-        socket.on("deleteRoom", (room) => {
-            let done = true;
+        socket.on("deleteRoom", async (room) => {
+            let done = false;
             if (room != null) {
-                controller.deleteRoom(room).then(() => {
-                    emitChanges();
+                let dl = await controller.deleteRoom(room).catch(() => {
+                    done = false;
                 });
-            }
-            else {
-                done = false;
+                if (dl != null &&
+                    dl.affected != null &&
+                    dl.affected != undefined &&
+                    dl.affected > 0) {
+                    await emitChanges();
+                    done = true;
+                }
             }
             socket.emit("deleteRoomRes", done);
         });
-        socket.on("updateRoom", (room, newroom) => {
-            if (room != null && newroom != null) {
-                controller.updateRoom(room, newroom).then(() => {
-                    emitRoomChanges();
-                });
+        socket.on("updateRoom", async (room, newroom) => {
+            let done = false;
+            if (newroom != null &&
+                newroom.trim() != "") {
+                let a = await controller.updateRoom(room, newroom);
+                if (a.affected != undefined && a.affected > 0) {
+                    await emitRoomChanges();
+                    done = true;
+                }
             }
+            socket.emit("updateRoomRes", done);
         });
         socket.on("getRoom", (room) => {
-            if (room != null) {
-                emitRoom(room);
-            }
+            controller
+                .getRoom(room)
+                .then((r) => socket.emit("getRoomRes", r))
+                .catch(() => socket.emit("getRoomRes", undefined));
         });
-        socket.on("asignDevice", (room, device) => {
+        socket.on("getRooms", () => {
+            emitRoomChanges();
+        });
+        socket.on("asignDevice", async (room, device) => {
+            let done = false;
             if (room != null && device != null) {
-                controller.asignDeviceToRoom(room, device).then(() => {
-                    emitChanges();
-                });
+                let ur = await controller.asignDeviceToRoom(room, device).catch(() => { });
+                if (ur != undefined && ur.affected != undefined && ur.affected > 0) {
+                    await emitChanges();
+                    done = true;
+                }
             }
+            socket.emit("asignDeviceRes", done);
         });
-        socket.on("unasignDevice", (device) => {
+        socket.on("unasignDevice", async (device) => {
+            let done = false;
             if (device != null) {
-                controller.unasignDevice(device).then(() => {
-                    emitChanges();
-                });
+                let ur = await controller
+                    .unasignDevice(device).catch(() => { });
+                if (ur != undefined && ur.affected != undefined && ur.affected > 0) {
+                    await emitChanges();
+                    done = true;
+                }
             }
+            socket.emit("unasignDeviceRes", done);
         });
         socket.on("checkState", (device) => {
-            if (device != null) {
-                emitDeviceState(device);
-            }
+            emitDeviceState(device);
         });
     });
 }

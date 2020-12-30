@@ -10,16 +10,14 @@ const room_1 = require("../entity/room");
 class Controller {
     constructor(c) {
         this.addDevice = async (device) => {
-            let id = await this.generateDeviceId();
             return this.deviceRepository
                 .createQueryBuilder()
                 .insert()
                 .values({
-                id: id,
+                id: device.id,
                 type: device.type,
                 state: device.state,
-                turned: device.turned,
-                room: device.room,
+                turned: device.turned
             })
                 .execute();
         };
@@ -42,6 +40,62 @@ class Controller {
                 .values({
                 name: room,
             })
+                .execute();
+        };
+        this.updateState = async (devices) => {
+            //Primero se quitan los dispositivos residuales de otros hubs
+            await this.deviceRepository.createQueryBuilder("device")
+                .delete()
+                .where("device.id NOT IN (:...ids)", { ids: devices.map(d => d.id) })
+                .execute();
+            let localDevices = (await this.deviceRepository.createQueryBuilder().getMany()).map(d => d.id);
+            for (let device of devices) {
+                if (localDevices.includes(device.id)) {
+                    await this.updateDevice(device);
+                }
+                else {
+                    await this.addDevice(device);
+                }
+            }
+        };
+        this.alarmsToTriggerOn = async () => {
+            let rwad = this.roomRepository
+                .createQueryBuilder("room")
+                .select("room.name")
+                .leftJoin("room.devices", "device")
+                .where("device.turned = :turned", { turned: false })
+                .orWhere("device.state IN (:...states)", { states: ["MOTION_DETECTED", "OPEN"] });
+            return this.deviceRepository
+                .createQueryBuilder("device")
+                .leftJoin("device.room", "r")
+                .where("device.type = :type", { type: "alarma" })
+                .andWhere("device.state = :s", { s: "OFF" })
+                .andWhere("r.name IN (" + rwad.getQuery() + ")")
+                .setParameters(rwad.getParameters())
+                .getMany();
+        };
+        this.alarmsToTriggerOff = async () => {
+            let rwad = this.roomRepository
+                .createQueryBuilder("room")
+                .select("room.name")
+                .leftJoin("room.devices", "device")
+                .where("device.turned = :turned", { turned: false })
+                .orWhere("device.state IN (:...states)", { states: ["MOTION_DETECTED", "OPEN"] });
+            return this.deviceRepository
+                .createQueryBuilder("device")
+                .leftJoin("device.room", "r")
+                .where("device.type = :type", { type: "alarma" })
+                .andWhere("device.state = :s", { s: "ON" })
+                .andWhere("r.name NOT IN (" + rwad.getQuery() + ")")
+                .setParameters(rwad.getParameters())
+                .getMany();
+        };
+        this.updateDevice = async (device) => {
+            return this.deviceRepository
+                .createQueryBuilder("device")
+                .update(device_1.Device)
+                .set({ state: device.state, turned: device.turned })
+                .where("device.id = :id", { id: device.id })
                 .execute();
         };
         this.updateRoom = (room, newroom) => {
@@ -90,21 +144,6 @@ class Controller {
         };
         this.deviceRepository = c.getRepository(device_1.Device);
         this.roomRepository = c.getRepository(room_1.Room);
-    }
-    async generateDeviceId() {
-        let cadena = "";
-        for (let i = 0; i < 3; i += 1)
-            cadena += String.fromCharCode(97 + Math.random() * 25);
-        const user = await this.deviceRepository
-            .createQueryBuilder("device")
-            .where("device.id = :id", { id: cadena })
-            .getOne();
-        if (user == null)
-            return cadena.toUpperCase();
-        else {
-            console.log("ID REPETIDA");
-            return this.generateDeviceId();
-        }
     }
 }
 exports.Controller = Controller;

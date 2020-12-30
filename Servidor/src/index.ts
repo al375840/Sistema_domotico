@@ -6,7 +6,7 @@ import { Room } from "./entity/room";
 import { Device } from "./entity/device";
 import { Server } from "socket.io";
 import { Controller } from "./controllers/controller";
-
+import { UpdateAlarm } from "./others/IUpdateAlarm";
 const PORT = process.env.PORT || 3000;
 var controller: Controller;
 createConnection()
@@ -81,14 +81,15 @@ function main() {
 		/*HUB*/
 		//añadimos los dispositivos cuando del hub recibimos esos disp por
 		//un mensaje con la cabecers addDevices
-		socket.on("addDevice", (devices: Device[]) => {
+		socket.on("updateState", async(devices: Device[]) => {
 			timeout.refresh();
 			if (devices != null && devices.length > 0) {
-				devices.forEach((element) => {
-					controller.addDevice(element).then(() => {
-						emitDeviceChanges();
-					});
-				});
+				await controller.updateState(devices);
+				let resp:UpdateAlarm = {
+				 turnOn : await controller.alarmsToTriggerOn(),
+				 turnOff : await controller.alarmsToTriggerOff()
+				} 
+				socket.emit("updateAlarms",resp)
 			}
 		});
 
