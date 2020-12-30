@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Add device</h1>
+<div mat-dialog-content>
+  <mat-button-toggle-group name="fontStyle" aria-label="Font Style" [(ngModel)]="data.type">
+    <mat-button-toggle value="movimiento"><mat-icon color="primary">directions_run</mat-icon></mat-button-toggle>
+    <mat-button-toggle value="apertura"><mat-icon color="primary">sensor_door</mat-icon></mat-button-toggle>
+    <mat-button-toggle value="alarma"><mat-icon color="primary">notification_important</mat-icon></mat-button-toggle>
+  </mat-button-toggle-group>
+  
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="close()">Back</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Add</button>
+</div>

@@ -11,6 +11,8 @@ import {A11yModule} from '@angular/cdk/a11y';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatSnackBarModule } from '@angular/material/snack-bar';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 @NgModule({
     imports: [
     MatToolbarModule,
@@ -23,7 +25,9 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
     A11yModule,
     MatMenuModule,
     MatSnackBarModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatRadioModule,
+    MatButtonToggleModule
     ],
     exports: [
         MatToolbarModule,
@@ -36,7 +40,9 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
         A11yModule,
         MatMenuModule,
         MatSnackBarModule,
-        MatSlideToggleModule
+        MatSlideToggleModule,
+        MatRadioModule,
+        MatButtonToggleModule
     ]
 })
 export class MaterialModule { }
