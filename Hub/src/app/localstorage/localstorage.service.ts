@@ -10,9 +10,8 @@ import { DeviceNotExists } from '../devices/exceptions/device-not-exist';
 })
 export class LocalStorageService implements ILocalStorage {
   private devices = new ReplaySubject<Device[]>(1);
-  private emited = false;
   constructor() {
-    
+    this.emiteChanges()
   }
   async addDevice(device: Device): Promise<string> {
     let id = device.id || await this.generateDeviceId();
@@ -53,10 +52,6 @@ export class LocalStorageService implements ILocalStorage {
   }
 
   getDevices(): Observable<Device[]> {
-    if(!this.emited){ // comprobamos que el subject tenga el estado inicial, solo se hace la primera vez que se solicita
-    this.emiteChanges()
-    this.emited=true;
-  }
     return this.devices;
   }
   private async emiteChanges() {
