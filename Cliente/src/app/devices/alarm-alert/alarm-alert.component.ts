@@ -31,10 +31,11 @@ export class AlarmAlertComponent implements OnInit {
           i++;
         }
 
-        if(!this.dialogRef && !iguales) {
+        if(!iguales) {
           this.roomNames = newNames;
           this.openDialog()
         }
+        
       }
       
     })
