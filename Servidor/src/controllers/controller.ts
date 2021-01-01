@@ -10,7 +10,7 @@ import { Room } from "../entity/room";
 export class Controller {
 	deviceRepository: Repository<Device>;
 	roomRepository: Repository<Room>;
-	constructor(c:Connection) {
+	constructor(c: Connection) {
 		this.deviceRepository = c.getRepository(Device);
 		this.roomRepository = c.getRepository(Room);
 	}
@@ -22,7 +22,7 @@ export class Controller {
 				id: device.id,
 				type: device.type,
 				state: device.state,
-				turned: device.turned
+				turned: device.turned,
 			})
 			.execute();
 	};
@@ -83,52 +83,54 @@ export class Controller {
 		}
 		return changes
 	};
-	
-	alarmsToTriggerOn = async()=>{
-		let rwad=this.roomRepository
+
+	alarmsToTriggerOn = async () => {
+		let rwad = this.roomRepository
 			.createQueryBuilder("room")
 			.select("room.name")
 			.leftJoin("room.devices", "device")
-			.where("device.turned = :turned",{turned:false})
-			.orWhere("device.state IN (:...states)",{states:["MOTION_DETECTED","OPEN"]});
+			.where("device.turned = :turned", { turned: false })
+			.orWhere("device.state IN (:...states)", {
+				states: ["MOTION_DETECTED", "OPEN"],
+			});
 
 		return this.deviceRepository
-		.createQueryBuilder("device")
-		.leftJoin("device.room", "r")
-		.where("device.type = :type",{type:"alarma"})
-		.andWhere("device.state = :s", {s:"OFF"})
-		.andWhere("r.name IN ("+rwad.getQuery()+")")
-		.setParameters(rwad.getParameters())
-		.getMany()
-		
-	}
+			.createQueryBuilder("device")
+			.leftJoin("device.room", "r")
+			.where("device.type = :type", { type: "alarma" })
+			.andWhere("device.state = :s", { s: "OFF" })
+			.andWhere("r.name IN (" + rwad.getQuery() + ")")
+			.setParameters(rwad.getParameters())
+			.getMany();
+	};
 
-	alarmsToTriggerOff = async()=>{
-		let rwad=this.roomRepository
+	alarmsToTriggerOff = async () => {
+		let rwad = this.roomRepository
 			.createQueryBuilder("room")
 			.select("room.name")
 			.leftJoin("room.devices", "device")
-			.where("device.turned = :turned",{turned:false})
-			.orWhere("device.state IN (:...states)",{states:["MOTION_DETECTED","OPEN"]});
+			.where("device.turned = :turned", { turned: false })
+			.orWhere("device.state IN (:...states)", {
+				states: ["MOTION_DETECTED", "OPEN"],
+			});
 
 		return this.deviceRepository
-		.createQueryBuilder("device")
-		.leftJoin("device.room", "r")
-		.where("device.type = :type",{type:"alarma"})
-		.andWhere("device.state = :s", {s:"ON"})
-		.andWhere("r.name NOT IN ("+rwad.getQuery()+")")
-		.setParameters(rwad.getParameters())
-		.getMany()
-	}
+			.createQueryBuilder("device")
+			.where("device.type = :type", { type: "alarma" })
+			.andWhere("device.state = :s", { s: "ON" })
+			.andWhere(`(device.room IS NULL OR device.room NOT IN (${rwad.getQuery()}))`)
+			.setParameters(rwad.getParameters())
+			.getMany();
+	};
 
-	updateDevice = async(device:Device)=>{
+	updateDevice = async (device: Device) => {
 		return this.deviceRepository
-		.createQueryBuilder("device")
-		.update(Device)
-		.set({state:device.state, turned:device.turned})
-		.where("device.id = :id",{id:device.id})
-		.execute();
-	}
+			.createQueryBuilder("device")
+			.update(Device)
+			.set({ state: device.state, turned: device.turned })
+			.where("device.id = :id", { id: device.id })
+			.execute();
+	};
 
 	updateRoom = (room: string, newroom: string) => {
 		return this.roomRepository

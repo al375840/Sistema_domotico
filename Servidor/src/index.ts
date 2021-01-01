@@ -9,6 +9,7 @@ import { Controller } from "./controllers/controller";
 import { UpdateAlarm } from "./others/IUpdateAlarm";
 const PORT = process.env.PORT || 3000;
 var controller: Controller;
+var cambiosCliente:boolean = false;
 createConnection()
 	.then((c) => {
 		console.log(
@@ -35,7 +36,7 @@ function main() {
 
 	io.on("connection", (socket) => {
 		var timeout: NodeJS.Timeout;
-
+		
 		//Emitimos los dispositivos sin habitación y las habitaciones
 		const emitChanges = async() => {
 			await emitDeviceChanges();
@@ -84,14 +85,16 @@ function main() {
 		socket.on("updateState", async(devices: Device[]) => {
 			timeout.refresh();
 			if (devices != null) {
-				let changes =await controller.updateState(devices);
-				if(changes>0){
+				let changes = await controller.updateState(devices);
+				if(cambiosCliente || changes> 0){
 					let resp:UpdateAlarm = {
-					 turnOn : await controller.alarmsToTriggerOn(),
-					 turnOff : await controller.alarmsToTriggerOff()
-					} 
+						turnOn : await controller.alarmsToTriggerOn(),
+						turnOff : await controller.alarmsToTriggerOff()
+					}
 					socket.emit("updateAlarms",resp);
-					emitChanges();
+					
+					await emitChanges();
+					cambiosCliente = false;
 				}
 			}
 		});
@@ -127,7 +130,9 @@ function main() {
 				) {
 					await emitChanges();
 					done = true;
+					cambiosCliente = true;
 				} 
+				
 			} 
 			socket.emit("deleteRoomRes", done);
 		});
@@ -166,6 +171,7 @@ function main() {
 			if (ur != undefined && ur.affected != undefined && ur.affected > 0){
 				await emitChanges();
 				done = true;
+				cambiosCliente = true;
 			}
 		}
 		socket.emit("asignDeviceRes", done);
@@ -179,6 +185,7 @@ function main() {
 			if (ur != undefined && ur.affected != undefined && ur.affected > 0){
 				await emitChanges();
 				done = true;
+				cambiosCliente = true;
 			}	
 			}
 			socket.emit("unasignDeviceRes",done);
