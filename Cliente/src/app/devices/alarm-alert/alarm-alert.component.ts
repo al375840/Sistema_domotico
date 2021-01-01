@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { map } from 'rxjs/operators';
-import { Room } from 'src/app/rooms/room';
 import { RoomService } from 'src/app/rooms/room.service';
 import { AlarmAlertModalComponent } from '../alarm-alert-modal/alarm-alert-modal.component';
 
@@ -22,20 +20,21 @@ export class AlarmAlertComponent implements OnInit {
 
   ngOnInit(): void {
     this.rs.getRoomsWithAlarms().subscribe((newNames:string[])=>{
-      if(newNames.length != this.roomNames.length){
-        let iguales = true;
+      let iguales = true;
+      if(newNames.length == this.roomNames.length){
         let i = 0
-        while(i<newNames.length && iguales){
+        while(i<this.roomNames.length && iguales){
           if(this.roomNames[i] != newNames[i])
-            iguales = false
+            iguales = false;
           i++;
         }
-
-        if(!iguales) {
-          this.roomNames = newNames;
-          this.openDialog()
-        }
-        
+      }else{
+        iguales = false;
+      }
+      if(!iguales) {
+        this.roomNames = newNames;
+        if(this.roomNames.length > 0)
+          this.openDialog();
       }
       
     })
