@@ -18,6 +18,8 @@ import { DeviceDetailsComponent } from './devices/device-details/deviceDetails.c
 import { SERVER_SERVICE } from './comun/i-server';
 import { ServerService } from './comun/server.service';
 import { DeviceInfoComponent } from './devices/device-info/device-info.component';
+import { AlarmAlertComponent } from './devices/alarm-alert/alarm-alert.component';
+import { AlarmAlertModalComponent } from './devices/alarm-alert-modal/alarm-alert-modal.component';
 
 
 @NgModule({
@@ -29,7 +31,9 @@ import { DeviceInfoComponent } from './devices/device-info/device-info.component
     RoomDetailsComponent,
     EditRoomComponent,
     AddRoomComponent,
-    DeviceInfoComponent
+    DeviceInfoComponent,
+    AlarmAlertComponent,
+    AlarmAlertModalComponent
   ],
   imports: [
     BrowserModule,

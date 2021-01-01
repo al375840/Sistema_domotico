@@ -4,7 +4,7 @@ import {take} from 'rxjs/operators';
 import {Room} from 'src/app/rooms/room';
 import {NameNotValid} from 'src/app/rooms/exceptions/name-not-valid';
 
-describe('HU10: Mostrar alerta', () => {
+describe('HU10: Mostrar alerta con las habitaciones en las que ha saltado una alarma', () => {
   let roomService: RoomService;
 
   beforeEach(() => {
@@ -12,14 +12,13 @@ describe('HU10: Mostrar alerta', () => {
     roomService = obtainRoomService();
   });
 
-  it('Deberia poder añadir haibitaciones con un nombre correcto', async () => {
-    
-    
-  });
-
-  it('No deberia poder añadir haibitaciones con un nombre no valido', async () => {
-   
-
+  it('Debereria devolver una lista vacia si no han saltado alarmas', async () => {
+    // Given -- una lista de habitaciones sin alarmas activas
+    // When --  el usuario solicita una lista de alarmas
+    const habitaciones:Array<string> = await roomService.getRoomsWithAlarms().pipe(take(1)).toPromise();
+    // Then -- devuelve una lista vacia o con los nombres de las habitaciones con alarmas activas
+    expect(habitaciones instanceof Array).toBeTruthy(); 
+    expect(habitaciones.length >= 0).toBeTrue();
   });
 
   afterEach(() => {

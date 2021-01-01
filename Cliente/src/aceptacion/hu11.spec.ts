@@ -37,7 +37,7 @@ describe('HU11: Guardar información de habitaciones', () => {
     await roomService.deleteRoom(nombre).catch((e) => {console.error(e); });
   });
 
-  it('Deberia poder listar habitaciones con sus dispositivos', async () => {
+  it('Debería de conservar la distribución de los dispositivos', async () => {
     const nombre = 'Persistencia';
     await roomService.addRoom(nombre).catch((e) => {console.error(e); });
     const deviceId = 'FEN';

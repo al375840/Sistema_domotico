@@ -90,6 +90,7 @@ function main() {
 				 turnOff : await controller.alarmsToTriggerOff()
 				} 
 				socket.emit("updateAlarms",resp)
+				emitChanges();
 			}
 		});
 

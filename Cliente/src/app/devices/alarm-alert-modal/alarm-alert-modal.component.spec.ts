@@ -1,25 +1,25 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-import { AddDeviceComponent } from './add-device.component';
+import { AlarmAlertModalComponent } from './alarm-alert-modal.component';
 
-describe('AddDeviceComponent', () => {
-  let component: AddDeviceComponent;
-  let fixture: ComponentFixture<AddDeviceComponent>;
+describe('AlarmAlertModalComponent', () => {
+  let component: AlarmAlertModalComponent;
+  let fixture: ComponentFixture<AlarmAlertModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      declarations: [ AlarmAlertModalComponent ],
       providers: [
-        {provide: MAT_DIALOG_DATA, useValue:{}},
-        {provide: MatDialogRef, useValue:{}}
-      ],
-      declarations: [ AddDeviceComponent ]
+        {provide: MatDialogRef, useValue: {}},
+        {provide: MAT_DIALOG_DATA, useValue: {}},
+      ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddDeviceComponent);
+    fixture = TestBed.createComponent(AlarmAlertModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

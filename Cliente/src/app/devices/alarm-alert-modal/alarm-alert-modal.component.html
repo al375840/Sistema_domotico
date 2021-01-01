@@ -1,0 +1,9 @@
+<div *ngIf="data">
+    <h1 mat-dialog-title>Alarm ON!!</h1>
+    <div mat-dialog-content *ngFor="let room of data.names">
+        <label>Alarm triggered in {{room}}</label>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-button (click)="close()">Close</button>
+    </div>
+</div>

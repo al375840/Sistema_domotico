@@ -28,7 +28,7 @@ export class RoomsListComponent implements OnInit {
   ngOnInit(): void {
     this.rs.getRooms().subscribe((data) => {
 
-      this.rooms = data.sort((a,b)=>a.name>=b.name?1:-1);
+      this.rooms = data;
       this.roomNames = data.map((r)=>r.name);
       this.rooms.forEach(r=>r.devices.sort((a,b) =>a.id>b.id?1:-1))
     });
