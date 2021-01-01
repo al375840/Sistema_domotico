@@ -50,22 +50,38 @@ export class Controller {
 			})
 			.execute();
 	};
-	updateState = async(devices:Device[])=>{
-		//Primero se quitan los dispositivos residuales de otros hubs
-		await this.deviceRepository.createQueryBuilder("device")
-		.delete()
-		.where("device.id NOT IN (:...ids)", { ids: devices.map(d=>d.id) })
-		.execute();
+	updateState = async (devices: Device[]) => {
+		let changes = 0;
+		//Primero se quitan los dispositivos residuales de otros hubs, si no hay ninguno se borran todos
+		if (devices.length > 0) {
+			await this.deviceRepository
+				.createQueryBuilder("device")
+				.delete()
+				.where("device.id NOT IN (:...ids)", { ids: devices.map((d) => d.id) })
+				.execute().then(res =>changes += res.affected||0 );
 
-		let localDevices = (await this.deviceRepository.createQueryBuilder().getMany()).map(d=>d.id);
-		for(let device of devices){
-			if(localDevices.includes(device.id)){
-				await this.updateDevice(device);
-			}else{
-				await this.addDevice(device);
+			let localDevices = 
+				await this.deviceRepository.createQueryBuilder().getMany();
+
+			for (let device of devices) {
+				let ld = localDevices.find((d)=>d.id == device.id)
+				if (ld) {
+					if(ld.state != device.state || ld?.turned != device.turned){
+						await this.updateDevice(device);
+						changes+=1;
+					}
+				} else {
+					await this.addDevice(device);
+					changes+=1;
+				}
 			}
+		} else {
+			await this.deviceRepository
+				.createQueryBuilder("device")
+				.delete()
+				.execute().then(res =>changes += res.affected||0 );
 		}
-		
+		return changes
 	};
 	
 	alarmsToTriggerOn = async()=>{

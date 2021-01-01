@@ -83,14 +83,16 @@ function main() {
 		//un mensaje con la cabecers addDevices
 		socket.on("updateState", async(devices: Device[]) => {
 			timeout.refresh();
-			if (devices != null && devices.length > 0) {
-				await controller.updateState(devices);
-				let resp:UpdateAlarm = {
-				 turnOn : await controller.alarmsToTriggerOn(),
-				 turnOff : await controller.alarmsToTriggerOff()
-				} 
-				socket.emit("updateAlarms",resp)
-				emitChanges();
+			if (devices != null) {
+				let changes =await controller.updateState(devices);
+				if(changes>0){
+					let resp:UpdateAlarm = {
+					 turnOn : await controller.alarmsToTriggerOn(),
+					 turnOff : await controller.alarmsToTriggerOff()
+					} 
+					socket.emit("updateAlarms",resp);
+					emitChanges();
+				}
 			}
 		});
 
