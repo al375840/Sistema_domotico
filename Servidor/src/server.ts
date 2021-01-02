@@ -5,8 +5,8 @@ import { Device } from "./entity/device";
 import { Room } from "./entity/room";
 import { UpdateAlarm } from "./others/IUpdateAlarm";
 
-
 export class SocketServer {
+	hubconneted:boolean = false;
 	cambiosCliente: boolean = false;
 	PORT = process.env.PORT || 3000;
 	controller: IController;
@@ -30,6 +30,9 @@ export class SocketServer {
 
 		io.on("connection", (socket) => {
 			//Emitimos los dispositivos sin habitación y las habitaciones
+			const emithubstate = ()=>{
+				io.emit("hubconexion", this.hubconneted);
+			}
 			const emitChanges = async () => {
 				await emitDeviceChanges();
 				await emitRoomChanges();
@@ -53,14 +56,18 @@ export class SocketServer {
 
 			//Para que cuando se conecte salga un mensaje por pantalla y emita los cambios
 			emitChanges();
+			emithubstate();
 			console.log("Nueva conexión");
 
 			// Miramos si el hub cada 20 segundos ha enviado un mensaje hello (WhatchDog)
 			socket.on("emmitter", () => {
 				console.log("Añadido emmiter");
+				this.hubconneted = true;
+				emithubstate();
 				this.timeout = setTimeout(() => {
 					console.log("conexion lost");
-					io.emit("conexionlost");
+					this.hubconneted = false;
+					emithubstate()
 				}, 20000);
 			});
 
@@ -72,7 +79,6 @@ export class SocketServer {
 			/*HUB*/
 			//añadimos los dispositivos cuando del hub recibimos esos disp por
 			//un mensaje con la cabecers addDevices
-			var cambiosCliente: boolean = false;
 			socket.on("updateState", async (devices: Device[]) => {
 				this.timeout.refresh();
 				if (devices != null) {
@@ -104,7 +110,7 @@ export class SocketServer {
 			socket.on("deleteRoom", async (room: string | null) => {
 				let done = false;
 				if (room) {
-					done = await this.controller.deleteRoom(room) > 0;
+					done = (await this.controller.deleteRoom(room)) > 0;
 					if (done) {
 						await emitChanges();
 						this.cambiosCliente = true;
@@ -116,7 +122,7 @@ export class SocketServer {
 			socket.on("updateRoom", async (room: string, newroom: string) => {
 				let done = false;
 				if (newroom && newroom.trim() != "") {
-					done = await this.controller.updateRoom(room, newroom) > 0;
+					done = (await this.controller.updateRoom(room, newroom)) > 0;
 					if (done) await emitRoomChanges();
 				}
 				socket.emit("updateRoomRes", done);
@@ -136,7 +142,7 @@ export class SocketServer {
 			socket.on("asignDevice", async (room: Room, device: string) => {
 				let done = false;
 				if (room && device) {
-					done = await this.controller.asignDeviceToRoom(room, device) > 0;
+					done = (await this.controller.asignDeviceToRoom(room, device)) > 0;
 					if (done) {
 						await emitChanges();
 						this.cambiosCliente = true;
@@ -148,7 +154,7 @@ export class SocketServer {
 			socket.on("unasignDevice", async (device: string) => {
 				let done = false;
 				if (device != null) {
-					done = await this.controller.unasignDevice(device) > 0;
+					done = (await this.controller.unasignDevice(device)) > 0;
 					if (done) {
 						await emitChanges();
 						this.cambiosCliente = true;
