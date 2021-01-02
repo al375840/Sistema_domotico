@@ -17,7 +17,7 @@ describe('HU03: Eliminar habitaciones', () => {
         const nombre = "Test"
         await roomService.addRoom(nombre).catch(()=>{});
         // When --  el usuario la elimina
-        await roomService.deleteRoom(nombre);
+        await roomService.deleteRoom(nombre).catch(()=>{});
         // Then -- se borra del registro.
         await expectAsync(roomService.getRoom(nombre)).toBeRejectedWith(new RoomNotExists(nombre));
         

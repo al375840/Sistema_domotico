@@ -20,22 +20,38 @@ export class AlarmAlertComponent implements OnInit {
 
   ngOnInit(): void {
     this.rs.getRoomsWithAlarms().subscribe((newNames:string[])=>{
-      let iguales = true;
       if(newNames.length == this.roomNames.length){
+        let iguales = true;
         let i = 0
         while(i<this.roomNames.length && iguales){
           if(this.roomNames[i] != newNames[i])
             iguales = false;
           i++;
         }
-      }else{
-        iguales = false;
-      }
-      if(!iguales) {
+        if(!iguales){
+          this.roomNames = newNames;
+          if(this.roomNames.length > 0 && !this.dialogRef)
+            this.openDialog();
+        }
+      }else if(newNames.length<this.roomNames.length){
+        let contenido = true; //Miramos si el estado nuevo es un subconjunto del anterior para evitar hacer que salte la alarma
+        let i = 0
+        while(i<newNames.length && contenido){
+          if(!this.roomNames.includes(newNames[i]))
+          contenido = false;
+          i++;
+        }
         this.roomNames = newNames;
-        if(this.roomNames.length > 0)
+        if(!contenido && !this.dialogRef)
+          this.openDialog();
+      }else{
+        this.roomNames = newNames;
+        if(!this.dialogRef)
           this.openDialog();
       }
+      
+        
+      
       
     })
   }

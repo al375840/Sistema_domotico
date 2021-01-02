@@ -1,20 +1,21 @@
 import { Connection, getRepository, Repository } from "typeorm";
 import { Device } from "../entity/device";
 import { Room } from "../entity/room";
+import { IController } from "./icontroller";
 
 /*export const addDevice= async(device:Device)=>{
     const newDevice = await this.deviceRepository.create(device);
     return await this.deviceRepository.save(newDevice);
 }*/
 
-export class Controller {
+export class Controller implements IController{
 	deviceRepository: Repository<Device>;
 	roomRepository: Repository<Room>;
 	constructor(c: Connection) {
 		this.deviceRepository = c.getRepository(Device);
 		this.roomRepository = c.getRepository(Room);
 	}
-	addDevice = async (device: Device) => {
+	private addDevice(device: Device){
 		return this.deviceRepository
 			.createQueryBuilder()
 			.insert()
@@ -27,30 +28,40 @@ export class Controller {
 			.execute();
 	};
 
-	getUnasignedDevices = () => {
+	getUnasignedDevices(): Promise<Device[] | undefined>{
 		return this.deviceRepository
 			.createQueryBuilder("device")
 			.where("device.room IS NULL")
-			.getMany();
+			.getMany()
+			.catch((e) => {
+				console.error(e);
+				return undefined;
+			});
 	};
 
-	getDeviceState = (device: string) => {
+	getDeviceState(device: string): Promise<Device | undefined>{
 		return this.deviceRepository
 			.createQueryBuilder("device")
 			.where("device.id = :id", { id: device })
 			.getOne();
 	};
 
-	addRoom = (room: string) => {
-		return this.roomRepository
+	async addRoom(room: string): Promise<boolean>{
+		let done = true;
+		await this.roomRepository
 			.createQueryBuilder()
 			.insert()
 			.values({
 				name: room,
 			})
-			.execute();
+			.execute()
+			.catch((e) => {
+				console.error(e);
+				done = false;
+			});
+		return done;
 	};
-	updateState = async (devices: Device[]) => {
+	async updateState(devices: Device[]): Promise<number>{
 		let changes = 0;
 		//Primero se quitan los dispositivos residuales de otros hubs, si no hay ninguno se borran todos
 		if (devices.length > 0) {
@@ -58,33 +69,36 @@ export class Controller {
 				.createQueryBuilder("device")
 				.delete()
 				.where("device.id NOT IN (:...ids)", { ids: devices.map((d) => d.id) })
-				.execute().then(res =>changes += res.affected||0 );
+				.execute()
+				.then((res) => (changes += res.affected || 0));
 
-			let localDevices = 
-				await this.deviceRepository.createQueryBuilder().getMany();
+			let localDevices = await this.deviceRepository
+				.createQueryBuilder()
+				.getMany();
 
 			for (let device of devices) {
-				let ld = localDevices.find((d)=>d.id == device.id)
+				let ld = localDevices.find((d) => d.id == device.id);
 				if (ld) {
-					if(ld.state != device.state || ld?.turned != device.turned){
+					if (ld.state != device.state || ld?.turned != device.turned) {
 						await this.updateDevice(device);
-						changes+=1;
+						changes += 1;
 					}
 				} else {
 					await this.addDevice(device);
-					changes+=1;
+					changes += 1;
 				}
 			}
 		} else {
 			await this.deviceRepository
 				.createQueryBuilder("device")
 				.delete()
-				.execute().then(res =>changes += res.affected||0 );
+				.execute()
+				.then((res) => (changes += res.affected || 0));
 		}
-		return changes
+		return changes;
 	};
 
-	alarmsToTriggerOn = async () => {
+	async alarmsToTriggerOn(): Promise<Device[]> {
 		let rwad = this.roomRepository
 			.createQueryBuilder("room")
 			.select("room.name")
@@ -104,7 +118,7 @@ export class Controller {
 			.getMany();
 	};
 
-	alarmsToTriggerOff = async () => {
+	async alarmsToTriggerOff(): Promise<Device[]>{
 		let rwad = this.roomRepository
 			.createQueryBuilder("room")
 			.select("room.name")
@@ -118,45 +132,72 @@ export class Controller {
 			.createQueryBuilder("device")
 			.where("device.type = :type", { type: "alarma" })
 			.andWhere("device.state = :s", { s: "ON" })
-			.andWhere(`(device.room IS NULL OR device.room NOT IN (${rwad.getQuery()}))`)
+			.andWhere(
+				`(device.room IS NULL OR device.room NOT IN (${rwad.getQuery()}))`
+			)
 			.setParameters(rwad.getParameters())
 			.getMany();
 	};
 
-	updateDevice = async (device: Device) => {
-		return this.deviceRepository
+	private async updateDevice(device: Device): Promise<number>{
+		let res = 0;
+		await this.deviceRepository
 			.createQueryBuilder("device")
 			.update(Device)
 			.set({ state: device.state, turned: device.turned })
 			.where("device.id = :id", { id: device.id })
-			.execute();
+			.execute()
+			.then((n) => (res = n.affected || 0))
+			.catch((e) => {
+				console.error(e);
+				res = -1;
+			});
+		return res
 	};
 
-	updateRoom = (room: string, newroom: string) => {
-		return this.roomRepository
+	async updateRoom(room: string, newroom: string): Promise<number>{
+		let res = 0;
+		await this.roomRepository
 			.createQueryBuilder("room")
 			.update(Room)
 			.set({ name: newroom })
 			.where("room.name = :name", { name: room })
-			.execute();
+			.execute()
+			.then((n) => (res = n.affected || 0))
+			.catch((e) => {
+				console.error(e);
+				res = -1;
+			});
+		return res;
 	};
 
-	deleteRoom = (room: string) => {
-		return this.roomRepository
+	async deleteRoom(room: string): Promise<number>{
+		let res = 0;
+		await this.roomRepository
 			.createQueryBuilder("room")
 			.delete()
 			.where("room.name = :name", { name: room })
-			.execute();
+			.execute()
+			.then((r) => (res = r.affected || 0))
+			.catch((e) => {
+				console.error(e);
+				res = -1;
+			});
+		return res;
 	};
 
-	getRooms = () => {
+	getRooms(): Promise<Room[] | undefined> {
 		return this.roomRepository
 			.createQueryBuilder("room")
 			.leftJoinAndSelect("room.devices", "device")
-			.getMany();
+			.getMany()
+			.catch((e) => {
+				console.error(e);
+				return undefined;
+			});
 	};
 
-	getRoom = (room: string) => {
+	getRoom(room: string): Promise<Room | undefined> {
 		return this.roomRepository
 			.createQueryBuilder("room")
 			.leftJoinAndSelect("room.devices", "device")
@@ -164,21 +205,35 @@ export class Controller {
 			.getOne();
 	};
 
-	asignDeviceToRoom = (room: Room, device: string) => {
-		return this.deviceRepository
+	async asignDeviceToRoom(room: Room, device: string): Promise<number>{
+		let res = 0;
+		await this.deviceRepository
 			.createQueryBuilder()
 			.update(Device)
 			.set({ room: room })
 			.where("device.id = :id", { id: device })
-			.execute();
+			.execute()
+			.then((n) => (res = n.affected || 0))
+			.catch((e) => {
+				console.error(e);
+				res = -1;
+			});
+		return res;
 	};
 
-	unasignDevice = (device: string) => {
-		return this.deviceRepository
+	async unasignDevice (device: string): Promise<number>{
+		let res = 0;
+		await this.deviceRepository
 			.createQueryBuilder()
 			.update(Device)
 			.set({ room: undefined })
 			.where("device.id = :id", { id: device })
-			.execute();
+			.execute()
+			.then((n) => (res = n.affected || 0))
+			.catch((e) => {
+				console.error(e);
+				res = -1;
+			});
+		return res;
 	};
 }

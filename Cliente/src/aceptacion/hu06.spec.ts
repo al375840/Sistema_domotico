@@ -16,16 +16,16 @@ describe('HU06: Consultar dispositivos asignados a una habitacion', () => {
   it('Deberia poder consultar los dispositivos de una habitación que existe y tiene dispositivos asignados', async () => {
         // Given -- una habitación con dispositivos asignados.
         const roomname = 'TEST'
-        await roomService.addRoom(roomname).catch(()=>{})
+        await roomService.addRoom(roomname).catch((e)=>console.error(e))
         const deviceId = 'FEN'
         const room = await roomService.getRoom(roomname)
-        await roomService.asignDevice(deviceId, room).catch(()=>{})
+        await roomService.asignDevice(deviceId, room).catch((e)=>console.error(e))
         // When -- quiere listar los dispositivos de la habitación.
         const roomafter = await roomService.getRoom(roomname)
         // Then --  se mostrará una lista con todos los dispositivos de la habitación.
         expect(roomafter.devices).toBeDefined()
-        await roomService.deleteRoom(roomname).catch(()=>{})
-    
+        await roomService.deleteRoom(roomname).catch((e)=>console.error(e))
+
   });
 
   it('No deberia poder consultar los dispositivos de una habitación que no existe', async () => {

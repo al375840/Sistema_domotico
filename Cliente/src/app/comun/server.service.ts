@@ -38,15 +38,15 @@ export class ServerService implements IServer {
 
   checkState(idDevice: string): Promise<Device> {
     this.socket.emit('checkState', idDevice);
-     
+
       return new Promise<Device>((resolve,reject)=>this.socket.on('checkState', (device: Device) => {
         if(device)
           resolve(device);
         else
           reject(new DeviceNotExists(idDevice));
-        
+
       }));
-   
+
   }
 
   async addRoom(room: string) {
