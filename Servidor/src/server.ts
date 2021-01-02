@@ -78,7 +78,7 @@ export class SocketServer {
 				this.timeout.refresh();
 				if (devices != null) {
 					let changes = await this.controller.updateState(devices);
-					if (cambiosCliente || changes > 0) {
+					if (this.cambiosCliente || changes > 0) {
 						let resp: UpdateAlarm = {
 							turnOn: await this.controller.alarmsToTriggerOn(),
 							turnOff: await this.controller.alarmsToTriggerOff(),
@@ -87,7 +87,7 @@ export class SocketServer {
 							socket.emit("updateAlarms", resp);
 
 						await emitChanges();
-						cambiosCliente = false;
+						this.cambiosCliente = false;
 					}
 				}
 			});
@@ -108,7 +108,7 @@ export class SocketServer {
 					done = await this.controller.deleteRoom(room) > 0;
 					if (done) {
 						await emitChanges();
-						cambiosCliente = true;
+						this.cambiosCliente = true;
 					}
 				}
 				socket.emit("deleteRoomRes", done);
@@ -140,7 +140,7 @@ export class SocketServer {
 					done = await this.controller.asignDeviceToRoom(room, device) > 0;
 					if (done) {
 						await emitChanges();
-						cambiosCliente = true;
+						this.cambiosCliente = true;
 					}
 				}
 				socket.emit("asignDeviceRes", done);
@@ -152,7 +152,7 @@ export class SocketServer {
 					done = await this.controller.unasignDevice(device) > 0;
 					if (done) {
 						await emitChanges();
-						cambiosCliente = true;
+						this.cambiosCliente = true;
 					}
 				}
 				socket.emit("unasignDeviceRes", done);
