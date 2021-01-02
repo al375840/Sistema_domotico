@@ -5,7 +5,6 @@ import { Device } from "./entity/device";
 import { Room } from "./entity/room";
 import { UpdateAlarm } from "./others/IUpdateAlarm";
 
-const PORT = process.env.PORT || 3000;
 
 export class SocketServer {
 	cambiosCliente: boolean = false;
@@ -17,8 +16,8 @@ export class SocketServer {
 	}
 
 	start() {
-		const app = express().listen(PORT, () => {
-			console.log(`Escuchando en ${PORT}`);
+		const app = express().listen(this.PORT, () => {
+			console.log(`Escuchando en ${this.PORT}`);
 		});
 
 		let io = new Server(app, {
