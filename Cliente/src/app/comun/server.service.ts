@@ -13,7 +13,7 @@ import { IServer } from './i-server';
 export class ServerService implements IServer {
   private socket: Socket;
   private unasignedDevices: ReplaySubject<Array<Device>> = new ReplaySubject<Array<Device>>(1);
-  private roomlist: ReplaySubject<Array<Room>> = new ReplaySubject<Array<Room>>(1);
+  private roomlist: ReplaySubject<Array<Room>> = new ReplaySubject<Array<Room>>(1); 
 
   constructor() {
     this.socket = io(environment.urlServer);
@@ -29,6 +29,15 @@ export class ServerService implements IServer {
     this.socket.on('disconect', () => {
       console.log('Server disconected');
     });
+  }
+
+  disconection(): Observable<boolean> {
+    return new Observable<boolean>((obs) => {
+      this.socket.on('hubconexion',(res:boolean)=>{
+        obs.next(res);
+        console.log(res)
+      })
+    })
   }
 
   listUnasignedDevices(): Observable<Array<Device>> {

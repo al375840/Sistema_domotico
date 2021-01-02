@@ -16,4 +16,5 @@ export interface IServer {
     getRoom(room: string): Promise<Room>;
     updateRoom(room: string, newRoom: string): Promise<void>;
     deleteRoom(room: string): Promise<void>;
+    disconection(): Observable<boolean>;
 }
