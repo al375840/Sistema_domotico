@@ -20,6 +20,8 @@ import { ServerService } from './comun/server.service';
 import { DeviceInfoComponent } from './devices/device-info/device-info.component';
 import { AlarmAlertComponent } from './devices/alarm-alert/alarm-alert.component';
 import { AlarmAlertModalComponent } from './devices/alarm-alert-modal/alarm-alert-modal.component';
+import { ConnectionLostComponent } from './comun/connection-lost/connection-lost/connection-lost.component';
+import { ConnectionLostModalComponent } from './comun/connection-lost/connection-lost-modal/connection-lost-modal.component';
 
 
 @NgModule({
@@ -33,7 +35,9 @@ import { AlarmAlertModalComponent } from './devices/alarm-alert-modal/alarm-aler
     AddRoomComponent,
     DeviceInfoComponent,
     AlarmAlertComponent,
-    AlarmAlertModalComponent
+    AlarmAlertModalComponent,
+    ConnectionLostComponent,
+    ConnectionLostModalComponent
   ],
   imports: [
     BrowserModule,
