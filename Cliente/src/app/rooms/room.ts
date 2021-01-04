@@ -4,8 +4,8 @@ export class Room  {
     name?: string;
     devices: Device[];
 
-    constructor(public newName:string) {
-        this.name=newName;
+    constructor(name:string) {
+        this.name=name;
         
     }
   }

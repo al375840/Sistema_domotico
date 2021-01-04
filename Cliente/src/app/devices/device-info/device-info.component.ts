@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AddRoomComponent } from 'src/app/rooms/add-room/add-room.component';
 import { Device } from '../device';
+import { DeviceType } from '../../enums/typeEnum';
 
 @Component({
   selector: 'app-device-info',
@@ -22,13 +23,13 @@ export class DeviceInfoComponent implements OnInit {
 
   get name() {
     switch(this.data.type) {
-      case "movimiento": {
+      case DeviceType.APERTURA: {
         return "Movement Sensor: " + this.data.id
       }
-      case "alarma": {
+      case DeviceType.ALARMA: {
         return "Alarm: " + this.data.id
       }
-      case "apertura": {
+      case DeviceType.APERTURA: {
         return "Opening Sensor: " + this.data.id
       }
     }

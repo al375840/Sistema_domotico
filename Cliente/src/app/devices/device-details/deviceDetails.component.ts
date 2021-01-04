@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Device } from '../device';
 import { DeviceInfoComponent } from '../device-info/device-info.component';
+import { DeviceType } from '../../enums/typeEnum';
 
 @Component({
     selector: 'app-device-details',
@@ -29,13 +30,13 @@ export class DeviceDetailsComponent {
 
     get icon() {
         switch(this.device.type) {
-            case "movimiento": {
+            case DeviceType.MOVIMIENTO: {
                 return "directions_run"
             }
-            case "apertura": {
+            case DeviceType.APERTURA: {
                 return "sensor_door"
             }
-            case "alarma": {
+            case DeviceType.ALARMA: {
                 return "notification_important"
             }
         }
