@@ -18,7 +18,7 @@ describe('HUH04: Guardar informacion de los dispositivos del HUB', () => {
     ds = TestBed.inject(DeviceService);
   });
 
-  it('Devería de conservar los cambios de estado de un dispositivo', async () => {
+  it('Debería de conservar los cambios de estado de un dispositivo', async () => {
     //Given uno de los dispositivos que tiene el hub por defecto
     const deviceId = "FEN"
     await ds?.switchDeviceTurned(deviceId, false)
