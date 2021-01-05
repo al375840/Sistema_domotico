@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "domohub-3e0f5": {
+      "hosting": {
+        "Hub": [
+          "domohub-3e0f5"
+        ]
+      }
+    }
+  }
+}

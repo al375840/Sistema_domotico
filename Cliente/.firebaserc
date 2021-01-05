@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "domocliente": {
+      "hosting": {
+        "Cliente": [
+          "domocliente"
+        ]
+      }
+    }
+  }
+}

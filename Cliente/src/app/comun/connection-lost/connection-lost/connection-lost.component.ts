@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SERVER_SERVICE, IServer } from '../../i-server';
 import { ConnectionLostModalComponent } from '../connection-lost-modal/connection-lost-modal.component';
 
@@ -9,7 +9,7 @@ import { ConnectionLostModalComponent } from '../connection-lost-modal/connectio
   styleUrls: ['./connection-lost.component.css']
 })
 export class ConnectionLostComponent implements OnInit {
-  dialogRef: any;
+  dialogRef: MatDialogRef<ConnectionLostModalComponent, any>;
   connected: boolean = true;
   alreadyShown: boolean = false;
   constructor(@Inject(SERVER_SERVICE)private server: IServer, public dialog: MatDialog) { }
@@ -24,8 +24,10 @@ export class ConnectionLostComponent implements OnInit {
         this.alreadyShown = true;
       }
 
-      if (this.connected && this.alreadyShown)
+      if (this.connected && this.alreadyShown){
+        this.dialogRef.close();
         this.alreadyShown = false;
+      }
     })
   }
 
