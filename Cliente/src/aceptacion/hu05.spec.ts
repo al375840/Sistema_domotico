@@ -1,11 +1,8 @@
-import { RoomService } from '../app/rooms/room.service';
-import { initializeTestBed, limpiarEstado, obtainDeviceService, obtainRoomService } from './comun';
-import { take } from 'rxjs/operators';
-import { Room } from 'src/app/rooms/room';
-import { NameNotValid } from 'src/app/rooms/exceptions/name-not-valid';
 import { Device } from 'src/app/devices/device';
 import { DeviceNotExists } from 'src/app/devices/exceptions/device-not-exists';
 import { DeviceService } from '../app/devices/device.service';
+import { RoomService } from '../app/rooms/room.service';
+import { initializeTestBed, limpiarEstado, obtainDeviceService, obtainRoomService } from './comun';
 
 describe('HU05: Quitar un dispositivo a una habitacion', () => {
     let roomService: RoomService;
