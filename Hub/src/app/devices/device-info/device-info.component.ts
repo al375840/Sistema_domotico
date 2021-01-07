@@ -3,15 +3,24 @@ import { Device } from '../device';
 import { DeviceService } from '../device.service';
 import { DeviceType } from '../enums/typeEnum';
 
+
+
 @Component({
   selector: 'app-device-info',
   templateUrl: './device-info.component.html',
   styleUrls: ['./device-info.component.css']
 })
+
+
 export class DeviceInfoComponent implements OnInit {
+
   @Input() device?: Device;
   stateDetection = false;
-  constructor(private ds: DeviceService) { }
+
+  constructor(private ds: DeviceService,
+  ) { 
+  }
+  
 
   ngOnInit(): void {
     if (this.device && (this.device.state == "OFF" || this.device.state == "NO_MOTION" || this.device.state == "CLOSE"))
@@ -76,13 +85,25 @@ get icon() {
   if (this.device)
     switch(this.device.type) {
         case DeviceType.MOVIMIENTO: {
+          if(this.device.state=='MOTION_DETECTED')
             return "directions_run"
+          else
+            return "directions_walk"
         }
         case DeviceType.APERTURA: {
+          if (this.device.state=='OPEN')
+            return "sensor_open_door"
+          else
             return "sensor_door"
         }
         case DeviceType.ALARMA: {
-            return "notification_important"
+        if(this.device.turned){
+            if (this.device.state=='OFF')
+              return "notifications_none"
+            else
+              return "notifications_active"
+          }else
+        return "notifications_paused"
         }
     }
   else

@@ -5,7 +5,7 @@
                 <button mat-icon-button class="delete" (click)="delete()">
                     <mat-icon color="accent">delete</mat-icon>
                 </button>
-                <mat-icon [ngStyle]="{'color':color}" class="icono">{{icon}}</mat-icon>
+                <mat-icon [ngStyle]="{'color':color}" svgIcon={{icon}} class="icono"></mat-icon>
             </div>
             <label>{{device.id}}</label>
             <span>

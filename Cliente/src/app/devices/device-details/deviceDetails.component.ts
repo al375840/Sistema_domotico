@@ -29,18 +29,33 @@ export class DeviceDetailsComponent {
     }
 
     get icon() {
-        switch(this.device.type) {
-            case DeviceType.MOVIMIENTO: {
-                return "directions_run"
-            }
-            case DeviceType.APERTURA: {
-                return "sensor_door"
-            }
-            case DeviceType.ALARMA: {
-                return "notification_important"
-            }
-        }
-    }
+        if (this.device)
+          switch(this.device.type) {
+              case DeviceType.MOVIMIENTO: {
+                if(this.device.state=='MOTION_DETECTED')
+                  return "directions_run"
+                else
+                  return "directions_walk"
+              }
+              case DeviceType.APERTURA: {
+                if (this.device.state=='OPEN')
+                  return "sensor_open_door"
+                else
+                  return "sensor_door"
+              }
+              case DeviceType.ALARMA: {
+              if(this.device.turned){
+                  if (this.device.state=='OFF')
+                    return "notifications_none"
+                  else
+                    return "notifications_active"
+                }else
+              return "notifications_paused"
+              }
+          }
+        else
+          return ""
+      }
 
     openDialog(): void {
     

@@ -15,6 +15,8 @@ import { AddDeviceComponent } from './devices/add-device/add-device.component';
 import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { MAT_RADIO_DEFAULT_OPTIONS, MAT_RADIO_GROUP } from '@angular/material/radio';
 
+import {HttpClientModule} from '@angular/common/http';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,7 +30,8 @@ import { MAT_RADIO_DEFAULT_OPTIONS, MAT_RADIO_GROUP } from '@angular/material/ra
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    MatDialogModule
+    MatDialogModule,
+    HttpClientModule
   ],
   entryComponents: [
     AddDeviceComponent

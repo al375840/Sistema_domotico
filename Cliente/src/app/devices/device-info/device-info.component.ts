@@ -23,7 +23,7 @@ export class DeviceInfoComponent implements OnInit {
 
   get name() {
     switch(this.data.type) {
-      case DeviceType.APERTURA: {
+      case DeviceType.MOVIMIENTO: {
         return "Movement Sensor: " + this.data.id
       }
       case DeviceType.ALARMA: {
