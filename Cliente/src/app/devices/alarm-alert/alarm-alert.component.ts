@@ -60,7 +60,7 @@ export class AlarmAlertComponent implements OnInit {
   openDialog(): void {
    
     this.dialogRef = this.dialog.open(AlarmAlertModalComponent, {
-      width: '250px',
+      width: '300px',
       data: {names: this.roomNames} as AlarmAlertData,
       autoFocus: true,
       disableClose: false,
