@@ -51,7 +51,7 @@ export class RoomService {
     return this.server.getRooms().pipe(map((rooms) => {
       const newNames = [];
       for (const room of rooms) {
-        if (room.devices.find((d) => d.state == 'ON')) {
+        if (room.devices.find((d) => d.state == 'ON' && d.turned)) {
           newNames.push(room.name);
         }
       }
