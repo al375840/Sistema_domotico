@@ -3,6 +3,7 @@ import {initializeTestBed, limpiarEstado, obtainDeviceService, obtainRoomService
 import {take} from 'rxjs/operators';
 import {Room} from 'src/app/rooms/room';
 import {NameNotValid} from 'src/app/rooms/exceptions/name-not-valid';
+import { UpdateFailed } from 'src/app/rooms/exceptions/update-failed';
 
 describe('HU02: Modificar habitaciones', () => {
   let roomService: RoomService;
@@ -36,7 +37,7 @@ describe('HU02: Modificar habitaciones', () => {
         const newname = ""
         // When -- el usuario cambia el nombre.
         // Then -- lanza la excepcion corresopndiente.
-        await expectAsync(roomService.updateRoom(nombre, newname)).toBeRejectedWith(new NameNotValid(newname));
+        await expectAsync(roomService.updateRoom(nombre, newname)).toBeRejectedWith(new UpdateFailed(nombre, newname));
         //After
         await roomService.deleteRoom(newname).catch(async()=>{
           await roomService.deleteRoom(nombre).catch(()=>{});

@@ -5,6 +5,7 @@ import {Room} from 'src/app/rooms/room';
 import {RoomNotExists} from 'src/app/rooms/exceptions/room-not-exists';
 import { Device } from 'src/app/devices/device';
 import { DeviceService } from '../app/devices/device.service';
+import { AsignFailed } from 'src/app/rooms/exceptions/asign-failed';
 
 describe('HU04: Asignar un dispositivo a una habitacion', () => {
   let roomService: RoomService;
@@ -46,7 +47,7 @@ describe('HU04: Asignar un dispositivo a una habitacion', () => {
 
   // When -- el usuario quiera añadir ese dispositivo a la habitación
   // Then -- se lanzará la excepción correspondiente
-  await expectAsync(roomService.asignDevice(deviceId, room)).toBeRejectedWith(new RoomNotExists(nombre));
+  await expectAsync(roomService.asignDevice(deviceId, room)).toBeRejectedWith(new AsignFailed(nombre, deviceId));
 
   });
 

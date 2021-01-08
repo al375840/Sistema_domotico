@@ -16,19 +16,19 @@ export class RoomService {
   constructor(@Inject(SERVER_SERVICE) private server: ServerService) { }
 
   async asignDevice(device: string, room: Room): Promise<void> {
-    return await this.server.asignDevice(device, room).catch(() => { throw new RoomNotExists(room.name); });
+    return await this.server.asignDevice(device, room);
   }
 
   async deleteRoom(room: string): Promise<void> {
-    return await this.server.deleteRoom(room).catch(() => { throw new RoomNotExists(room); });
+    return await this.server.deleteRoom(room);
   }
 
   async addRoom(room: string): Promise<void> {
-    await this.server.addRoom(room).catch(() => { throw new NameNotValid(room); });
+    await this.server.addRoom(room);
   }
 
   async getRoom(room: string): Promise<Room> {
-    return await this.server.getRoom(room).catch(() => { throw new RoomNotExists(room); });
+    return await this.server.getRoom(room);
   }
 
   getRooms(): Observable<Array<Room>> {
@@ -61,6 +61,6 @@ export class RoomService {
   }
 
   async updateRoom(room: string, newRoom: string): Promise<void> {
-    return await this.server.updateRoom(room, newRoom).catch(() => { throw new NameNotValid(newRoom); });
+    return await this.server.updateRoom(room, newRoom);
   }
 }

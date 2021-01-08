@@ -4,6 +4,10 @@ import { io, Socket } from 'socket.io-client';
 import { environment } from 'src/environments/environment';
 import { Device } from '../devices/device';
 import { DeviceNotExists } from '../devices/exceptions/device-not-exists';
+import { AsignFailed } from '../rooms/exceptions/asign-failed';
+import { NameNotValid } from '../rooms/exceptions/name-not-valid';
+import { RoomNotExists } from '../rooms/exceptions/room-not-exists';
+import { UpdateFailed } from '../rooms/exceptions/update-failed';
 import { Room } from '../rooms/room';
 import { IServer } from './i-server';
 
@@ -35,7 +39,6 @@ export class ServerService implements IServer {
     return new Observable<boolean>((obs) => {
       this.socket.on('hubconexion',(res:boolean)=>{
         obs.next(res);
-        console.log(res)
       })
     })
   }
@@ -47,7 +50,6 @@ export class ServerService implements IServer {
 
   checkState(idDevice: string): Promise<Device> {
     this.socket.emit('checkState', idDevice);
-
       return new Promise<Device>((resolve,reject)=>this.socket.on('checkState', (device: Device) => {
         if(device)
           resolve(device);
@@ -63,7 +65,7 @@ export class ServerService implements IServer {
     return new Promise<void>((resolve, reject) => {
       this.socket.once('addRoomRes', (done: boolean) => {
         if (!done) {
-          reject('Error al crear habitación');
+          reject(new NameNotValid(room));
         } else {
           resolve();
         }
@@ -76,7 +78,7 @@ export class ServerService implements IServer {
     return new Promise<void>((resolve, reject) => {
       this.socket.once('asignDeviceRes', (done: boolean) => {
         if (!done) {
-          reject('Error al asignar');
+          reject(new AsignFailed(room.name, device));
         } else {
           resolve();
         }
@@ -89,7 +91,7 @@ export class ServerService implements IServer {
     return new Promise<void>((resolve, reject) => {
       this.socket.once('unasignDeviceRes', (done: boolean) => {
         if (!done) {
-          reject('Error al asignar');
+          reject(new DeviceNotExists(device));
         } else {
           resolve();
         }
@@ -107,7 +109,7 @@ export class ServerService implements IServer {
     return new Promise<Room>((resolve, reject) => {
       this.socket.once('getRoomRes', (res: Room) => {
         if (res == undefined) {
-          reject('Error al obtener habitacion');
+          reject(new RoomNotExists(room));
         } else {
           resolve(res);
         }
@@ -120,7 +122,7 @@ export class ServerService implements IServer {
     return new Promise<void>((resolve, reject) => {
       this.socket.once('updateRoomRes', (done: boolean) => {
         if (!done) {
-          reject('Error al actualizar habitacion');
+          reject(new UpdateFailed(room, newRoom));
         } else {
           resolve();
         }
@@ -133,7 +135,7 @@ export class ServerService implements IServer {
     return new Promise<void>((resolve, reject) => {
       this.socket.once('deleteRoomRes', (done: boolean) => {
         if (!done) {
-          reject('Nombre no valido');
+          reject(new RoomNotExists(room));
         } else {
           resolve();
         }

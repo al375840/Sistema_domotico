@@ -23,6 +23,6 @@ export class DeviceService {
   }
 
   async unasignDevice(device: string) {
-    return await this.server.unasignDevice(device).catch(() => {throw new DeviceNotExists(device); });
+    return await this.server.unasignDevice(device);
   }
 }
