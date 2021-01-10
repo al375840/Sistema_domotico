@@ -3,15 +3,13 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SERVER_SERVICE } from '../comun/i-server';
 import { ServerService } from '../comun/server.service';
-import { NameNotValid } from './exceptions/name-not-valid';
-import { RoomNotExists } from './exceptions/room-not-exists';
+import { orderDevices } from '../comun/utilityFunctions';
 import { Room } from './room';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoomService {
-  newRoom: any;
 
   constructor(@Inject(SERVER_SERVICE) private server: ServerService) { }
 
@@ -42,7 +40,11 @@ export class RoomService {
           ret = -1;
  }
         return ret;
-      });
+      }).map(r=>{
+        r.devices.sort(orderDevices)
+        return r});
+      
+      
     }));
   }
 

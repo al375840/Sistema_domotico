@@ -30,7 +30,6 @@ export class RoomsListComponent implements OnInit {
 
       this.rooms = data;
       this.roomNames = data.map((r)=>r.name);
-      this.rooms.forEach(r=>r.devices.sort((a,b) =>a.id>b.id?1:-1))
     });
   }
 

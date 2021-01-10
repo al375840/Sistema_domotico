@@ -25,6 +25,46 @@ describe('RoomService', () => {
     expect(service).toBeTruthy();
   });
   it('debería devolver un listado de las habitaciones con alarmas activas', async () => {
+    const listadoHabitaciones = service
+      .getRooms()
+      .pipe(take(4), toArray())
+      .toPromise();
+    topicoServidor.next([{ name: 'Z', devices: [] }]);
+    topicoServidor.next([
+      { name: 'Z', devices: [] },
+      { name: 'B', devices: [] },
+    ]);
+    topicoServidor.next([
+      { name: 'Z', devices: [] },
+      { name: 'B', devices: [] },
+      { name: 'C', devices: [] },
+    ]);
+    topicoServidor.next([
+      { name: 'Z', devices: [] },
+      { name: 'B', devices: [] },
+      { name: 'C', devices: [] },
+      { name: 'A', devices: [] },
+    ]);
+    const estados = await listadoHabitaciones;
+    expect(estados[0]).toEqual([{ name: 'Z', devices: [] }]);
+    expect(estados[1]).toEqual([
+      { name: 'B', devices: [] },
+      { name: 'Z', devices: [] },
+    ]);
+    expect(estados[2]).toEqual([
+      { name: 'B', devices: [] },
+      { name: 'C', devices: [] },
+      { name: 'Z', devices: [] },
+    ]);
+    expect(estados[3]).toEqual([
+      { name: 'A', devices: [] },
+      { name: 'B', devices: [] },
+      { name: 'C', devices: [] },
+      { name: 'Z', devices: [] },
+    ]);
+  });
+
+  it('debería devolver un listado de las habitaciones con alarmas activas', async () => {
     const estadosDetectados = service
       .getRoomsWithAlarms()
       .pipe(take(9), toArray())
@@ -36,7 +76,12 @@ describe('RoomService', () => {
         name: 'jardin',
         devices: [
           { id: 'AAA', type: DeviceType.ALARMA, state: 'OFF', turned: true },
-          { id: 'OAA', type: DeviceType.MOVIMIENTO, state: 'NO_MOTION', turned: true },
+          {
+            id: 'OAA',
+            type: DeviceType.MOVIMIENTO,
+            state: 'NO_MOTION',
+            turned: true,
+          },
         ],
       },
     ]);
@@ -45,7 +90,12 @@ describe('RoomService', () => {
         name: 'jardin',
         devices: [
           { id: 'AAA', type: DeviceType.ALARMA, state: 'OFF', turned: true },
-          { id: 'OAA', type: DeviceType.MOVIMIENTO, state: 'MOTION_DETECTED', turned: true },
+          {
+            id: 'OAA',
+            type: DeviceType.MOVIMIENTO,
+            state: 'MOTION_DETECTED',
+            turned: true,
+          },
         ],
       },
     ]);
@@ -54,7 +104,12 @@ describe('RoomService', () => {
         name: 'jardin',
         devices: [
           { id: 'AAA', type: DeviceType.ALARMA, state: 'ON', turned: true },
-          { id: 'OAA', type: DeviceType.MOVIMIENTO, state: 'MOTION_DETECTED', turned: true },
+          {
+            id: 'OAA',
+            type: DeviceType.MOVIMIENTO,
+            state: 'MOTION_DETECTED',
+            turned: true,
+          },
         ],
       },
     ]);
@@ -63,7 +118,12 @@ describe('RoomService', () => {
         name: 'jardin',
         devices: [
           { id: 'AAA', type: DeviceType.ALARMA, state: 'ON', turned: true },
-          { id: 'OAA', type: DeviceType.MOVIMIENTO, state: 'NO_MOTION', turned: true },
+          {
+            id: 'OAA',
+            type: DeviceType.MOVIMIENTO,
+            state: 'NO_MOTION',
+            turned: true,
+          },
         ],
       },
     ]);
@@ -72,7 +132,12 @@ describe('RoomService', () => {
         name: 'jardin',
         devices: [
           { id: 'AAA', type: DeviceType.ALARMA, state: 'OFF', turned: true },
-          { id: 'OAA', type: DeviceType.MOVIMIENTO, state: 'NO_MOTION', turned: true },
+          {
+            id: 'OAA',
+            type: DeviceType.MOVIMIENTO,
+            state: 'NO_MOTION',
+            turned: true,
+          },
         ],
       },
     ]);
@@ -83,7 +148,12 @@ describe('RoomService', () => {
         name: 'jardin',
         devices: [
           { id: 'AAA', type: DeviceType.ALARMA, state: 'OFF', turned: true },
-          { id: 'OAA', type: DeviceType.MOVIMIENTO, state: 'NO_MOTION', turned: false },
+          {
+            id: 'OAA',
+            type: DeviceType.MOVIMIENTO,
+            state: 'NO_MOTION',
+            turned: false,
+          },
         ],
       },
     ]);
@@ -92,7 +162,12 @@ describe('RoomService', () => {
         name: 'jardin',
         devices: [
           { id: 'AAA', type: DeviceType.ALARMA, state: 'ON', turned: true },
-          { id: 'OAA', type: DeviceType.MOVIMIENTO, state: 'NO_MOTION', turned: false },
+          {
+            id: 'OAA',
+            type: DeviceType.MOVIMIENTO,
+            state: 'NO_MOTION',
+            turned: false,
+          },
         ],
       },
     ]);
@@ -101,7 +176,12 @@ describe('RoomService', () => {
         name: 'jardin',
         devices: [
           { id: 'AAA', type: DeviceType.ALARMA, state: 'ON', turned: true },
-          { id: 'OAA', type: DeviceType.MOVIMIENTO, state: 'NO_MOTION', turned: true },
+          {
+            id: 'OAA',
+            type: DeviceType.MOVIMIENTO,
+            state: 'NO_MOTION',
+            turned: true,
+          },
         ],
       },
     ]);
@@ -110,7 +190,12 @@ describe('RoomService', () => {
         name: 'jardin',
         devices: [
           { id: 'AAA', type: DeviceType.ALARMA, state: 'OFF', turned: true },
-          { id: 'OAA', type: DeviceType.MOVIMIENTO, state: 'NO_MOTION', turned: true },
+          {
+            id: 'OAA',
+            type: DeviceType.MOVIMIENTO,
+            state: 'NO_MOTION',
+            turned: true,
+          },
         ],
       },
     ]);
