@@ -1,6 +1,7 @@
 
 .roomcard{
-    width: 85%;
+    max-width: 88%;
+    min-width: 75%;
     height: 150px;
     margin-top: 1rem;
     margin-bottom: 1rem;
@@ -12,6 +13,7 @@
     /*border: 5px solid #4885ed;
     box-shadow: 1px 2px 10px 0 #4885ed;*/
     box-shadow: 1px 2px 10px 0 black;
+    overflow: hidden;
   }
 
   .edit {

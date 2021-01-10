@@ -4,13 +4,13 @@
 </mat-card-title>
 
   <div overflow="scroll" class="unasigned-container" >
-    <button (mousedown)="scrollLeft()" (mouseup)="stopScroll()" (mouseout)="stopScroll()" mat-mini-fab color="accent" class="left_button"><mat-icon>keyboard_arrow_left</mat-icon></button>
+    <button (mousedown)="scrollLeft()" (mouseup)="stopScroll()" (mouseout)="stopScroll()" (click)="scrollLeftClick()" mat-mini-fab color="accent" class="left_button"><mat-icon>keyboard_arrow_left</mat-icon></button>
     <div #containerunasigned cdkDropListSortingDisabled cdkDropList [cdkDropListData]="devices" cdkDropListOrientation="horizontal" class="unasigned-list" (cdkDropListDropped)="drop($event)">
       <div class="unasigned-box" *ngFor="let device of devices" cdkDrag >
         <app-device-details [device]="device"></app-device-details>
       </div>
     </div>
-    <button (mousedown)="scrollRight()" (mouseup)="stopScroll()" (mouseout)="stopScroll()" mat-mini-fab color="accent" class="right_button"><mat-icon>keyboard_arrow_right</mat-icon></button>
+    <button (mousedown)="scrollRight()" (mouseup)="stopScroll()" (mouseout)="stopScroll()" (click)="scrollRighttClick()" mat-mini-fab color="accent" class="right_button"><mat-icon>keyboard_arrow_right</mat-icon></button>
   </div>
 </mat-card>
 

@@ -1,7 +1,11 @@
 <mat-card class="roomscard" color="primary" >
     <mat-card-title>
-        <h2 class="tittle" matBadge={{rooms.length}} matBadgePosition="after above" matBadgeColor="accent">Rooms</h2>
-        <button mat-mini-fab class="add-room" (click)="openDialog()"><mat-icon>add</mat-icon></button>
+        <div class="floatchild">
+            <h2 class="tittle"><span  matBadge={{rooms.length}} matBadgePosition="after" matBadgeColor="accent">Rooms </span></h2>  
+        </div>
+        <div class="floatchild">
+            <button mat-mini-fab class="add-room" (click)="openDialog()"><mat-icon>add</mat-icon></button> 
+        </div>
     </mat-card-title>
     <div class="roomlist" cdkScrollable>
         <div *ngFor="let room of rooms">

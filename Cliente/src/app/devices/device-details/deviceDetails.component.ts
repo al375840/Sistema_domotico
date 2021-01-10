@@ -32,13 +32,13 @@ export class DeviceDetailsComponent {
         if (this.device)
           switch(this.device.type) {
               case DeviceType.MOVIMIENTO: {
-                if(this.device.state=='MOTION_DETECTED')
+                if(this.device.state=='MOTION_DETECTED' && this.device.turned)
                   return "directions_run"
                 else
                   return "directions_walk"
               }
               case DeviceType.APERTURA: {
-                if (this.device.state=='OPEN')
+                if (this.device.state=='OPEN' && this.device.turned)
                   return "sensor_open_door"
                 else
                   return "sensor_door"

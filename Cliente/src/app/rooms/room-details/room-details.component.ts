@@ -83,6 +83,14 @@ scrollLeft() {
   }, 100);
 }
 
+scrollLeftClick() {
+  this.containerunasigned.nativeElement.scrollLeft -= 50;
+}
+
+scrollRighttClick() {
+  this.containerunasigned.nativeElement.scrollLeft += 50;
+}
+
 stopScroll() {
   clearTimeout(this.intervalScroll)
 }

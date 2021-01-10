@@ -16,14 +16,22 @@
 
 .roomlist{
     position: absolute;
-    width: 98%;
+    width: 95%;
     max-height: 85%;
     overflow: auto;
     margin-right: 0;
+    margin-top: 2.5em;
+}
+
+.floatchild{
+    height: 100%;
+    width: 50%;
+    float: left;
 }
 
 .tittle{
-    position: absolute;
+    position: relative;
+    width: 100%;
     margin-left: 1rem;
     font-size: 20px;
     color: white;
@@ -31,6 +39,5 @@
 
 .add-room{
     position: relative;
-    margin-top: -1%;
-    margin-left: 95%;
+    margin: -10% 0 0 90%;
 }
