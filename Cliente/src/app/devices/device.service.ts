@@ -1,9 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Socket } from 'socket.io-client';
-import { ServerService } from '../comun/server.service';
 import { Device } from './device';
-import { DeviceNotExists } from './exceptions/device-not-exists';
 import { IServer, SERVER_SERVICE } from '../comun/i-server';
 
 @Injectable({

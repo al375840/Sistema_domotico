@@ -30,7 +30,7 @@ export class ServerService implements IServer {
       this.roomlist.next(rooms);
     });
 
-    this.socket.on('disconect', () => {
+    this.socket.on('disconnect', () => {
       console.log('Server disconected');
     });
   }
