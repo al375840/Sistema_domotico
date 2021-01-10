@@ -1,6 +1,6 @@
 import { Device } from "../device";
 
 export interface UpdateAlarm{
-    turnOn:Device[];
-    turnOff:Device[];
+    turnOn:string[];
+    turnOff:string[];
 }

@@ -46,7 +46,7 @@ export class DeviceService {
   }
 
   async switchDeviceState(id: string, state:  "ON" | "OFF" | "MOTION_DETECTED" | "NO_MOTION" | "CLOSE" | "OPEN"): Promise<void> {
-    let device = await this.getDevice(id)
+    let device = await this.getDevice(id);
     device.state = state;
     const switched = await this.storage.updateDevice(device);
     if (!switched)
@@ -84,13 +84,13 @@ export class DeviceService {
   }
   
   private async updateAlarms(ua:UpdateAlarm){
-    ua.turnOn.forEach(d=>{
-      if(d.id)
-      this.switchDeviceState(d.id,"ON")
+    ua.turnOn.forEach(id=>{
+      if(id)
+      this.switchDeviceState(id,"ON")
     })
-    ua.turnOff.forEach(d=>{
-      if(d.id)
-      this.switchDeviceState(d.id,"OFF")
+    ua.turnOff.forEach(id=>{
+      if(id)
+      this.switchDeviceState(id,"OFF")
     })
   }
 }

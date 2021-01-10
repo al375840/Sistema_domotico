@@ -7,7 +7,7 @@ import { DeviceType } from '../enums/typeEnum';
 export class Device {
 
     @PrimaryColumn() //@PrimaryGeneratedColumn()
-    id?: string;
+    id: string;
 
     @Column({
         type: "enum",

@@ -85,8 +85,8 @@ export class SocketServer {
 					let changes = await this.controller.updateState(devices);
 					if (this.cambiosCliente || changes > 0) {
 						let resp: UpdateAlarm = {
-							turnOn: await this.controller.alarmsToTriggerOn(),
-							turnOff: await this.controller.alarmsToTriggerOff(),
+							turnOn: (await this.controller.alarmsToTriggerOn()).map(d=>d.id),
+							turnOff: (await this.controller.alarmsToTriggerOff()).map(d=>d.id),
 						};
 						if (resp.turnOff.length > 0 || resp.turnOn.length > 0)
 							socket.emit("updateAlarms", resp);
