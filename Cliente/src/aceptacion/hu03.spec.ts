@@ -1,8 +1,6 @@
-import {RoomService} from '../app/rooms/room.service';
-import {initializeTestBed, limpiarEstado, obtainDeviceService, obtainRoomService} from './comun';
-import {take} from 'rxjs/operators';
-import {Room} from 'src/app/rooms/room';
 import { RoomNotExists } from 'src/app/rooms/exceptions/room-not-exists';
+import { RoomService } from '../app/rooms/room.service';
+import { initializeTestBed, limpiarEstado, obtainRoomService } from './comun';
 
 describe('HU03: Eliminar habitaciones', () => {
   let roomService: RoomService;

@@ -1,8 +1,6 @@
 import { DeviceService } from '../app/devices/device.service';
-import { Device } from '../app/devices/device';
 import { DeviceNotExists } from '../app/devices/exceptions/device-not-exists';
-import { obtainDeviceService, limpiarEstado, initializeTestBed } from './comun';
-import { take } from 'rxjs/operators';
+import { initializeTestBed, limpiarEstado, obtainDeviceService } from './comun';
 
 describe('HU07: Consultar estado de los dispositivos', () => {
   let deviceService: DeviceService;

@@ -1,11 +1,13 @@
 import { Device } from "../entity/device";
 import { Room } from "../entity/room";
+import { updateState } from "../others/i-update-state";
 
 export interface IController {
 	getUnasignedDevices(): Promise<Device[] | undefined>;
 	getDeviceState(device: string): Promise<Device | undefined>;
 	addRoom(room: string): Promise<boolean>;
-	updateState(devices: Device[]): Promise<number>;
+	setDevicesState(devices: Device[]): Promise<number>;
+	updateDevicesState(us: updateState): Promise<number>;
 	alarmsToTriggerOn(): Promise<Device[]>;
 	alarmsToTriggerOff(): Promise<Device[]>;
 	updateRoom(room: string, newroom: string): Promise<number>;

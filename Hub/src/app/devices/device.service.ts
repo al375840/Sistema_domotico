@@ -6,6 +6,7 @@ import { Alarm, Device, Movement } from './device';
 import { DeviceType } from './enums/typeEnum';
 import { DeviceNotExists } from './exceptions/device-not-exist';
 import { UpdateAlarm } from './others/IUpdateAlarm';
+import { take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class DeviceService {
 
   constructor(@Inject(STORAGE)private storage:ILocalStorage, @Inject(SERVER_SERVICE) private ss: IServer) { 
     this.addInitialDevices().then(()=>{
-      ss.setDeviceList(this.getDevices())
+      storage.getDevices().pipe(take(1)).subscribe((devices)=>ss.setServerState(devices))
     });
     ss.getAlarmChanges$().subscribe((ua)=>this.updateAlarms(ua))
     
@@ -36,29 +37,38 @@ export class DeviceService {
         break
       }
     }
-    return this.storage.addDevice(device);
+    let id = await this.storage.addDevice(device);
+    device.id = id
+    this.ss.addDevice(device)
+    return id
   }
 
   async deleteDevice(id: string): Promise<void> {
     const deleted = await this.storage.deleteDevice(id);
     if (!deleted)
       throw new DeviceNotExists(id);
+    else
+      this.ss.deleteDevice(deleted);
   }
 
   async switchDeviceState(id: string, state:  "ON" | "OFF" | "MOTION_DETECTED" | "NO_MOTION" | "CLOSE" | "OPEN"): Promise<void> {
     let device = await this.getDevice(id);
     device.state = state;
-    const switched = await this.storage.updateDevice(device);
-    if (!switched)
+    const updated = await this.storage.updateDevice(device);
+    if (!updated)
       throw new DeviceNotExists(id);
+    else
+      this.ss.updateDevice(device)
   }
  
   async switchDeviceTurned(id: string, turned: boolean): Promise<void> {
     let device = await this.getDevice(id)
     device.turned = turned;
-    const switched = await this.storage.updateDevice(device);
-    if (!switched)
+    const updated = await this.storage.updateDevice(device);
+    if (!updated)
       throw new DeviceNotExists(id);
+    else
+      this.ss.updateDevice(device)
   }
 
   getDevices(): Observable<Device[]>{

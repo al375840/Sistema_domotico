@@ -3,6 +3,7 @@ import { Server } from "socket.io";
 import { IController } from "./controllers/icontroller";
 import { Device } from "./entity/device";
 import { Room } from "./entity/room";
+import { updateState } from "./others/i-update-state";
 import { UpdateAlarm } from "./others/IUpdateAlarm";
 
 export class SocketServer {
@@ -60,10 +61,23 @@ export class SocketServer {
 			console.log("Nueva conexión");
 
 			// Miramos si el hub cada 20 segundos ha enviado un mensaje hello (WhatchDog)
-			socket.on("emmitter", () => {
+			socket.on("emmitter", async(devices: Device[]) => {
 				console.log("Añadido emmiter");
 				this.hubconneted = true;
 				emithubstate();
+
+				let changes = await this.controller.setDevicesState(devices);
+				if ( changes > 0) {
+					let resp: UpdateAlarm = {
+						turnOn: (await this.controller.alarmsToTriggerOn()).map(d=>d.id),
+						turnOff: (await this.controller.alarmsToTriggerOff()).map(d=>d.id),
+					};
+					if (resp.turnOff.length > 0 || resp.turnOn.length > 0)
+						socket.emit("updateAlarms", resp);
+
+					await emitChanges();
+				}
+
 				this.timeout = setTimeout(() => {
 					console.log("conexion lost");
 					this.hubconneted = false;
@@ -79,10 +93,10 @@ export class SocketServer {
 			/*HUB*/
 			//añadimos los dispositivos cuando del hub recibimos esos disp por
 			//un mensaje con la cabecers addDevices
-			socket.on("updateState", async (devices: Device[]) => {
+			socket.on("updateState", async (ud: updateState) => {
 				this.timeout.refresh();
-				if (devices != null) {
-					let changes = await this.controller.updateState(devices);
+				if (ud != null) {
+					let changes = await this.controller.updateDevicesState(ud);
 					if (this.cambiosCliente || changes > 0) {
 						let resp: UpdateAlarm = {
 							turnOn: (await this.controller.alarmsToTriggerOn()).map(d=>d.id),

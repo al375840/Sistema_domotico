@@ -1,8 +1,6 @@
-import {RoomService} from '../app/rooms/room.service';
-import {initializeTestBed, limpiarEstado, obtainRoomService} from './comun';
-import {take} from 'rxjs/operators';
-import {Room} from 'src/app/rooms/room';
-import {NameNotValid} from 'src/app/rooms/exceptions/name-not-valid';
+import { take } from 'rxjs/operators';
+import { RoomService } from '../app/rooms/room.service';
+import { initializeTestBed, limpiarEstado, obtainRoomService } from './comun';
 
 describe('HU10: Mostrar alerta con las habitaciones en las que ha saltado una alarma', () => {
   let roomService: RoomService;

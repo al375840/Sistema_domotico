@@ -1,55 +1,73 @@
-import { Inject, Injectable } from '@angular/core';
-import { Observable, ReplaySubject, Subscription } from 'rxjs';
-import { Device } from '../devices/device';
-import { DeviceType } from '../devices/enums/typeEnum';
-import { IServer } from './i-server';
-import { io, Socket } from 'socket.io-client';
+import { Injectable } from '@angular/core';
+import { Observable, ReplaySubject } from 'rxjs';
+import { io } from 'socket.io-client';
 import { environment } from 'src/environments/environment';
+import { Device } from '../devices/device';
 import { UpdateAlarm } from '../devices/others/IUpdateAlarm';
-import { STORAGE, ILocalStorage } from '../localstorage/i-local-storage';
-import { take } from 'rxjs/operators';
-import { DeviceService } from '../devices/device.service';
+import { IServer } from './i-server';
+import { updateState } from './i-update-state';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class ServerService implements IServer{
-
-  private socket: Socket;
-  private alarmChanges: ReplaySubject<UpdateAlarm> = new ReplaySubject<UpdateAlarm>(1);
-  private devices?: Device[];
-  private subscription?: Subscription;
+export class ServerService implements IServer {
+  private alarmChanges: ReplaySubject<UpdateAlarm> = new ReplaySubject<UpdateAlarm>(
+    1
+  );
+  private us = {
+    toAdd: [],
+    toDelete: [],
+    toUpdate: [],
+  } as updateState;
   constructor() {
+  
+  }
+  private startConexion(devices: Device[]){
+    console.log('Servicio servidor iniciado');
 
-    console.log("Servicio servidor iniciado");
+    let socket = io(environment.urlServer);
 
-    this.socket = io(environment.urlServer);
-
-    this.socket.emit("emmitter")
-
-    this.socket.on('updateAlarms', (alarms: UpdateAlarm) => {
+    socket.on('updateAlarms', (alarms: UpdateAlarm) => {
       this.alarmChanges.next(alarms);
     });
-
-    var timeout;
-    timeout = setInterval(async () => {
-      this.socket.emit("updateState", this.devices || [])
-    }, 10000);
-
-    this.socket.on('disconect', () => {
+    socket.on('disconect', () => {
       console.log('Server disconected');
     });
-
+    socket.emit('emmitter', devices);
+    console.log('emitiendo estado al servidor');
+    setInterval(async () => {
+      socket.emit('updateState', this.us);
+      this.us = {
+        toAdd: [],
+        toDelete: [],
+        toUpdate: [],
+      };
+    }, 10000);
   }
 
   getAlarmChanges$(): Observable<UpdateAlarm> {
-    return this.alarmChanges
+    return this.alarmChanges;
   }
 
-  setDeviceList(odl: Observable<Device[]>): void {
-    if(this.subscription)
-      this.subscription.unsubscribe()
-    this.subscription = odl.subscribe((dl) => this.devices = dl)
+  async setServerState(devices: Device[]): Promise<void> {
+    this.startConexion(devices);
   }
 
+  addDevice(device: Device): void {
+    this.us.toAdd.push(device);
+  }
+
+  updateDevice(device: Device): void {
+    let d = this.us.toUpdate.find((d) => d.id == device.id);
+    if (d) {
+      d.state = device.state;
+      d.turned = device.turned;
+    } else {
+      this.us.toUpdate.push(device);
+    }
+  }
+
+  deleteDevice(device: Device): void {
+    this.us.toDelete.push(device);
+  }
 }

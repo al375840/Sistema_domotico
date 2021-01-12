@@ -15,7 +15,7 @@ async function main(c:Connection) {
 		{id:'EEE',state:'MOTION_DETECTED',turned:true,type:"movimiento"}as Device,
 	]
 	
-	await controller.updateState(estado).catch(()=>console.log("ERROR 1"));
+	await controller.setDevicesState(estado).catch(()=>console.log("ERROR 1"));
 	await controller.addRoom("hola").catch(()=>console.log("ERROR 2"));
 	await controller.asignDeviceToRoom({name:"hola"},'PPP').catch(()=>console.log("ERROR 3"));
 	await controller.asignDeviceToRoom({name:"hola"},'ÑÑÑ').catch(()=>console.log("ERROR 4"));

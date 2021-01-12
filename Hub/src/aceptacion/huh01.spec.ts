@@ -44,7 +44,7 @@ describe('HUH01: Crear dispositivo de los distitos estados', () => {
     } catch (error) {
       console.error(error)
     }
-    
+    expect(addedDevice).toBeDefined()
     if(addedDevice && addedDevice.id){
       await ds.deleteDevice(addedDevice.id).catch((e) => {console.error(e)})
     }

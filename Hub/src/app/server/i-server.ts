@@ -9,5 +9,8 @@ export const SERVER_SERVICE = new InjectionToken<IServer>('ServerService');
 
 export interface IServer {
     getAlarmChanges$(): Observable<UpdateAlarm>;
-    setDeviceList(odl: Observable<Device[]>): void;
+    setServerState(odl: Device[]): Promise<void>;
+    addDevice(device:Device): void;
+    updateDevice(device:Device): void;
+    deleteDevice(device:Device): void;
 }

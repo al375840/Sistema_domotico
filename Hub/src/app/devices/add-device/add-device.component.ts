@@ -1,8 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Device } from '../device';
 import { DeviceTypeParams } from '../device-list/device-list.component';
-import { DeviceType } from '../enums/typeEnum';
 
 @Component({
   selector: 'app-add-device',

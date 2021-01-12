@@ -1,7 +1,7 @@
-import {RoomService} from '../app/rooms/room.service';
-import {initializeTestBed, limpiarEstado, obtainDeviceService, obtainRoomService} from './comun';
-import {take} from 'rxjs/operators';
-import {Room} from 'src/app/rooms/room';
+import { take } from 'rxjs/operators';
+import { Room } from 'src/app/rooms/room';
+import { RoomService } from '../app/rooms/room.service';
+import { initializeTestBed, limpiarEstado, obtainRoomService } from './comun';
 
 describe('HU12: Listar habitaciones', () => {
   let roomService: RoomService;

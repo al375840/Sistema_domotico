@@ -1,11 +1,9 @@
-import {RoomService} from '../app/rooms/room.service';
-import {initializeTestBed, limpiarEstado, obtainDeviceService, obtainRoomService} from './comun';
-import {take} from 'rxjs/operators';
-import {Room} from 'src/app/rooms/room';
-import {RoomNotExists} from 'src/app/rooms/exceptions/room-not-exists';
 import { Device } from 'src/app/devices/device';
-import { DeviceService } from '../app/devices/device.service';
 import { AsignFailed } from 'src/app/rooms/exceptions/asign-failed';
+import { Room } from 'src/app/rooms/room';
+import { DeviceService } from '../app/devices/device.service';
+import { RoomService } from '../app/rooms/room.service';
+import { initializeTestBed, limpiarEstado, obtainDeviceService, obtainRoomService } from './comun';
 
 describe('HU04: Asignar un dispositivo a una habitacion', () => {
   let roomService: RoomService;

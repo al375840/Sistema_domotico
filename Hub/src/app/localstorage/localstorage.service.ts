@@ -25,7 +25,7 @@ export class LocalStorageService implements ILocalStorage {
     return id;
   }
   async updateDevice(device: Device): Promise<boolean> {
-    if (device.id && (await localforage.getItem(device.id))) {
+    if (device.id ) {
       await localforage.setItem(device.id, device);
       await this.emiteChanges();
       return true;
@@ -33,13 +33,14 @@ export class LocalStorageService implements ILocalStorage {
       return false;
     }
   }
-  async deleteDevice(id: string): Promise<boolean> {
-    if (await localforage.getItem(id)) {
+  async deleteDevice(id: string): Promise<Device | null> {
+    let device:Device | null = await localforage.getItem(id)
+    if (device) {
       await localforage.removeItem(id);
       await this.emiteChanges();
-      return true;
+      return device;
     } else {
-      return false;
+      return device;
     }
   }
   async getDevice(id: string): Promise<Device> {

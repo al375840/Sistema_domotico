@@ -1,9 +1,6 @@
-import {RoomService} from '../app/rooms/room.service';
-import {initializeTestBed, limpiarEstado, obtainDeviceService, obtainRoomService} from './comun';
-import {take} from 'rxjs/operators';
-import {Room} from 'src/app/rooms/room';
-import {NameNotValid} from 'src/app/rooms/exceptions/name-not-valid';
 import { UpdateFailed } from 'src/app/rooms/exceptions/update-failed';
+import { RoomService } from '../app/rooms/room.service';
+import { initializeTestBed, limpiarEstado, obtainRoomService } from './comun';
 
 describe('HU02: Modificar habitaciones', () => {
   let roomService: RoomService;

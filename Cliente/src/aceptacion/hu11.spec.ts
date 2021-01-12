@@ -1,13 +1,12 @@
-import {RoomService} from '../app/rooms/room.service';
-import {initializeTestBed, limpiarEstado, obtainRoomService} from './comun';
-import {take} from 'rxjs/operators';
-import {Room} from 'src/app/rooms/room';
-import {NameNotValid} from 'src/app/rooms/exceptions/name-not-valid';
 import { TestBed } from '@angular/core/testing';
-import { Device } from 'src/app/devices/device';
-import { DeviceService } from '../app/devices/device.service';
-import {ServerService} from '../app/comun/server.service';
+import { take } from 'rxjs/operators';
 import { SERVER_SERVICE } from 'src/app/comun/i-server';
+import { Device } from 'src/app/devices/device';
+import { Room } from 'src/app/rooms/room';
+import { ServerService } from '../app/comun/server.service';
+import { DeviceService } from '../app/devices/device.service';
+import { RoomService } from '../app/rooms/room.service';
+import { limpiarEstado } from './comun';
 
 describe('HU11: Guardar información de habitaciones', () => {
   let roomService: RoomService;

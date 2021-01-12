@@ -1,9 +1,6 @@
-import {RoomService} from '../app/rooms/room.service';
-import {initializeTestBed, limpiarEstado, obtainRoomService} from './comun';
-import {take} from 'rxjs/operators';
-import {Room} from 'src/app/rooms/room';
-import {NameNotValid} from 'src/app/rooms/exceptions/name-not-valid';
 import { RoomNotExists } from 'src/app/rooms/exceptions/room-not-exists';
+import { RoomService } from '../app/rooms/room.service';
+import { initializeTestBed, limpiarEstado, obtainRoomService } from './comun';
 
 describe('HU06: Consultar dispositivos asignados a una habitacion', () => {
   let roomService: RoomService;
