@@ -4,11 +4,6 @@ import { Room } from "../entity/room";
 import { updateState } from "../others/i-update-state";
 import { IController } from "./icontroller";
 
-/*export const addDevice= async(device:Device)=>{
-    const newDevice = await this.deviceRepository.create(device);
-    return await this.deviceRepository.save(newDevice);
-}*/
-
 export class Controller implements IController {
 	deviceRepository: Repository<Device>;
 	roomRepository: Repository<Room>;
@@ -25,7 +20,7 @@ export class Controller implements IController {
 			});
 		}
 		if (us.toUpdate.length > 0) {
-			us.toAdd.forEach((d) => {
+			us.toUpdate.forEach((d) => {
 				this.updateDevice(d);
 				changes += 1;
 			});
@@ -54,15 +49,16 @@ export class Controller implements IController {
 			.execute();
 	}
 
-	getUnasignedDevices(): Promise<Device[] | undefined> {
-		return this.deviceRepository
-			.createQueryBuilder("device")
-			.where("device.room IS NULL")
-			.getMany()
-			.catch((e) => {
-				console.error(e);
-				return undefined;
-			});
+	async getUnasignedDevices(): Promise<Device[] | undefined> {
+		try {
+			return this.deviceRepository
+				.createQueryBuilder("device")
+				.where("device.room IS NULL")
+				.getMany();
+		} catch (e) {
+			console.error(e);
+			return undefined;
+		}
 	}
 
 	getDeviceState(device: string): Promise<Device | undefined> {
