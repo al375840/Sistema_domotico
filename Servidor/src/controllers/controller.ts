@@ -13,18 +13,17 @@ export class Controller implements IController {
 	}
 	async updateDevicesState(us: updateState): Promise<number> {
 		let changes = 0;
-		if (us.toAdd.length > 0) {
-			us.toAdd.forEach((d) => {
-				this.addDevice(d);
-				changes += 1;
-			});
+
+		for (let d of us.toAdd) {
+			await this.addDevice(d);
+			changes += 1;
 		}
-		if (us.toUpdate.length > 0) {
-			us.toUpdate.forEach((d) => {
-				this.updateDevice(d);
-				changes += 1;
-			});
+
+		for (let d of us.toUpdate) {
+			await this.updateDevice(d);
+			changes += 1;
 		}
+
 		if (us.toDelete.length > 0) {
 			await this.deviceRepository
 				.createQueryBuilder("device")
@@ -135,6 +134,7 @@ export class Controller implements IController {
 			.leftJoin("device.room", "r")
 			.where("device.type = :type", { type: "alarma" })
 			.andWhere("device.state = :s", { s: "OFF" })
+			.andWhere("device.turned = :t", { t: true })
 			.andWhere("r.name IN (" + rwad.getQuery() + ")")
 			.setParameters(rwad.getParameters())
 			.getMany();
@@ -154,6 +154,7 @@ export class Controller implements IController {
 			.createQueryBuilder("device")
 			.where("device.type = :type", { type: "alarma" })
 			.andWhere("device.state = :s", { s: "ON" })
+			.andWhere("device.turned = :t", { t: true })
 			.andWhere(
 				`(device.room IS NULL OR device.room NOT IN (${rwad.getQuery()}))`
 			)
