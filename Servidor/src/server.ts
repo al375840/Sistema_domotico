@@ -78,6 +78,10 @@ export class SocketServer {
 					await emitChanges();
 				}
 
+				if(this.timeout){
+					clearTimeout(this.timeout)
+				}
+
 				this.timeout = setTimeout(() => {
 					console.log("conexion lost");
 					this.hubconneted = false;
